@@ -46,24 +46,24 @@ func _on_timer_timeout() -> void:
 	music_timer.start()
 
 func set_game_state(g_state: GameState):
-	if $PauseTimer.is_stopped():
-		if g_state == GameState.UI:
-			paused = true
-			#Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE) if Global.is_paused() else Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
-			Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
-		else:
-			paused = false
-			Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
-		state = g_state
+	#if $PauseTimer.is_stopped():
+	if g_state == GameState.UI:
+		paused = true
+		#Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE) if Global.is_paused() else Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
+	else:
+		paused = false
+		Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+	state = g_state
 
 func pause_game():
 	set_game_state(GameState.UI)
-	$PauseTimer.start()
+	#$PauseTimer.start()
 	on_pause.emit()
 
 func resume_game():
 	set_game_state(GameState.GAMEPLAY)
-	$PauseTimer.start()
+	#$PauseTimer.start()
 	on_resume.emit()
 
 func is_paused():
