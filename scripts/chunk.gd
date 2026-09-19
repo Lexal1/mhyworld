@@ -41,7 +41,7 @@ var chunk_position = Vector2.ZERO:
 		self.visible = false
 
 func _ready():
-	noise.seed = Global.world_seed
+	noise.seed = Global.world_seed #TODO: add a check to make sure that the world seed actually exists
 	#generate()
 	#update()
 	generate_and_update()
