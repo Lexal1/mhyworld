@@ -57,13 +57,13 @@ func set_game_state(g_state: GameState):
 		state = g_state
 
 func pause_game():
-	$PauseTimer.start()
 	set_game_state(GameState.UI)
+	$PauseTimer.start()
 	on_pause.emit()
 
 func resume_game():
-	$PauseTimer.start()
 	set_game_state(GameState.GAMEPLAY)
+	$PauseTimer.start()
 	on_resume.emit()
 
 func is_paused():
