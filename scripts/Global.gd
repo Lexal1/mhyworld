@@ -39,29 +39,30 @@ func _input(event: InputEvent) -> void:
 
 func _on_timer_timeout() -> void:
 	print(time.get("hour"))
-	@warning_ignore("standalone_ternary")
-	music_two.play() if time.get("hour") > 21 or time.get("hour") < 7 else music.play()
-	@warning_ignore("standalone_ternary")
-	await music.finished if music.playing else await music_two.finished
+	@warning_ignore("standalone_ternary") music_two.play() if time.get("hour") > 21 or time.get("hour") < 7 else music.play()
+	@warning_ignore("standalone_ternary") await music.finished if music.playing else await music_two.finished
 	#SHUT UPPPPPPPPP
 	music_timer.wait_time = randi_range(9,99)
 	music_timer.start()
 
 func set_game_state(g_state: GameState):
-	if g_state == GameState.UI:
-		paused = true
-		#Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE) if Global.is_paused() else Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
-		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
-	else:
-		paused = false
-		Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
-	state = g_state
+	if $PauseTimer.is_stopped():
+		if g_state == GameState.UI:
+			paused = true
+			#Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE) if Global.is_paused() else Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+			Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
+		else:
+			paused = false
+			Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+		state = g_state
 
 func pause_game():
+	$PauseTimer.start()
 	set_game_state(GameState.UI)
 	on_pause.emit()
 
 func resume_game():
+	$PauseTimer.start()
 	set_game_state(GameState.GAMEPLAY)
 	on_resume.emit()
 

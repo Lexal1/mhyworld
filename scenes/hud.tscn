@@ -1,24 +1,6 @@
 [gd_scene format=3 uid="uid://de37u445imeh7"]
 
 [ext_resource type="Script" uid="uid://dwqrgjgu48wwx" path="res://scripts/crosshair.gd" id="1_ahhtf"]
-[ext_resource type="Shader" uid="uid://f1ldnbqxs5mr" path="res://scripts/vg_mini.gdshader" id="2_oo0fn"]
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_g4v7s"]
-shader = ExtResource("2_oo0fn")
-shader_parameter/resolution = Vector2(640, 480)
-shader_parameter/scan_line_amount = 0.0
-shader_parameter/warp_amount = 0.250000011875
-shader_parameter/noise_amount = 0.02000000095
-shader_parameter/interference_amount = 0.010000000475
-shader_parameter/grille_amount = 0.1
-shader_parameter/grille_size = 1.0
-shader_parameter/vignette_amount = 0.30000001425
-shader_parameter/vignette_intensity = 0.50000002375
-shader_parameter/aberation_amount = 0.010000000475
-shader_parameter/roll_line_amount = 0.06000000285
-shader_parameter/roll_speed = 0.15000038712500086
-shader_parameter/scan_line_strength = -12.0
-shader_parameter/pixel_strength = -2.0
 
 [node name="HUD" type="Control" unique_id=1430509112]
 layout_mode = 3
@@ -47,16 +29,3 @@ mouse_filter = 2
 position = Vector2(-7, 0)
 width = 1.0
 script = ExtResource("1_ahhtf")
-
-[node name="CRT" type="CanvasLayer" parent="." unique_id=993384757]
-layer = 9
-visible = false
-
-[node name="ColorRect" type="ColorRect" parent="CRT" unique_id=417044765]
-material = SubResource("ShaderMaterial_g4v7s")
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2

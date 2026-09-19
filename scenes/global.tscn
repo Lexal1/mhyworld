@@ -39,4 +39,9 @@ wait_time = 3.0
 one_shot = true
 autostart = true
 
+[node name="PauseTimer" type="Timer" parent="." unique_id=553628922]
+wait_time = 2.0
+one_shot = true
+ignore_time_scale = true
+
 [connection signal="timeout" from="Music/Timer" to="." method="_on_timer_timeout"]

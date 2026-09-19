@@ -1,5 +1,190 @@
 [gd_scene format=3 uid="uid://t2ghc1agq2jn"]
 
+[ext_resource type="Script" uid="uid://dp4dcv7e32wd1" path="res://scenes/pause_menu.gd" id="1_myx47"]
+[ext_resource type="FontFile" uid="uid://bocinqr2prvyh" path="res://assets/consola.ttf" id="1_n87rw"]
+[ext_resource type="Shader" uid="uid://f1ldnbqxs5mr" path="res://scripts/vg_mini.gdshader" id="3_kukqi"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_imw0r"]
+font = ExtResource("1_n87rw")
+font_size = 12
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_5d2l8"]
+shader = ExtResource("3_kukqi")
+shader_parameter/resolution = Vector2(640, 480)
+shader_parameter/scan_line_amount = 0.0
+shader_parameter/warp_amount = 0.0
+shader_parameter/noise_amount = 0.02000000095
+shader_parameter/interference_amount = 0.010000000475
+shader_parameter/grille_amount = 0.1
+shader_parameter/grille_size = 1.0
+shader_parameter/vignette_amount = 0.30000001425
+shader_parameter/vignette_intensity = 0.50000002375
+shader_parameter/aberation_amount = 0.010000000475
+shader_parameter/roll_line_amount = 0.06000000285
+shader_parameter/roll_speed = 0.15000038712500086
+shader_parameter/scan_line_strength = -12.0
+shader_parameter/pixel_strength = -2.0
+
+[sub_resource type="Animation" id="Animation_kukqi"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("ColorRect:material:shader_parameter/warp_amount")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("ColorRect:material:shader_parameter/grille_amount")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.1]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("ColorRect:material:shader_parameter/roll_speed")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.15000038712500086]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath(".:visible")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+
+[sub_resource type="Animation" id="Animation_5d2l8"]
+resource_name = "tween_in"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("ColorRect:material:shader_parameter/warp_amount")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(0.5, 1),
+"update": 0,
+"values": [0.0, 0.250000011875]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("ColorRect:material:shader_parameter/grille_amount")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.0, 0.1]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("ColorRect:material:shader_parameter/roll_speed")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(0.22531264, 1),
+"update": 0,
+"values": [3.7999999946691787e-07, 0.15000038712500086]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath(".:visible")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+
+[sub_resource type="Animation" id="Animation_7l7mv"]
+resource_name = "tween_out"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("ColorRect:material:shader_parameter/warp_amount")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(0.5, 1),
+"update": 0,
+"values": [0.250000011875, 0.0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("ColorRect:material:shader_parameter/grille_amount")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.1, 0.0]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("ColorRect:material:shader_parameter/roll_speed")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(5.0982404, 1),
+"update": 0,
+"values": [0.15000038712500086, 3.7999999946691787e-07]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath(".:visible")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(1),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_v4r4p"]
+_data = {
+&"RESET": SubResource("Animation_kukqi"),
+&"tween_in": SubResource("Animation_5d2l8"),
+&"tween_out": SubResource("Animation_7l7mv")
+}
+
 [node name="PauseMenu" type="Control" unique_id=1947755196]
 layout_mode = 3
 anchors_preset = 15
@@ -7,9 +192,27 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("1_myx47")
 
 [node name="Label" type="Label" parent="." unique_id=1434541707]
 layout_mode = 0
 offset_right = 40.0
 offset_bottom = 23.0
-text = "paused !!! yoy"
+text = "paused!!! yoy"
+label_settings = SubResource("LabelSettings_imw0r")
+
+[node name="CRT" type="CanvasLayer" parent="." unique_id=120951089]
+layer = 9
+visible = false
+
+[node name="ColorRect" type="ColorRect" parent="CRT" unique_id=1566958971]
+material = SubResource("ShaderMaterial_5d2l8")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="CRT" unique_id=1115737534]
+libraries/ = SubResource("AnimationLibrary_v4r4p")
