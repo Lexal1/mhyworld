@@ -1,12 +1,10 @@
 [gd_resource type="ShaderMaterial" format=3 uid="uid://dq2bo6521l0vq"]
 
 [ext_resource type="Shader" uid="uid://bnobd3qinwotm" path="res://scripts/models.gdshader" id="1_8vyal"]
-[ext_resource type="Texture2D" uid="uid://djmi15qf82sbx" path="res://assets/palette.png" id="2_0hsq4"]
 
 [resource]
 render_priority = 0
 shader = ExtResource("1_8vyal")
-shader_parameter/albedo_texture = ExtResource("2_0hsq4")
 shader_parameter/texture_tile = Vector2(1, 1)
 shader_parameter/snap_enabled = true
 shader_parameter/snap_resolution = 100.0

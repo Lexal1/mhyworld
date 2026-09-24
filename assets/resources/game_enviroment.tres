@@ -4,7 +4,7 @@
 rayleigh_color = Color(0.13441822, 0.27786598, 1, 1)
 mie_coefficient = 0.001
 mie_color = Color(1, 1, 1, 1)
-ground_color = Color(0, 0, 0, 1)
+ground_color = Color(0.049304307, 0.07393909, 0.1440098, 1)
 
 [sub_resource type="Sky" id="Sky_g4v7s"]
 sky_material = SubResource("PhysicalSkyMaterial_yf5fn")
@@ -12,6 +12,7 @@ radiance_size = 0
 
 [resource]
 background_mode = 2
+background_energy_multiplier = 5.0
 sky = SubResource("Sky_g4v7s")
 ambient_light_source = 3
 reflected_light_source = 1
@@ -28,5 +29,6 @@ volumetric_fog_albedo = Color(0.44421136, 0.48178816, 0.56920975, 1)
 volumetric_fog_anisotropy = 0.4
 volumetric_fog_detail_spread = 6.0
 volumetric_fog_ambient_inject = 16.0
+volumetric_fog_sky_affect = 0.0
 adjustment_enabled = true
 adjustment_contrast = 1.25

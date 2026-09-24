@@ -29,7 +29,7 @@ func is_day(degree : float) -> bool: return degree > 90 and degree < 270
 func is_night(degree : float) -> bool: return not is_day(degree)
 
 func sun_intensity(degree : float) -> float:
-	var normalized = (degree - 90.0) / 180.0
+	var normalized = (degree - 90.0) / 1500.0
 	return sin(normalized * PI)
 
 func get_time(format : bool = false) -> String:

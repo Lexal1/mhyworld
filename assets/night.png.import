@@ -2,8 +2,8 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://c8sq65i2w7aiv"
-path.bptc="res://.godot/imported/panorama_image.png-2dd176275a2ae8ec9387bbb85406a644.bptc.ctex"
+uid="uid://ci86elcp2s7ly"
+path.s3tc="res://.godot/imported/night.png-5d74c4687065e56cbfff5976d8b8f7fb.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
@@ -11,13 +11,13 @@ metadata={
 
 [deps]
 
-source_file="res://assets/panorama_image.png"
-dest_files=["res://.godot/imported/panorama_image.png-2dd176275a2ae8ec9387bbb85406a644.bptc.ctex"]
+source_file="res://assets/night.png"
+dest_files=["res://.godot/imported/night.png-5d74c4687065e56cbfff5976d8b8f7fb.s3tc.ctex"]
 
 [params]
 
 compress/mode=2
-compress/high_quality=true
+compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
