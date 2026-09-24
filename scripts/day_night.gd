@@ -2,7 +2,7 @@ extends Node
 
 @export var sun : DirectionalLight3D
 @export var sky : WorldEnvironment
-@export var day_duration = 180.0 ## A day's duration, in seconds. REMEMBER THAT THIS ACCOUNTS FOR NIGHT'S LENGTH TOO!
+@export var day_duration = 1440.0/2 ## A day's duration, in seconds. REMEMBER THAT THIS ACCOUNTS FOR NIGHT'S LENGTH TOO!
 @export var label : Label
 
 var time : float = 0.0
@@ -32,7 +32,7 @@ func sun_intensity(degree : float) -> float:
 	var normalized = (degree - 90.0) / 180.0
 	return sin(normalized * PI)
 
-func get_time() -> String:
+func get_time(format : bool = false) -> String:
 	var minutes : int = int(time * 24 * 60)
 	var hour = minutes / 60
 	var minute = minutes % 60
@@ -40,5 +40,5 @@ func get_time() -> String:
 	var meridian: String = "AM" if hour < 12 else "PM"
 	var hour_12 : int = hour % 12
 	if hour_12 == 0: hour_12 = 12
-	
-	return "%d:%02d %s" % [hour_12, minute, meridian]
+	if format == false: return "%d:%02d" % [hour, minute]
+	else: return "%d:%02d %s" % [hour_12, minute, meridian]

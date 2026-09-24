@@ -13,6 +13,8 @@ var t_bob = 0.0
 #var paused = false
 var perspective = false
 var dead = false
+var block_selected = &"plate"
+
 
 @onready var head: Node3D = $Head
 @onready var camera = $Head/Camera
@@ -92,14 +94,20 @@ func _physics_process(delta: float) -> void:
 		block_outline.position = bpos
 		block_outline.visible = true
 		
-		if Input.is_action_just_pressed("1"):
+		if Input.is_action_just_pressed("mouse1"):
 			#blok.stream = BREAKSFX
 			emit_signal("break_block", pos)
 			#blok.play()
-		if Input.is_action_just_pressed("2"):
+		if Input.is_action_just_pressed("mouse2"):
 			#blok.stream = PLACESFX
-			emit_signal("place_block", pos +norm, BlockRegistry.get_idx_of(&"plate"))
+			emit_signal("place_block", pos +norm, BlockRegistry.get_idx_of(block_selected))
 			#blok.play()
+		if Input.is_action_just_pressed("numpad1"):
+			block_selected = &"plate"
+		if Input.is_action_just_pressed("numpad2"):
+			block_selected = &"turf"
+		if Input.is_action_just_pressed("numpad3"):
+			block_selected = &"light"
 	else:
 		block_outline.visible = false
 

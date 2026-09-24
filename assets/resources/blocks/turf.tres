@@ -5,8 +5,8 @@
 
 [sub_resource type="Resource" id="Resource_xuogw"]
 script = ExtResource("1_xuogw")
-TOP = Vector2(0, 1)
-BOTTOM = Vector2(3, 1)
+TOP = Vector2(1, 1)
+BOTTOM = Vector2(1, 1)
 NORTH = Vector2(1, 1)
 SOUTH = Vector2(1, 1)
 WEST = Vector2(1, 1)

@@ -1,22 +1,32 @@
 [gd_resource type="Environment" format=3 uid="uid://brc6bsfocnk1h"]
 
 [sub_resource type="PhysicalSkyMaterial" id="PhysicalSkyMaterial_yf5fn"]
-use_debanding = false
+rayleigh_color = Color(0.13441822, 0.27786598, 1, 1)
+mie_coefficient = 0.001
+mie_color = Color(1, 1, 1, 1)
+ground_color = Color(0, 0, 0, 1)
 
 [sub_resource type="Sky" id="Sky_g4v7s"]
 sky_material = SubResource("PhysicalSkyMaterial_yf5fn")
+radiance_size = 0
 
 [resource]
 background_mode = 2
 sky = SubResource("Sky_g4v7s")
 ambient_light_source = 3
+reflected_light_source = 1
 glow_enabled = true
-fog_light_color = Color(0, 0, 0, 1)
-fog_density = 0.5
-fog_sky_affect = 0.0
-fog_height_density = -0.036
-volumetric_fog_albedo = Color(0, 0, 0, 1)
-volumetric_fog_length = 50.0
-volumetric_fog_detail_spread = 0.5
+fog_mode = 1
+fog_light_color = Color(0.4088728, 0.50265324, 0.64762026, 1)
+fog_density = 1.0
+fog_depth_curve = 2.0
+fog_depth_begin = 0.0
+fog_depth_end = 80.0
+volumetric_fog_enabled = true
+volumetric_fog_density = 0.06
+volumetric_fog_albedo = Color(0.44421136, 0.48178816, 0.56920975, 1)
+volumetric_fog_anisotropy = 0.4
+volumetric_fog_detail_spread = 6.0
 volumetric_fog_ambient_inject = 16.0
-volumetric_fog_sky_affect = 0.5
+adjustment_enabled = true
+adjustment_contrast = 1.25

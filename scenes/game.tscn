@@ -18,6 +18,7 @@ shader_parameter/virtual_resolution = Vector2(320, 240)
 
 [node name="Game" type="Node3D" unique_id=1003255847]
 script = ExtResource("1_5dhsp")
+render_distance = 10
 blockShape = SubResource("BoxShape3D_iywne")
 
 [node name="Environment" type="Node" parent="." unique_id=1344819257]
@@ -32,7 +33,7 @@ label = NodePath("../../HUD/Time")
 environment = ExtResource("2_oaiob")
 
 [node name="SunPivot" type="Node3D" parent="Environment" unique_id=530159136]
-transform = Transform3D(-4.371139e-08, -1, 0, -1, 4.371139e-08, 8.742278e-08, -8.742278e-08, 3.821371e-15, -1, 0, 0, 0)
+transform = Transform3D(4.371139e-08, -1, -8.742278e-08, -1, -4.371139e-08, 0, -3.821371e-15, 8.742278e-08, -1, 0, 0, 0)
 
 [node name="Sun" type="DirectionalLight3D" parent="Environment/SunPivot" unique_id=840323454]
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0, 0, 0)
