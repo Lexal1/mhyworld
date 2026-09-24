@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://buipywsyrvbve"]
 
-[ext_resource type="Script" uid="uid://dsfndo1innaq4" path="res://scenes/draggable.gd" id="1_g4uxh"]
+[ext_resource type="Script" uid="uid://dsfndo1innaq4" path="res://scripts/draggable.gd" id="1_g4uxh"]
 [ext_resource type="Texture2D" uid="uid://b2y6nxaslmwm6" path="res://assets/robotos.png" id="1_v2vit"]
 
 [node name="Draggable" type="Control" unique_id=338330628]

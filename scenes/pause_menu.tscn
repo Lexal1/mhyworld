@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://t2ghc1agq2jn"]
 
-[ext_resource type="Script" uid="uid://dp4dcv7e32wd1" path="res://scenes/pause_menu.gd" id="1_myx47"]
+[ext_resource type="Script" uid="uid://dp4dcv7e32wd1" path="res://scripts/pause_menu.gd" id="1_myx47"]
 [ext_resource type="FontFile" uid="uid://bocinqr2prvyh" path="res://assets/consola.ttf" id="1_n87rw"]
 [ext_resource type="Shader" uid="uid://f1ldnbqxs5mr" path="res://scripts/vg_mini.gdshader" id="3_kukqi"]
 

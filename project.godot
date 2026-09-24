@@ -14,7 +14,7 @@ compatibility/default_parent_skeleton_in_mesh_instance_3d=true
 
 [application]
 
-config/name="untitled computer sandbox program"
+config/name="mhyworld"
 config/version="0.1"
 run/main_scene="res://scenes/game.tscn"
 config/features=PackedStringArray("4.7", "Forward Plus")

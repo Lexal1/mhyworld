@@ -74,9 +74,9 @@ func _generate():
 				if j < height / 2:
 					block = BlockRegistry.get_idx_of(&"stone")
 				elif j < height:
-					block = BlockRegistry.get_idx_of(&"stone") #DIRT
+					block = BlockRegistry.get_idx_of(&"dirt")
 				elif j == height:
-					block = BlockRegistry.get_idx_of(&"turf")
+					block = BlockRegistry.get_idx_of(&"grass")
 				if typeof(block) != TYPE_INT:
 					print("unint block: ", block)
 				blocks[i][j][k] = block

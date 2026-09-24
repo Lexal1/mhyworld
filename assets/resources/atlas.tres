@@ -1,6 +1,6 @@
-[gd_resource type="AtlasTexture" load_steps=2 format=3 uid="uid://2htkletl4hgi"]
+[gd_resource type="AtlasTexture" format=3 uid="uid://2htkletl4hgi"]
 
-[ext_resource type="Texture2D" path="res://assets/minecraftss.dds" id="1_0rjrp"]
+[ext_resource type="Texture2D" uid="uid://dooex1b22t0kv" path="res://assets/mhycraftblocks.png" id="1_lacmq"]
 
 [resource]
-atlas = ExtResource("1_0rjrp")
+atlas = ExtResource("1_lacmq")
