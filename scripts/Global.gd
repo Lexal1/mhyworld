@@ -3,13 +3,6 @@ extends Node
 signal on_pause
 signal on_resume
 
-const SYNTH_1 = preload("res://assets/audio/synth1.ogg")
-const SYNTH_2 = preload("res://assets/audio/synth2.ogg")
-const SYNTH_3 = preload("res://assets/audio/synth3.ogg")
-const SYNTH_4 = preload("uid://cr4lfh73qb7nc")
-const SYNTH_5 = preload("uid://bhyawgcw5kpfy")
-const SYNTH_6 = preload("uid://dq4a2b17kusep")
-
 enum GameState {
 	GAMEPLAY,
 	UI,

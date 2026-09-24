@@ -1,18 +1,15 @@
 [gd_resource type="Environment" format=3 uid="uid://brc6bsfocnk1h"]
 
-[ext_resource type="Texture2D" uid="uid://c8sq65i2w7aiv" path="res://assets/panorama_image.png" id="1_c150e"]
+[sub_resource type="PhysicalSkyMaterial" id="PhysicalSkyMaterial_yf5fn"]
+use_debanding = false
 
-[sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_eg3cf"]
-panorama = ExtResource("1_c150e")
-
-[sub_resource type="Sky" id="Sky_0fyiv"]
-sky_material = SubResource("PanoramaSkyMaterial_eg3cf")
+[sub_resource type="Sky" id="Sky_g4v7s"]
+sky_material = SubResource("PhysicalSkyMaterial_yf5fn")
 
 [resource]
 background_mode = 2
-sky = SubResource("Sky_0fyiv")
-tonemap_mode = 2
-ssao_enabled = true
+sky = SubResource("Sky_g4v7s")
+ambient_light_source = 3
 glow_enabled = true
 fog_light_color = Color(0, 0, 0, 1)
 fog_density = 0.5

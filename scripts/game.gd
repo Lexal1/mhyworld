@@ -94,7 +94,7 @@ func _on_player_break_block(pos: Variant) -> void:
 
 func _on_player_die() -> void:
 	Global.music.stream_paused = true
-	environment.environment.background_mode = Environment.BG_KEEP
+	#environment.background_mode = Environment.BG_KEEP
 	die.play()
 	await die.finished
 	get_tree().quit()

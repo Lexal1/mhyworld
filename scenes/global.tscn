@@ -1,28 +1,17 @@
 [gd_scene format=3 uid="uid://ccp68jltp664l"]
 
 [ext_resource type="Script" uid="uid://l42d5kskepyc" path="res://scripts/Global.gd" id="1_6kgfw"]
-[ext_resource type="AudioStream" uid="uid://bu65xu5kcj1y8" path="res://assets/audio/synth1.ogg" id="2_6rlim"]
-[ext_resource type="AudioStream" uid="uid://bmr8qa233ug1i" path="res://assets/audio/synth2.ogg" id="3_mmyj5"]
-[ext_resource type="AudioStream" uid="uid://gnpocoee081i" path="res://assets/audio/synth3.ogg" id="4_unqd7"]
-[ext_resource type="AudioStream" uid="uid://bhyawgcw5kpfy" path="res://assets/audio/synth5.ogg" id="5_x8cda"]
-[ext_resource type="AudioStream" uid="uid://dq4a2b17kusep" path="res://assets/audio/synth6.ogg" id="6_bv183"]
-[ext_resource type="AudioStream" uid="uid://cr4lfh73qb7nc" path="res://assets/audio/synth4.ogg" id="6_mmyj5"]
-[ext_resource type="AudioStream" uid="uid://cnt8q468cfwgc" path="res://assets/audio/synth7.ogg" id="6_unqd7"]
+[ext_resource type="AudioStream" uid="uid://28rexbx35u0x" path="res://assets/audio/TEMPVIBEMUSIC.mp3" id="2_nmxvb"]
 
 [sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_g4v7s"]
 random_pitch = 1.005793
-streams_count = 5
-stream_0/stream = ExtResource("2_6rlim")
-stream_1/stream = ExtResource("3_mmyj5")
-stream_2/stream = ExtResource("5_x8cda")
-stream_3/stream = ExtResource("6_bv183")
-stream_4/stream = ExtResource("6_unqd7")
+streams_count = 1
+stream_0/stream = ExtResource("2_nmxvb")
 
 [sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_yf5fn"]
 random_pitch = 1.0594631
-streams_count = 2
-stream_0/stream = ExtResource("6_mmyj5")
-stream_1/stream = ExtResource("4_unqd7")
+streams_count = 1
+stream_0/stream = ExtResource("2_nmxvb")
 
 [node name="Global" type="Node" unique_id=1590814855]
 script = ExtResource("1_6kgfw")
