@@ -32,21 +32,28 @@ var mesh_instance : MeshInstance3D = null
 
 var material = preload("res://assets/resources/new_standard_material_3d.tres")
 
+var _chunk_position: Vector2
 var chunk_position = Vector2.ZERO:
 	get:
-		return chunk_position
+		return _chunk_position
 	set(value):
-		chunk_position = value
+		_chunk_position = value
 		position = Vector3(value.x, 0, value.y) * Global.CHUNK_SIZE
 		self.visible = false
 
 func _ready():
-	noise.seed = Global.world_seed #TODO: add a check to make sure that the world seed actually exists
+	if Engine.is_editor_hint():
+		noise.seed = 128
+	else:
+		noise.seed = Global.world_seed #TODO: add a check to make sure that the world seed actually exists
 	#generate()
 	#update()
 	generate_and_update()
 
 func generate_and_update():
+	if Engine.is_editor_hint():
+		_generate_and_update()
+		return
 	return WorkerThreadPool.add_task(_generate_and_update)
 	
 func _generate_and_update():
@@ -65,7 +72,6 @@ func _generate():
 			blocks[i][j].resize(Global.CHUNK_SIZE.z)
 			for k in range(0, Global.CHUNK_SIZE.z):
 				var global_pos = chunk_position * Vector2(Global.CHUNK_SIZE.x,Global.CHUNK_SIZE.z) + Vector2(i,k)
-				
 				var height = int((noise.get_noise_2dv(global_pos) + 1)/ 2 * Global.CHUNK_SIZE.y)
 				
 				#var block = Blocks.AIR
@@ -100,6 +106,11 @@ func update():
 	st.set_material(shaderMaterial)
 	mesh = st.commit()
 	mesh_instance.set_mesh(mesh)
+	if Engine.is_editor_hint():
+		add_child(mesh_instance)
+		mesh_instance.create_trimesh_collision()
+		set_visible(true)
+		return
 	self.call_deferred("add_child",mesh_instance)
 	#mesh_instance.create_trimesh_collision()
 	mesh_instance.create_trimesh_collision.call_deferred()

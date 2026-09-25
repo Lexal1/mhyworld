@@ -35,6 +35,10 @@ window/stretch/mode="viewport"
 window/stretch/aspect="keep_height"
 window/stretch/scale_mode="integer"
 
+[dotnet]
+
+project/assembly_name="mhyworld"
+
 [input]
 
 forward={
