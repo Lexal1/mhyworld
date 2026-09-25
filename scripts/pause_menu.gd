@@ -8,7 +8,6 @@ func _ready() -> void:
 	global.on_pause.connect(pause)
 	global.on_resume.connect(unpause)
 
-
 func _process(delta: float) -> void:
 	label.text = str(Time.get_unix_time_from_system()) + "\n" + str(Global.world_seed)
 

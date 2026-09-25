@@ -29,10 +29,6 @@ func _ready():
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 
 func _unhandled_input(event: InputEvent):
-	if Input.is_action_just_pressed("pause"):
-		Global.toggle_pause_state()
-		print("pasued: ",Global.is_paused())
-		
 	if Global.is_paused(): return
 	
 	if event is InputEventMouseMotion:
@@ -50,8 +46,13 @@ func _unhandled_input(event: InputEvent):
 			camera.position.z = 0
 
 func _physics_process(delta: float) -> void:
-	if Global.is_paused():
-		return
+	if Input.is_action_just_pressed("pause"):
+		print("key pressed!")
+		print("var: ",Global.paused)
+		Global.toggle_pause_state()
+		print("pasued: ",Global.is_paused())
+		print("var: ",Global.paused)
+
 	if position.y <= -25 and !dead:
 		dead = true
 		die.emit()

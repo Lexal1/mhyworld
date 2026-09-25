@@ -4,12 +4,14 @@
 [ext_resource type="AudioStream" uid="uid://16q3fbo2h5ec" path="res://assets/audio/amby_2.ogg" id="2_m3l3d"]
 [ext_resource type="AudioStream" uid="uid://c573ht0bo1dw3" path="res://assets/audio/TEMPMUSICANOTHER.mp3" id="3_opebo"]
 [ext_resource type="AudioStream" uid="uid://b22vj0e4va2cp" path="res://assets/audio/crickets.ogg" id="4_m3l3d"]
+[ext_resource type="AudioStream" uid="uid://28rexbx35u0x" path="res://assets/audio/TEMPVIBEMUSIC.mp3" id="4_nelfd"]
 
 [sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_g4v7s"]
 random_pitch = 1.005793
-streams_count = 2
+streams_count = 3
 stream_0/stream = ExtResource("2_m3l3d")
 stream_1/stream = ExtResource("3_opebo")
+stream_2/stream = ExtResource("4_nelfd")
 
 [sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_yf5fn"]
 random_pitch = 1.0594631

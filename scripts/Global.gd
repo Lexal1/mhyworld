@@ -48,24 +48,22 @@ func set_game_state(g_state: GameState):
 		paused = true
 		#Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE) if Global.is_paused() else Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
+		on_pause.emit()
 	elif g_state == GameState.GAMEPLAY:
 		paused = false
 		Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+		on_resume.emit()
 	state = g_state
 
 func pause_game():
 	set_game_state(GameState.UI)
-	on_pause.emit()
+	
 
 func resume_game():
 	set_game_state(GameState.GAMEPLAY)
-	on_resume.emit()
 
-func is_paused():
-	return paused
+func is_paused(): return paused
 
 func toggle_pause_state():
-	if state == GameState.UI:
-		resume_game()
-	else:
-		pause_game()
+	if state == GameState.UI: set_game_state(GameState.GAMEPLAY)
+	else: set_game_state(GameState.UI)
