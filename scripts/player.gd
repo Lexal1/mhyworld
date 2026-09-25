@@ -10,7 +10,6 @@ var sensitivity = 0.005
 
 var t_bob = 0.0
 
-#var paused = false
 var perspective = false
 var dead = false
 var block_selected = &"plate"
@@ -31,11 +30,8 @@ func _ready():
 
 func _unhandled_input(event: InputEvent):
 	if Input.is_action_just_pressed("pause"):
-		#paused = not paused
 		Global.toggle_pause_state()
 		print("pasued: ",Global.is_paused())
-		#Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE) if Global.is_paused() else Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
-		#SHUT UP YOU STUPID WARNING! I WANT MY TERNIARY OPERATORS TO CUT DOWN ON CODE LENGTH!!!! EFFICACY BE DAMNED!!!!
 		
 	if Global.is_paused(): return
 	
@@ -95,13 +91,9 @@ func _physics_process(delta: float) -> void:
 		block_outline.visible = true
 		
 		if Input.is_action_just_pressed("mouse1"):
-			#blok.stream = BREAKSFX
 			emit_signal("break_block", pos)
-			#blok.play()
 		if Input.is_action_just_pressed("mouse2"):
-			#blok.stream = PLACESFX
 			emit_signal("place_block", pos +norm, BlockRegistry.get_idx_of(block_selected))
-			#blok.play()
 		if Input.is_action_just_pressed("numpad1"):
 			block_selected = &"plate"
 		if Input.is_action_just_pressed("numpad2"):

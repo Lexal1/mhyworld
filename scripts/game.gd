@@ -39,12 +39,7 @@ func chunk_processing():
 		
 		if (newx != cx or newz != cz):
 			c.chunk_position = Vector2(int(newx),int(newz))
-			#c.generate()
-			#c.update()
 			tasks.push_back(c.generate_and_update())
-			#WorkerThreadPool.wait_for_task_completion()
-	#if len(tasks) > 0:
-	#	call_deferred("_wait_for_tasks", tasks)
 
 func _wait_for_tasks(tasks: Array):
 	for task in tasks:

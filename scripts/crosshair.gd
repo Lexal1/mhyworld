@@ -28,7 +28,7 @@ func calculate_heartbeat_y(t: float) -> float:
 	
 	y += 0.15 * exp(-pow((phase - 1.0) / 0.15, 2)) # small initial bump
 	y -= 0.20 * exp(-pow((phase - 1.4) / 0.05, 2)) # small dip before spike
-	y += 1.00 * exp(-pow((phase - 1.5) / 0.04, 2)) # the massive spike
+	y += 1.00 * exp(-pow((phase - 1.5) / 0.04, 2)) # massive spike
 	y -= 0.35 * exp(-pow((phase - 1.6) / 0.05, 2)) # sharp dip after spike
 	y += 0.30 * exp(-pow((phase - 2.2) / 0.25, 2)) # medium recovery bump
 	

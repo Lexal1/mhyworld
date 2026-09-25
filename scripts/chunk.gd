@@ -46,8 +46,6 @@ func _ready():
 		noise.seed = 128
 	else:
 		noise.seed = Global.world_seed #TODO: add a check to make sure that the world seed actually exists
-	#generate()
-	#update()
 	generate_and_update()
 
 func generate_and_update():
@@ -87,6 +85,7 @@ func _generate():
 					print("unint block: ", block)
 				blocks[i][j][k] = block
 	blocksMutex.unlock()
+
 func update():
 	## unloads chunk if it exists
 	if mesh != null:
@@ -112,9 +111,7 @@ func update():
 		set_visible(true)
 		return
 	self.call_deferred("add_child",mesh_instance)
-	#mesh_instance.create_trimesh_collision()
 	mesh_instance.create_trimesh_collision.call_deferred()
-	#self.visible = true
 	self.call_deferred("set_visible", true)
 
 func check_transparency(x,y,z):
@@ -130,12 +127,9 @@ func check_transparency(x,y,z):
 func create_block(x,y,z):
 	#print("creating block %s %s %s" % [x,y,z])
 	var block = blocks[x][y][z]
-	#if block == Blocks.AIR:
-	#	return
 	if block == BlockRegistry.get_idx_of(&"air"):
 		return
 	
-	#var block_data = Blocks.block_types[block]
 	var block_data = BlockRegistry.get_by_idx(block)
 	var atlas_data = block_data.atlas_position
 	

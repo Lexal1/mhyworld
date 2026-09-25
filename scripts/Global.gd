@@ -56,12 +56,10 @@ func set_game_state(g_state: GameState):
 
 func pause_game():
 	set_game_state(GameState.UI)
-	#$PauseTimer.start()
 	on_pause.emit()
 
 func resume_game():
 	set_game_state(GameState.GAMEPLAY)
-	#$PauseTimer.start()
 	on_resume.emit()
 
 func is_paused():
