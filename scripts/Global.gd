@@ -44,12 +44,11 @@ func _on_timer_timeout() -> void:
 	music_timer.start()
 
 func set_game_state(g_state: GameState):
-	#if $PauseTimer.is_stopped():
 	if g_state == GameState.UI:
 		paused = true
 		#Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE) if Global.is_paused() else Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
-	else:
+	elif g_state == GameState.GAMEPLAY:
 		paused = false
 		Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	state = g_state

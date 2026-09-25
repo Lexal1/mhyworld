@@ -8,7 +8,7 @@ extends Node
 var time : float = 0.0
 
 func _ready() -> void:
-	time = 0.25
+	time = 0.30
 	sun.rotation_degrees.x = time
 
 func _process(delta: float) -> void:
