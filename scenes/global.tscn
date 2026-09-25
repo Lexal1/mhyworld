@@ -2,7 +2,8 @@
 
 [ext_resource type="Script" uid="uid://l42d5kskepyc" path="res://scripts/Global.gd" id="1_6kgfw"]
 [ext_resource type="AudioStream" uid="uid://28rexbx35u0x" path="res://assets/audio/TEMPVIBEMUSIC.mp3" id="2_nmxvb"]
-[ext_resource type="AudioStream" uid="uid://c573ht0bo1dw3" path="res://assets/audio/ANOTHERTEMPMUSIC.mp3" id="3_opebo"]
+[ext_resource type="AudioStream" uid="uid://c573ht0bo1dw3" path="res://assets/audio/TEMPMUSICANOTHER.mp3" id="3_opebo"]
+[ext_resource type="AudioStream" uid="uid://da8jd00h5sptx" path="res://assets/audio/TEMPMUSICAGAIN.mp3" id="4_m3l3d"]
 
 [sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_g4v7s"]
 random_pitch = 1.005793
@@ -12,9 +13,8 @@ stream_1/stream = ExtResource("3_opebo")
 
 [sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_yf5fn"]
 random_pitch = 1.0594631
-streams_count = 2
-stream_0/stream = ExtResource("2_nmxvb")
-stream_1/stream = ExtResource("3_opebo")
+streams_count = 1
+stream_0/stream = ExtResource("4_m3l3d")
 
 [node name="Global" type="Node" unique_id=1590814855]
 script = ExtResource("1_6kgfw")

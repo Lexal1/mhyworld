@@ -7,7 +7,7 @@ var chunk_scene = preload("res://scenes/chunk.tscn")
 
 @onready var world: Node3D = $World
 @onready var player: CharacterBody3D = $Player
-@onready var environment: WorldEnvironment = $WorldEnvironment
+@onready var environment: WorldEnvironment = $Environment/Sky
 @onready var die: AudioStreamPlayer = $die
 @onready var pause_menu: Control = $PauseMenu
 
@@ -94,7 +94,7 @@ func _on_player_break_block(pos: Variant) -> void:
 
 func _on_player_die() -> void:
 	Global.music.stream_paused = true
-	#environment.background_mode = Environment.BG_KEEP
+	environment.environment.background_mode = Environment.BG_KEEP
 	die.play()
 	await die.finished
 	get_tree().quit()

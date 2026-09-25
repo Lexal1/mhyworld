@@ -15,5 +15,6 @@ metadata/_custom_type_script = "uid://c2j5n5wf30urt"
 
 [resource]
 script = ExtResource("1_4obfa")
+id = &"brick"
 atlas_position = SubResource("Resource_mje64")
 metadata/_custom_type_script = "uid://bvocj4r036lxu"

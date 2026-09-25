@@ -34,7 +34,7 @@ void fragment() {
 	vec2 uv_aff = uv_affine / clip_w;
 	vec2 uv_final = mix(uv_persp, uv_aff, affine_weight);
 	
-	vec4 albedo =texture(albedo_texture, uv_final * texture_tile);
+	vec4 albedo = texture(albedo_texture, uv_final * texture_tile);
 	ALBEDO = albedo.rgb;
 	ALPHA = albedo.a;
 }
