@@ -47,11 +47,7 @@ func _unhandled_input(event: InputEvent):
 
 func _physics_process(delta: float) -> void:
 	if Input.is_action_just_pressed("pause"):
-		print("key pressed!")
-		print("var: ",Global.paused)
 		Global.toggle_pause_state()
-		print("pasued: ",Global.is_paused())
-		print("var: ",Global.paused)
 
 	if position.y <= -25 and !dead:
 		dead = true
