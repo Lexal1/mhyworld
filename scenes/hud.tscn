@@ -5,7 +5,6 @@
 
 [sub_resource type="LabelSettings" id="LabelSettings_gee14"]
 font = ExtResource("1_oo0fn")
-font_size = 12
 
 [node name="HUD" type="Control" unique_id=1430509112]
 layout_mode = 3
@@ -44,3 +43,7 @@ mouse_filter = 2
 position = Vector2(-7, 0)
 width = 1.0
 script = ExtResource("1_ahhtf")
+width_pixels = 30.0
+scroll_speed = 3.0
+pulse_rate = 1.25
+amplitude = 18.0
