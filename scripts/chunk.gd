@@ -141,7 +141,7 @@ func create_block(x,y,z):
 	if check_transparency(x-1, y, z): create_face(WEST, x,y,z, atlas_data.WEST)
 	
 	if block_data.has_method("on_block_created"):
-		block_data.on_block_created(x, y, z)
+		block_data.on_block_created(Vector3i(x, y, z))
 
 func create_face(i, x,y,z, atlas_offset): #what is this, miitopia?
 	var offset = Vector3(x,y,z)
