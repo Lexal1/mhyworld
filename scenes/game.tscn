@@ -6,7 +6,7 @@
 [ext_resource type="Environment" uid="uid://brc6bsfocnk1h" path="res://assets/resources/game_enviroment.tres" id="2_oaiob"]
 [ext_resource type="PackedScene" uid="uid://t2ghc1agq2jn" path="res://scenes/pause_menu.tscn" id="3_u5sy4"]
 [ext_resource type="AudioStream" uid="uid://cc0nd4rgeqi8h" path="res://assets/audio/die.wav" id="4_7r2ba"]
-[ext_resource type="Shader" uid="uid://d3cfhejlrm2dw" path="res://scripts/postprocessing.gdshader" id="5_iywne"]
+[ext_resource type="Shader" uid="uid://d3cfhejlrm2dw" path="res://scripts/shaders/postprocessing.gdshader" id="5_iywne"]
 [ext_resource type="PackedScene" uid="uid://de37u445imeh7" path="res://scenes/hud.tscn" id="6_p57ef"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_iywne"]

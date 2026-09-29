@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://dsmdch1charhc"]
 
 [ext_resource type="Script" uid="uid://g10bjemtmg6s" path="res://scripts/chunk.gd" id="1_16sgi"]
-[ext_resource type="Shader" uid="uid://bnobd3qinwotm" path="res://scripts/models.gdshader" id="2_c3gog"]
+[ext_resource type="Shader" uid="uid://bnobd3qinwotm" path="res://scripts/shaders/models.gdshader" id="2_c3gog"]
 [ext_resource type="Texture2D" uid="uid://2htkletl4hgi" path="res://assets/resources/atlas.tres" id="3_y5xp6"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_c3gog"]
@@ -11,7 +11,7 @@ shader_parameter/albedo_texture = ExtResource("3_y5xp6")
 shader_parameter/texture_tile = Vector2(1, 1)
 shader_parameter/snap_enabled = true
 shader_parameter/snap_resolution = 100.0
-shader_parameter/affine_weight = 0.50000002375
+shader_parameter/affine_weight = 0.750000035625
 
 [node name="Chunk" type="StaticBody3D" unique_id=939724336]
 script = ExtResource("1_16sgi")

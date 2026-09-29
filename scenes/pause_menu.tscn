@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://dp4dcv7e32wd1" path="res://scripts/pause_menu.gd" id="1_myx47"]
 [ext_resource type="FontFile" uid="uid://bocinqr2prvyh" path="res://assets/consola.ttf" id="1_n87rw"]
-[ext_resource type="Shader" uid="uid://f1ldnbqxs5mr" path="res://scripts/vg_mini.gdshader" id="3_kukqi"]
+[ext_resource type="Shader" uid="uid://f1ldnbqxs5mr" path="res://scripts/shaders/crt.gdshader" id="3_kukqi"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_imw0r"]
 font = ExtResource("1_n87rw")
