@@ -2,7 +2,7 @@ extends Node
 
 @export var sun : DirectionalLight3D
 @export var sky : WorldEnvironment
-@export var day_duration = 1440.0/2 ## A day's duration, in seconds. REMEMBER THAT THIS ACCOUNTS FOR NIGHT'S LENGTH TOO!
+@export var day_duration = 1440.0/10 ## A day's duration, in seconds. REMEMBER THAT THIS ACCOUNTS FOR NIGHT'S LENGTH TOO!
 @export var label : Label
 
 var time : float = 0.0
@@ -20,9 +20,11 @@ func _process(delta: float) -> void:
 
 func update_environment() -> void:
 	var deg_x = sun.rotation_degrees.x
+	var intensity = sun_intensity(deg_x)
 	if is_day(deg_x):
-		var intensity = sun_intensity(deg_x)
 		sun.light_energy = intensity
+	if is_night(deg_x):
+		sun.light_energy = 0 #HACK FIX! PLEASE FIX LATER
 
 func is_day(degree : float) -> bool: return degree > 90 and degree < 270
 
