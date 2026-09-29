@@ -5,6 +5,7 @@
 [ext_resource type="AudioStream" uid="uid://c573ht0bo1dw3" path="res://assets/audio/TEMPMUSICANOTHER.mp3" id="3_opebo"]
 [ext_resource type="AudioStream" uid="uid://b22vj0e4va2cp" path="res://assets/audio/crickets.ogg" id="4_m3l3d"]
 [ext_resource type="AudioStream" uid="uid://28rexbx35u0x" path="res://assets/audio/TEMPVIBEMUSIC.mp3" id="4_nelfd"]
+[ext_resource type="Shader" uid="uid://d3cfhejlrm2dw" path="res://scripts/shaders/postprocessing.gdshader" id="6_6rlim"]
 
 [sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_g4v7s"]
 random_pitch = 1.005793
@@ -17,6 +18,11 @@ stream_2/stream = ExtResource("4_nelfd")
 random_pitch = 1.0594631
 streams_count = 1
 stream_0/stream = ExtResource("4_m3l3d")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_mmyj5"]
+shader = ExtResource("6_6rlim")
+shader_parameter/viewport_size = Vector2(640, 480)
+shader_parameter/virtual_resolution = Vector2(320, 240)
 
 [node name="Global" type="Node" unique_id=1590814855]
 script = ExtResource("1_6kgfw")
@@ -38,5 +44,16 @@ autostart = true
 wait_time = 2.0
 one_shot = true
 ignore_time_scale = true
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1412082213]
+
+[node name="ColorRect" type="ColorRect" parent="CanvasLayer" unique_id=1817115692]
+material = SubResource("ShaderMaterial_mmyj5")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
 
 [connection signal="timeout" from="Music/Timer" to="." method="_on_timer_timeout"]

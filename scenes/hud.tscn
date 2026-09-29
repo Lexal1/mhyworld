@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://de37u445imeh7"]
 
 [ext_resource type="Script" uid="uid://dwqrgjgu48wwx" path="res://scripts/crosshair.gd" id="1_ahhtf"]
-[ext_resource type="FontFile" uid="uid://bocinqr2prvyh" path="res://assets/consola.ttf" id="1_oo0fn"]
+[ext_resource type="FontFile" uid="uid://bocinqr2prvyh" path="res://assets/resources/consola.ttf" id="1_oo0fn"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_gee14"]
 font = ExtResource("1_oo0fn")

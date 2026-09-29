@@ -6,15 +6,9 @@
 [ext_resource type="Environment" uid="uid://brc6bsfocnk1h" path="res://assets/resources/game_enviroment.tres" id="2_oaiob"]
 [ext_resource type="PackedScene" uid="uid://t2ghc1agq2jn" path="res://scenes/pause_menu.tscn" id="3_u5sy4"]
 [ext_resource type="AudioStream" uid="uid://cc0nd4rgeqi8h" path="res://assets/audio/die.wav" id="4_7r2ba"]
-[ext_resource type="Shader" uid="uid://d3cfhejlrm2dw" path="res://scripts/shaders/postprocessing.gdshader" id="5_iywne"]
 [ext_resource type="PackedScene" uid="uid://de37u445imeh7" path="res://scenes/hud.tscn" id="6_p57ef"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_iywne"]
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_g4v7s"]
-shader = ExtResource("5_iywne")
-shader_parameter/viewport_size = Vector2(640, 480)
-shader_parameter/virtual_resolution = Vector2(320, 240)
 
 [node name="Game" type="Node3D" unique_id=1003255847]
 script = ExtResource("1_5dhsp")
@@ -39,17 +33,6 @@ transform = Transform3D(4.371139e-08, -1, -8.742278e-08, -1, -4.371139e-08, 0, -
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0, 0, 0)
 shadow_enabled = true
 shadow_blur = 0.0
-
-[node name="Shader(s)" type="CanvasLayer" parent="." unique_id=1901781800]
-
-[node name="ColorRect" type="ColorRect" parent="Shader(s)" unique_id=1620100075]
-material = SubResource("ShaderMaterial_g4v7s")
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
 
 [node name="World" type="Node3D" parent="." unique_id=421522664]
 
