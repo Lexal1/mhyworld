@@ -6,6 +6,10 @@ var _blocks: Array[Block] = []
 func register(block: Block, fname: String = ""):
 	if _blocks.has(block):
 		printerr("Attempt to register a block (%s) twice!" % [fname, block.id])
+		return
+	if id_exists(block.id):
+		printerr("Duplicate ID '%s' while loading '%s'!" % [block.id, fname])
+		return
 	_blocks.push_back(block)
 
 func get_by_id(id: StringName):

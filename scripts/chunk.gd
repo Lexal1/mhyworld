@@ -130,7 +130,7 @@ func create_block(x,y,z):
 	if block == BlockRegistry.get_idx_of(&"air"):
 		return
 	
-	var block_data = BlockRegistry.get_by_idx(block)
+	var block_data: Block = BlockRegistry.get_by_idx(block)
 	var atlas_data = block_data.atlas_position
 	
 	if check_transparency(x, y+1, z): create_face(TOP, x,y,z, atlas_data.TOP)
@@ -139,6 +139,9 @@ func create_block(x,y,z):
 	if check_transparency(x, y, z-1): create_face(SOUTH, x,y,z, atlas_data.SOUTH)
 	if check_transparency(x+1, y, z): create_face(EAST, x,y,z, atlas_data.EAST)
 	if check_transparency(x-1, y, z): create_face(WEST, x,y,z, atlas_data.WEST)
+	
+	if block_data.has_method("on_block_created"):
+		block_data.on_block_created(x, y, z)
 
 func create_face(i, x,y,z, atlas_offset): #what is this, miitopia?
 	var offset = Vector3(x,y,z)
