@@ -77,6 +77,12 @@ func _on_player_place_block(pos: Vector3, t: Variant) -> void:
 	if c != null:
 		if will_collide_with_player(pos) and t != BlockRegistry.get_idx_of(&"air"):
 			return
+		var block: int = c.blocks[bx][by][bz]
+		var blockData = BlockRegistry.get_by_idx(block)
+		if blockData != null:
+			if blockData.has_method("on_block_destroyed"):
+				blockData.on_block_destroyed(Vector3i(bx, by, bz), c.chunk_position, c)
+
 		c.blocks[bx][by][bz] = t
 		c.update()
 		if t == BlockRegistry.get_idx_of(&"air"):
