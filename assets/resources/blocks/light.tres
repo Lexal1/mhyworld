@@ -1,9 +1,9 @@
-[gd_resource type="Resource" script_class="Block" format=3 uid="uid://bic3gxk0ustqd"]
+[gd_resource type="Resource" script_class="LightBlock" format=3 uid="uid://bic3gxk0ustqd"]
 
 [ext_resource type="Script" uid="uid://c2j5n5wf30urt" path="res://scripts/blocks/BlockAtlasPosition.gd" id="1_6sfte"]
-[ext_resource type="Script" uid="uid://bvocj4r036lxu" path="res://scripts/blocks/Block.gd" id="2_u12sa"]
+[ext_resource type="Script" uid="uid://bftmjy0ehb53a" path="res://scripts/blocks/LightBlock.gd" id="1_asibt"]
 
-[sub_resource type="Resource" id="Resource_xuogw"]
+[sub_resource type="Resource" id="Resource_6sfte"]
 script = ExtResource("1_6sfte")
 TOP = Vector2(0, 2)
 BOTTOM = Vector2(0, 2)
@@ -14,7 +14,7 @@ EAST = Vector2(0, 2)
 metadata/_custom_type_script = "uid://c2j5n5wf30urt"
 
 [resource]
-script = ExtResource("2_u12sa")
+script = ExtResource("1_asibt")
 id = &"light"
-atlas_position = SubResource("Resource_xuogw")
-metadata/_custom_type_script = "uid://bvocj4r036lxu"
+atlas_position = SubResource("Resource_6sfte")
+metadata/_custom_type_script = "uid://bftmjy0ehb53a"
