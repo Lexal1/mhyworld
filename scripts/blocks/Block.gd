@@ -16,3 +16,12 @@ func _init(p_id: StringName = "", p_solid: bool = true, p_atlas_position: BlockA
 	id = p_id
 	solid = p_solid
 	atlas_position = p_atlas_position
+
+func set_tag(pos: Vector3, chunk: StaticBody3D, tag: Variant) -> void:
+	chunk.block_tags[pos] = tag
+
+func get_tag(pos: Vector3, chunk: StaticBody3D) -> Variant:
+	return chunk.block_tags[pos]
+
+func rm_tag(pos: Vector3, chunk: StaticBody3D) -> void:
+	chunk.block_tags.erase(pos)

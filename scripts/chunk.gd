@@ -29,6 +29,7 @@ var blocks = []
 var st = SurfaceTool.new()
 var mesh : Mesh = null
 var mesh_instance : MeshInstance3D = null
+var block_tags: Dictionary[Vector3, Variant] = {}
 
 var material = preload("res://assets/resources/new_standard_material_3d.tres")
 
