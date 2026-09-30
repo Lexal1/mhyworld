@@ -1,7 +1,7 @@
 extends CharacterBody3D
 
 const SPEED = 6.0
-const JUMP_VELOCITY = 5.0
+const JUMP_VELOCITY = 7.0
 const BREAKSFX = preload("res://assets/audio/break.wav")
 const PLACESFX = preload("res://assets/audio/place.wav")
 
@@ -69,10 +69,10 @@ func _physics_process(delta: float) -> void:
 			velocity.x = direction.x * SPEED
 			velocity.z = direction.z * SPEED
 		else:
-			velocity.x = lerp(velocity.x, direction.x * SPEED, delta * 25.0)
-			velocity.z = lerp(velocity.z, direction.z * SPEED, delta * 25.0)
+			velocity.x = lerp(velocity.x, direction.x * SPEED, delta * 17.0)
+			velocity.z = lerp(velocity.z, direction.z * SPEED, delta * 17.0)
 	else: #TODO: condense these somehow?
-		velocity.x = lerp(velocity.x, direction.x * SPEED, delta * 5.0)
+		velocity.x = lerp(velocity.x, direction.x * SPEED, delta * 5.0) #lerp lerp lerp sahur
 		velocity.z = lerp(velocity.z, direction.z * SPEED, delta * 5.0)
 
 	if raycast.is_colliding():
