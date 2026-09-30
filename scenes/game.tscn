@@ -42,8 +42,9 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 30, 0)
 [node name="die" type="AudioStreamPlayer" parent="." unique_id=1165512681]
 stream = ExtResource("4_7r2ba")
 
-[node name="PauseMenu" parent="." unique_id=1947755196 instance=ExtResource("3_u5sy4")]
+[node name="PauseMenu" parent="." unique_id=1947755196 node_paths=PackedStringArray("player") instance=ExtResource("3_u5sy4")]
 visible = false
+player = NodePath("../Player")
 
 [node name="HUD" parent="." unique_id=1430509112 instance=ExtResource("6_p57ef")]
 z_index = 99

@@ -77,6 +77,10 @@ func _on_player_place_block(pos: Vector3, t: Variant) -> void:
 	if c != null:
 		if will_collide_with_player(pos) and t != BlockRegistry.get_idx_of(&"air"):
 			return
+		if not c.hasChunkGenerated:
+			return
+		if not c.blocksMutex.try_lock():
+			return
 		var block: int = c.blocks[bx][by][bz]
 		var blockData = BlockRegistry.get_by_idx(block)
 		if blockData != null:
@@ -89,6 +93,7 @@ func _on_player_place_block(pos: Vector3, t: Variant) -> void:
 			player.play_break_sfx()
 		else:
 			player.play_place_sfx()
+		c.blocksMutex.unlock()
 
 func _on_player_break_block(pos: Variant) -> void:
 	_on_player_place_block(pos, BlockRegistry.get_idx_of(&"air"))

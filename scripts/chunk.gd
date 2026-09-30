@@ -25,6 +25,7 @@ var noise = FastNoiseLite.new()
 
 var blocksMutex: Mutex = Mutex.new()
 var blocks = []
+var hasChunkGenerated: bool = false
 
 var st = SurfaceTool.new()
 var mesh : Mesh = null
@@ -86,6 +87,7 @@ func _generate():
 					print("unint block: ", block)
 				blocks[i][j][k] = block
 	blocksMutex.unlock()
+	hasChunkGenerated = true
 
 func update():
 	## unloads chunk if it exists
@@ -120,6 +122,7 @@ func check_transparency(x,y,z):
 		y >= 0 and y < Global.CHUNK_SIZE.y and \
 		z >= 0 and z < Global.CHUNK_SIZE.z:
 			#return not Blocks.block_types[blocks[x][y][z]][Blocks.SOLID]
+			var blok = blocks[x][y][z]
 			if typeof(blocks[x][y][z]) != TYPE_INT:
 				print(blocks[x][y][z])
 			return not BlockRegistry.get_by_idx(blocks[x][y][z]).solid
