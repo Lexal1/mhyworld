@@ -23,5 +23,8 @@ func set_tag(pos: Vector3, chunk: StaticBody3D, tag: Variant) -> void:
 func get_tag(pos: Vector3, chunk: StaticBody3D) -> Variant:
 	return chunk.block_tags[pos]
 
+func has_tag(pos: Vector3, chunk: StaticBody3D) -> Variant:
+	return chunk.block_tags.has(pos)
+
 func rm_tag(pos: Vector3, chunk: StaticBody3D) -> void:
 	chunk.block_tags.erase(pos)
