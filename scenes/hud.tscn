@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://de37u445imeh7"]
 
-[ext_resource type="Script" uid="uid://bouki26jn7jg7" path="res://scenes/hud.gd" id="1_5ysmq"]
+[ext_resource type="Script" uid="uid://bouki26jn7jg7" path="res://scripts/hud.gd" id="1_5ysmq"]
 [ext_resource type="Script" uid="uid://dwqrgjgu48wwx" path="res://scripts/crosshair.gd" id="1_ahhtf"]
 [ext_resource type="FontFile" uid="uid://bocinqr2prvyh" path="res://assets/resources/consola.ttf" id="1_oo0fn"]
 

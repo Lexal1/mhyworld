@@ -74,7 +74,6 @@ func _generate():
 				var global_pos = chunk_position * Vector2(Global.CHUNK_SIZE.x,Global.CHUNK_SIZE.z) + Vector2(i,k)
 				var height = int((noise.get_noise_2dv(global_pos) + 1)/ 2 * Global.CHUNK_SIZE.y)
 				
-				#var block = Blocks.AIR
 				var block = BlockRegistry.get_idx_of(&"air")
 				
 				if j < height / 2:
@@ -121,7 +120,6 @@ func check_transparency(x,y,z):
 	if x >= 0 and x < Global.CHUNK_SIZE.x and \
 		y >= 0 and y < Global.CHUNK_SIZE.y and \
 		z >= 0 and z < Global.CHUNK_SIZE.z:
-			#return not Blocks.block_types[blocks[x][y][z]][Blocks.SOLID]
 			if typeof(blocks[x][y][z]) != TYPE_INT:
 				print(blocks[x][y][z])
 			return not BlockRegistry.get_by_idx(blocks[x][y][z]).solid
