@@ -10,7 +10,10 @@ func _ready() -> void:
 	global.on_resume.connect(unpause)
 
 func _process(delta: float) -> void:
-	label.text = "\n"+str(Time.get_unix_time_from_system())+"\n"+ str(Global.world_seed)+"\n"+str(Vector3i(player.position))
+	label.text = \
+	"\n"+str(Time.get_unix_time_from_system())+ \
+	"\ns:"+str(Global.world_seed)+ \
+	"\nxyz:"+str(Vector3i(player.position))
 
 func pause(): $CRT/AnimationPlayer.play("tween_in")
 
