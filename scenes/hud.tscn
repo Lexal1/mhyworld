@@ -1,9 +1,13 @@
 [gd_scene format=3 uid="uid://de37u445imeh7"]
 
+[ext_resource type="Script" uid="uid://bouki26jn7jg7" path="res://scenes/hud.gd" id="1_5ysmq"]
 [ext_resource type="Script" uid="uid://dwqrgjgu48wwx" path="res://scripts/crosshair.gd" id="1_ahhtf"]
 [ext_resource type="FontFile" uid="uid://bocinqr2prvyh" path="res://assets/resources/consola.ttf" id="1_oo0fn"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_gee14"]
+font = ExtResource("1_oo0fn")
+
+[sub_resource type="LabelSettings" id="LabelSettings_6fi6k"]
 font = ExtResource("1_oo0fn")
 
 [node name="HUD" type="Control" unique_id=1430509112]
@@ -14,6 +18,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
+script = ExtResource("1_5ysmq")
 
 [node name="Time" type="Label" parent="." unique_id=630657089]
 layout_mode = 1
@@ -52,3 +57,5 @@ amplitude = 18.0
 layout_mode = 0
 offset_right = 40.0
 offset_bottom = 23.0
+text = "VE$RSION"
+label_settings = SubResource("LabelSettings_6fi6k")

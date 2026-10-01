@@ -10,7 +10,6 @@ var chunk_scene = preload("res://scenes/chunk.tscn")
 @onready var environment: WorldEnvironment = $Environment/Sky
 @onready var die: AudioStreamPlayer = $die
 @onready var pause_menu: Control = $PauseMenu
-@onready var ver: Label = $Ver
 
 func _ready() -> void:
 	for i in range(0, render_distance):
