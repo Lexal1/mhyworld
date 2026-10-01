@@ -47,7 +47,7 @@ func _ready():
 	if Engine.is_editor_hint():
 		noise.seed = 128
 	else:
-		noise.seed = Global.world_seed #TODO: add a check to make sure that the world seed actually exists
+		noise.seed = Global.world_seed
 	generate_and_update()
 
 func generate_and_update():

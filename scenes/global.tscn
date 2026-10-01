@@ -46,6 +46,7 @@ one_shot = true
 ignore_time_scale = true
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1412082213]
+visible = false
 
 [node name="ColorRect" type="ColorRect" parent="CanvasLayer" unique_id=1817115692]
 material = SubResource("ShaderMaterial_mmyj5")

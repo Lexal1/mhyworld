@@ -47,3 +47,8 @@ width_pixels = 30.0
 scroll_speed = 3.0
 pulse_rate = 1.25
 amplitude = 18.0
+
+[node name="Ver" type="Label" parent="." unique_id=410920366]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0

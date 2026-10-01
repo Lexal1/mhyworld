@@ -55,12 +55,9 @@ func set_game_state(g_state: GameState):
 		on_resume.emit()
 	state = g_state
 
-func pause_game():
-	set_game_state(GameState.UI)
-	
+func pause_game(): set_game_state(GameState.UI)
 
-func resume_game():
-	set_game_state(GameState.GAMEPLAY)
+func resume_game(): set_game_state(GameState.GAMEPLAY)
 
 func is_paused(): return paused
 
