@@ -57,6 +57,12 @@ func generate_and_update():
 	return WorkerThreadPool.add_task(_generate_and_update)
 	
 func _generate_and_update():
+	# if chunk is regenerated then we need to clear out the block tags
+	for key in block_tags:
+		var obj: Variant = block_tags[key]
+		if obj.has_method("queue_free"): # mfs better not put a primitive in there
+			obj.queue_free()
+	block_tags = {}
 	_generate()
 	update()
 

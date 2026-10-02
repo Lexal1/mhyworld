@@ -95,6 +95,17 @@ func _on_player_place_block(pos: Vector3, t: Variant) -> void:
 			player.play_place_sfx()
 		c.blocksMutex.unlock()
 
+func _unhandled_input(event: InputEvent) -> void:
+	if Input.is_action_just_pressed("debug4"):
+		var byteSum = 0
+		var chunks: Array[Node] = world.get_children()
+		for chunk: StaticBody3D in chunks:
+			var blocks: Array = chunk.blocks
+			var lebytes: PackedByteArray = var_to_bytes(blocks)
+			print("%d bytes" % len(lebytes))
+			byteSum += len(lebytes)
+		print("total of %d bytes" % byteSum)
+
 func _on_player_break_block(pos: Variant) -> void:
 	_on_player_place_block(pos, BlockRegistry.get_idx_of(&"air"))
 
