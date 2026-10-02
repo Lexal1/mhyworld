@@ -2,7 +2,7 @@ extends Node
 
 @export var sun : DirectionalLight3D
 @export var sky : WorldEnvironment
-@export var day_duration = 1440.0/10 ## A day's duration, in seconds. REMEMBER THAT THIS ACCOUNTS FOR NIGHT'S LENGTH TOO!
+@export var day_duration = 1440.0 ## A day's duration, in seconds. REMEMBER THAT THIS ACCOUNTS FOR NIGHT'S LENGTH TOO!
 @export var label : Label
 
 var time : float = 0.0
