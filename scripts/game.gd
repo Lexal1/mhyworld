@@ -10,6 +10,7 @@ var chunk_scene = preload("res://scenes/chunk.tscn")
 @onready var environment: WorldEnvironment = $Environment/Sky
 @onready var die: AudioStreamPlayer = $die
 @onready var pause_menu: Control = $PauseMenu
+var _unfinished_thread_tasks: Array[int] = []
 
 func _ready() -> void:
 	for i in range(0, render_distance):
@@ -26,7 +27,6 @@ func _process(delta: float) -> void:
 	self.call_deferred("chunk_processing")
 
 func chunk_processing():
-	var tasks = []
 	for c in world.get_children():
 		var cx = c.chunk_position.x
 		var cz = c.chunk_position.y
@@ -39,11 +39,32 @@ func chunk_processing():
 		
 		if (newx != cx or newz != cz):
 			c.chunk_position = Vector2(int(newx),int(newz))
-			tasks.push_back(c.generate_and_update())
+			_unfinished_thread_tasks.push_back(c.generate_and_update())
+	_wait_for_tasks()
 
-func _wait_for_tasks(tasks: Array):
-	for task in tasks:
+func _wait_for_tasks():
+	var newUnfinishedTasks: Array[int] = []
+	for task in _unfinished_thread_tasks:
+		#WorkerThreadPool.wait_for_task_completion(task)
+		if WorkerThreadPool.is_task_completed(task):
+			var err = WorkerThreadPool.wait_for_task_completion(task) # this is needed so godot frees up the resources properly
+			match err:
+				OK:
+					#print("[_wait_for_tasks] Task %d completed" % task)
+					break
+				ERR_INVALID_PARAMETER:
+					printerr("[_wait_for_tasks] Task %d doesn't exist" % task)
+				ERR_BUSY:
+					printerr("[_wait_for_tasks] Busy task: %d" % task)
+		else:
+			newUnfinishedTasks.push_back(task)
+	_unfinished_thread_tasks = newUnfinishedTasks
+
+func _force_wait_for_tasks():
+	for task in _unfinished_thread_tasks:
 		WorkerThreadPool.wait_for_task_completion(task)
+	_unfinished_thread_tasks = []
+
 func get_chunk(pos):
 	for c in world.get_children():
 		if c.chunk_position == pos:
@@ -122,3 +143,10 @@ func show_pause_menu():
 
 func hide_pause_menu():
 	pause_menu.hide()
+
+func _notification(what: int) -> void:
+	if what == NOTIFICATION_WM_CLOSE_REQUEST:
+		print("Mhyworld is closing, we gotta clean up!")
+		Global.gameIsQuitting = true
+		_force_wait_for_tasks()
+		get_tree().quit()
