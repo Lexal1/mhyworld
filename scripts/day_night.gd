@@ -9,6 +9,7 @@ var time : float = 0.0
 
 func _ready() -> void:
 	time = 0.30
+	#time = 0.50
 	sun.rotation_degrees.x = time
 
 func _process(delta: float) -> void:

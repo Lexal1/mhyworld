@@ -1,5 +1,5 @@
 shader_type spatial;
-render_mode blend_mix, cull_back, depth_prepass_alpha, shadows_disabled, specular_disabled, vertex_lighting;
+render_mode blend_mix, cull_back, depth_prepass_alpha, /*shadows_disabled,*/ specular_disabled, vertex_lighting;
 
 uniform sampler2D albedo_texture: source_color, filter_nearest;
 
