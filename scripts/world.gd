@@ -101,6 +101,6 @@ func _unhandled_input(event: InputEvent) -> void:
 func save_chunk_to_file(chunk: Chunk):
 	if not DirAccess.dir_exists_absolute("user://world/test/chunk"):
 		DirAccess.make_dir_recursive_absolute("user://world/test/chunk")
-	var file = FileAccess.open("user://world/test/chunk/%d-%d.chunk" % [chunk.chunk_position.x, chunk.chunk_position.y], FileAccess.WRITE)
+	var file = FileAccess.open("user://world/test/chunk/c.%d.%d.chunk" % [chunk.chunk_position.x, chunk.chunk_position.y], FileAccess.WRITE)
 	var wf = WorldFile.new()
 	wf.write_chunk(chunk, file)
