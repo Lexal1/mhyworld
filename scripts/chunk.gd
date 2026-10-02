@@ -104,8 +104,7 @@ func _generate():
 
 func update():
 	## unloads chunk if it exists
-	if Global.gameIsQuitting:
-		return
+	if Global.gameIsQuitting: return
 	if mesh != null:
 		mesh_instance.call_deferred("queue_free")
 		mesh_instance = null

@@ -40,6 +40,7 @@ func chunk_processing():
 
 func get_chunk(pos):
 	for c in get_children():
+		if c is not Chunk: continue
 		if c.chunk_position == pos: return c
 	return null
 
@@ -68,12 +69,9 @@ func _on_player_place_block(pos: Vector3, t: Variant) -> void:
 	
 	var c = get_chunk(Vector2(cx,cz))
 	if c != null:
-		if will_collide_with_player(pos) and t != BlockRegistry.get_idx_of(&"air"):
-			return
-		if not c.hasChunkGenerated:
-			return
-		if not c.blocksMutex.try_lock():
-			return
+		if will_collide_with_player(pos) and t != BlockRegistry.get_idx_of(&"air"): return
+		if not c.hasChunkGenerated: return
+		if not c.blocksMutex.try_lock(): return
 		var block: int = c.blocks[bx][by][bz]
 		var blockData = BlockRegistry.get_by_idx(block)
 		if blockData != null:

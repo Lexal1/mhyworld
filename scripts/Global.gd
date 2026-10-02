@@ -19,6 +19,7 @@ var Tasks: TaskManager = TaskManager.new()
 @onready var music_timer: Timer = $Music/Timer
 @onready var music: AudioStreamPlayer = $Music
 @onready var music_two: AudioStreamPlayer = $Music/MusicTwo
+@onready var canvas_layer: CanvasLayer = $CanvasLayer
 
 const CHUNK_SIZE = Vector3(16,32,16)
 
@@ -27,6 +28,9 @@ const TEXTURE_ATLAS_SIZE = Vector2(16,16)
 var time = Time.get_time_dict_from_system()
 
 var world_seed = Time.get_unix_time_from_system()
+
+func _ready() -> void:
+	canvas_layer.visible = true
 
 func _input(event: InputEvent) -> void:
 	if Engine.is_editor_hint():
