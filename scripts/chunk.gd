@@ -48,7 +48,7 @@ func _ready():
 		noise.seed = 128
 	else:
 		noise.seed = Global.world_seed
-	generate_and_update()
+	Global.Tasks.add_task(generate_and_update())
 
 func generate_and_update():
 	if Engine.is_editor_hint():

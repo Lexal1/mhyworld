@@ -15,6 +15,7 @@ var state: GameState = GameState.GAMEPLAY
 var paused: bool = false
 var gameIsQuitting: bool = false
 
+var Tasks: TaskManager = TaskManager.new()
 @onready var music_timer: Timer = $Music/Timer
 @onready var music: AudioStreamPlayer = $Music
 @onready var music_two: AudioStreamPlayer = $Music/MusicTwo
