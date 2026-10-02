@@ -1,6 +1,7 @@
 [gd_scene format=4 uid="uid://bqcx2ecd5u32u"]
 
 [ext_resource type="Script" uid="uid://b42ins7fl6gre" path="res://scripts/title.gd" id="1_ak2if"]
+[ext_resource type="Script" uid="uid://bsco42r87rq4k" path="res://scenes/title_screen.gd" id="1_dc4i4"]
 [ext_resource type="Texture2D" uid="uid://pbmld36ovdnw" path="res://assets/resources/model_0.png" id="2_ig5kc"]
 [ext_resource type="Shader" uid="uid://bnobd3qinwotm" path="res://scripts/shaders/models.gdshader" id="2_s4lrb"]
 [ext_resource type="Theme" uid="uid://be74h2fudfjk0" path="res://assets/resources/theme_default.tres" id="4_mgrm8"]
@@ -358,6 +359,7 @@ blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_bug71")
 
 [node name="Title Screen" type="Node3D" unique_id=2006834322]
+script = ExtResource("1_dc4i4")
 
 [node name="Sun" type="DirectionalLight3D" parent="." unique_id=602038960]
 transform = Transform3D(-0.8660254, -0.43301278, 0.25, 0, 0.49999997, 0.86602545, -0.50000006, 0.75, -0.43301266, 0, 0, 0)
@@ -433,20 +435,24 @@ theme_override_constants/margin_bottom = 32
 layout_mode = 2
 alignment = 2
 
-[node name="Button" type="Button" parent="MarginContainer/VBoxContainer" unique_id=1226479603]
+[node name="NewWorld" type="Button" parent="MarginContainer/VBoxContainer" unique_id=1226479603]
 layout_mode = 2
 theme = ExtResource("4_mgrm8")
 text = "new world"
 
-[node name="Button3" type="Button" parent="MarginContainer/VBoxContainer" unique_id=1698315402]
+[node name="LoadWorld" type="Button" parent="MarginContainer/VBoxContainer" unique_id=1698315402]
 layout_mode = 2
 theme = ExtResource("4_mgrm8")
 text = "old world"
 
-[node name="Button2" type="Button" parent="MarginContainer/VBoxContainer" unique_id=742339328]
+[node name="Quit" type="Button" parent="MarginContainer/VBoxContainer" unique_id=742339328]
 layout_mode = 2
 theme = ExtResource("4_mgrm8")
 text = "quit i guess"
 
 [node name="Camera3D" type="Camera3D" parent="." unique_id=438045915]
 transform = Transform3D(-0.99999654, -1.6336226e-11, -0.002632766, 0.00028668065, 0.9940539, -0.10888918, 0.002617111, -0.10888956, -0.99405044, 0, -5.972534, -12.003172)
+
+[connection signal="pressed" from="MarginContainer/VBoxContainer/NewWorld" to="." method="_on_new_world_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/LoadWorld" to="." method="_on_load_world_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/Quit" to="." method="_on_quit_pressed"]

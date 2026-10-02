@@ -5,6 +5,7 @@ signal on_pause
 signal on_resume
 
 enum GameState {
+	TITLE,
 	GAMEPLAY,
 	UI,
 	DIALOG,
