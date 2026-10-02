@@ -35,6 +35,9 @@ shadow_enabled = true
 shadow_bias = 0.5
 shadow_normal_bias = 7.0
 shadow_blur = 0.6
+directional_shadow_blend_splits = true
+directional_shadow_max_distance = 64.0
+directional_shadow_pancake_size = 0.0
 
 [node name="World" type="Node3D" parent="." unique_id=421522664]
 
