@@ -1,0 +1,1 @@
+class_name TaskManager extends RefCounted

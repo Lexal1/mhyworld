@@ -51,7 +51,7 @@ func _wait_for_tasks():
 			match err:
 				OK:
 					#print("[_wait_for_tasks] Task %d completed" % task)
-					break
+					continue
 				ERR_INVALID_PARAMETER:
 					printerr("[_wait_for_tasks] Task %d doesn't exist" % task)
 				ERR_BUSY:
