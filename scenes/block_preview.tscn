@@ -1,14 +1,10 @@
 [gd_scene format=3 uid="uid://2inp61j5ydhl"]
 
-[ext_resource type="Material" uid="uid://dquhqwobluafx" path="res://assets/resources/new_standard_material_3d.tres" id="1_vofoj"]
-[ext_resource type="Script" uid="uid://bthusuo82nfye" path="res://block_preview.gd" id="3_bwvy6"]
-[ext_resource type="Script" uid="uid://bvocj4r036lxu" path="res://scripts/blocks/Block.gd" id="4_3whsx"]
+[ext_resource type="Script" uid="uid://bthusuo82nfye" path="res://scripts/block_preview.gd" id="1_e5766"]
+[ext_resource type="Material" uid="uid://dq2bo6521l0vq" path="res://assets/resources/model_material.tres" id="2_vofoj"]
+[ext_resource type="Resource" uid="uid://d8dthrog4ana" path="res://assets/resources/blocks/log.tres" id="3_vofoj"]
 
-[sub_resource type="BoxMesh" id="BoxMesh_g4v7s"]
-material = ExtResource("1_vofoj")
-
-[node name="BlockPreview" type="MeshInstance3D" unique_id=483134830]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5, 0.5, 0.5)
-mesh = SubResource("BoxMesh_g4v7s")
-script = ExtResource("3_bwvy6")
-block = ExtResource("4_3whsx")
+[node name="BlockPreview" type="StaticBody3D" unique_id=1270440796]
+script = ExtResource("1_e5766")
+shaderMaterial = ExtResource("2_vofoj")
+previewBlock = ExtResource("3_vofoj")

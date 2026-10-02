@@ -30,7 +30,7 @@ var time = Time.get_time_dict_from_system()
 var world_seed = Time.get_unix_time_from_system()
 
 func _ready() -> void:
-	canvas_layer.visible = true
+	if !Engine.is_editor_hint(): canvas_layer.visible = true
 
 func _input(event: InputEvent) -> void:
 	if Engine.is_editor_hint():
