@@ -44,3 +44,10 @@ debug_shape_custom_color = Color(1, 0, 1, 0.21568628)
 
 [node name="blok" type="AudioStreamPlayer3D" parent="Head/Camera/RayCast" unique_id=1385764948]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -4.78793)
+
+[node name="CoyoteTime" type="Timer" parent="." unique_id=986982129]
+wait_time = 0.1
+one_shot = true
+
+[node name="InputBuffer" type="Timer" parent="." unique_id=1752370864]
+one_shot = true
