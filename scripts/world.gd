@@ -55,8 +55,7 @@ func will_collide_with_player(pos: Vector3):
 	if result.size() > 0:
 		for r in result:
 			#print("Colliding with: ", r.collider.name)
-			if r.collider == player:
-				return true
+			if r.collider == player: return true
 	return false
 
 func _on_player_place_block(pos: Vector3, t: Variant) -> void:
