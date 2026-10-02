@@ -1,5 +1,6 @@
 class_name WorldFile extends RefCounted
 
+var version: String
 var name: StringName
 var createdAt: int
 var modifiedAt: int

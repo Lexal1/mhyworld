@@ -63,6 +63,9 @@ func _generate_and_update():
 func _generate():
 	blocksMutex.lock()
 	blocks = []
+	if Global.gameIsQuitting:
+		blocksMutex.unlock()
+		return
 	blocks.resize(Global.CHUNK_SIZE.x)
 	for i in range(0, Global.CHUNK_SIZE.x):
 		blocks[i] = []
@@ -71,6 +74,9 @@ func _generate():
 			blocks[i][j] = []
 			blocks[i][j].resize(Global.CHUNK_SIZE.z)
 			for k in range(0, Global.CHUNK_SIZE.z):
+				if Global.gameIsQuitting:
+					blocksMutex.unlock()
+					return
 				var global_pos = chunk_position * Vector2(Global.CHUNK_SIZE.x,Global.CHUNK_SIZE.z) + Vector2(i,k)
 				var height = int((noise.get_noise_2dv(global_pos) + 1)/ 2 * Global.CHUNK_SIZE.y)
 				
@@ -90,6 +96,8 @@ func _generate():
 
 func update():
 	## unloads chunk if it exists
+	if Global.gameIsQuitting:
+		return
 	if mesh != null:
 		mesh_instance.call_deferred("queue_free")
 		mesh_instance = null
@@ -101,6 +109,9 @@ func update():
 	for x in Global.CHUNK_SIZE.x:
 		for y in Global.CHUNK_SIZE.y:
 			for z in Global.CHUNK_SIZE.z:
+				if Global.gameIsQuitting:
+					blocksMutex.unlock()
+					return
 				create_block(x,y,z)
 	blocksMutex.unlock()
 	st.generate_normals(false)
@@ -117,9 +128,13 @@ func update():
 	self.call_deferred("set_visible", true)
 
 func check_transparency(x,y,z):
+	if Global.gameIsQuitting:
+		return true # fuck it
 	if x >= 0 and x < Global.CHUNK_SIZE.x and \
 		y >= 0 and y < Global.CHUNK_SIZE.y and \
 		z >= 0 and z < Global.CHUNK_SIZE.z:
+			if Global.gameIsQuitting:
+				return true # fuck it
 			if typeof(blocks[x][y][z]) != TYPE_INT:
 				print(blocks[x][y][z])
 			return not BlockRegistry.get_by_idx(blocks[x][y][z]).solid

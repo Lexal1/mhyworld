@@ -12,6 +12,7 @@ enum GameState {
 }
 var state: GameState = GameState.GAMEPLAY
 var paused: bool = false
+var gameIsQuitting: bool = false
 
 @onready var music_timer: Timer = $Music/Timer
 @onready var music: AudioStreamPlayer = $Music

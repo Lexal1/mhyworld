@@ -99,6 +99,7 @@ func _on_player_break_block(pos: Variant) -> void:
 	_on_player_place_block(pos, BlockRegistry.get_idx_of(&"air"))
 
 func _on_player_die() -> void:
+	Global.gameIsQuitting = true
 	Global.music.stream_paused = true
 	environment.environment.background_mode = Environment.BG_KEEP
 	die.play()
