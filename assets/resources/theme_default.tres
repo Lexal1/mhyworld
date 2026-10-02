@@ -1,0 +1,44 @@
+[gd_resource type="Theme" format=3 uid="uid://be74h2fudfjk0"]
+
+[ext_resource type="FontFile" uid="uid://bocinqr2prvyh" path="res://assets/resources/consola.ttf" id="1_cvpox"]
+[ext_resource type="Texture2D" uid="uid://civayb3yvf1ph" path="res://assets/resources/gui.png" id="2_i0dia"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_l8mtw"]
+texture = ExtResource("2_i0dia")
+texture_margin_left = 8.0
+texture_margin_top = 8.0
+texture_margin_right = 8.0
+texture_margin_bottom = 8.0
+region_rect = Rect2(24, 0, 24, 24)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_mfkoe"]
+texture = ExtResource("2_i0dia")
+texture_margin_left = 8.0
+texture_margin_top = 8.0
+texture_margin_right = 8.0
+texture_margin_bottom = 8.0
+region_rect = Rect2(0, 0, 24, 24)
+modulate_color = Color(1.353256, 1.353256, 1.353256, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_wsxci"]
+texture = ExtResource("2_i0dia")
+texture_margin_left = 8.0
+texture_margin_top = 8.0
+texture_margin_right = 8.0
+texture_margin_bottom = 8.0
+region_rect = Rect2(0, 0, 24, 24)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_8ma0r"]
+texture = ExtResource("2_i0dia")
+texture_margin_left = 8.0
+texture_margin_top = 8.0
+texture_margin_right = 8.0
+texture_margin_bottom = 8.0
+region_rect = Rect2(24, 0, 24, 24)
+
+[resource]
+Button/fonts/font = ExtResource("1_cvpox")
+Button/styles/disabled = SubResource("StyleBoxTexture_l8mtw")
+Button/styles/hover = SubResource("StyleBoxTexture_mfkoe")
+Button/styles/normal = SubResource("StyleBoxTexture_wsxci")
+Button/styles/pressed = SubResource("StyleBoxTexture_8ma0r")

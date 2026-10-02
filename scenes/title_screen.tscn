@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://b42ins7fl6gre" path="res://scripts/title.gd" id="1_ak2if"]
 [ext_resource type="Texture2D" uid="uid://pbmld36ovdnw" path="res://assets/resources/model_0.png" id="2_ig5kc"]
 [ext_resource type="Shader" uid="uid://bnobd3qinwotm" path="res://scripts/shaders/models.gdshader" id="2_s4lrb"]
+[ext_resource type="Theme" uid="uid://be74h2fudfjk0" path="res://assets/resources/theme_default.tres" id="4_mgrm8"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_yf5fn"]
 sky_top_color = Color(0.09622363, 0.45263308, 0.79214585, 1)
@@ -434,14 +435,17 @@ alignment = 2
 
 [node name="Button" type="Button" parent="MarginContainer/VBoxContainer" unique_id=1226479603]
 layout_mode = 2
+theme = ExtResource("4_mgrm8")
 text = "new world"
 
 [node name="Button3" type="Button" parent="MarginContainer/VBoxContainer" unique_id=1698315402]
 layout_mode = 2
+theme = ExtResource("4_mgrm8")
 text = "old world"
 
 [node name="Button2" type="Button" parent="MarginContainer/VBoxContainer" unique_id=742339328]
 layout_mode = 2
+theme = ExtResource("4_mgrm8")
 text = "quit i guess"
 
 [node name="Camera3D" type="Camera3D" parent="." unique_id=438045915]
