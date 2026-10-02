@@ -13,7 +13,7 @@ var playtime: int
 # blockState is for stuff like the block's facing direction
 # entityState is an index into a map of entity states inside the chunk
 # id is just the block id
-class Chunk extends RefCounted:
+class WFChunk extends RefCounted:
 	var position: Vector2i
 	var blocks: Array
 	
