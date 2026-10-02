@@ -1,5 +1,5 @@
 @tool
-extends StaticBody3D
+class_name Chunk extends StaticBody3D
 
 const vertices = [
 	Vector3(0,0,0),

@@ -11,9 +11,9 @@ func _ready() -> void:
 
 func _process(delta: float) -> void:
 	label.text = \
-	"\n"+str(Time.get_unix_time_from_system())+ \
-	"\ns:"+str(Global.world_seed)+ \
-	"\nxyz:"+str(Vector3i(player.position))
+	"\ntime:"+str(Time.get_unix_time_from_system())+ \
+	"\nseed:"+str(Global.world_seed)+ \
+	"\nxyz :"+str(Vector3i(player.position))
 
 func pause(): $CRT/AnimationPlayer.play("tween_in")
 

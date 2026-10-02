@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://cradyr4imf0tk"]
 
 [ext_resource type="Script" uid="uid://d0jinjwheg73p" path="res://scripts/game.gd" id="1_5dhsp"]
+[ext_resource type="Script" uid="uid://b68eysrf87yjn" path="res://scenes/world.gd" id="2_0tnpc"]
 [ext_resource type="Script" uid="uid://c4rnoxgp2qfxf" path="res://scripts/day_night.gd" id="2_gee14"]
 [ext_resource type="PackedScene" uid="uid://dl24p08af224r" path="res://scenes/player.tscn" id="2_nni6g"]
 [ext_resource type="Environment" uid="uid://brc6bsfocnk1h" path="res://assets/resources/game_enviroment.tres" id="2_oaiob"]
@@ -8,28 +9,30 @@
 [ext_resource type="AudioStream" uid="uid://cc0nd4rgeqi8h" path="res://assets/audio/die.wav" id="4_7r2ba"]
 [ext_resource type="PackedScene" uid="uid://de37u445imeh7" path="res://scenes/hud.tscn" id="6_p57ef"]
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_iywne"]
-
 [node name="Game" type="Node3D" unique_id=1003255847]
 script = ExtResource("1_5dhsp")
 render_distance = 10
-blockShape = SubResource("BoxShape3D_iywne")
 
-[node name="Environment" type="Node" parent="." unique_id=1344819257]
+[node name="World" type="Node3D" parent="." unique_id=421522664 node_paths=PackedStringArray("player")]
+script = ExtResource("2_0tnpc")
+render_distance = 10
+player = NodePath("../Player")
 
-[node name="DayNight" type="Node" parent="Environment" unique_id=169369929 node_paths=PackedStringArray("sun", "sky", "label")]
+[node name="Environment" type="Node" parent="World" unique_id=1344819257]
+
+[node name="DayNight" type="Node" parent="World/Environment" unique_id=169369929 node_paths=PackedStringArray("sun", "sky", "label")]
 script = ExtResource("2_gee14")
 sun = NodePath("../SunPivot/Sun")
 sky = NodePath("../Sky")
-label = NodePath("../../HUD/Time")
+label = NodePath("../../../HUD/Time")
 
-[node name="Sky" type="WorldEnvironment" parent="Environment" unique_id=1793283456]
+[node name="Sky" type="WorldEnvironment" parent="World/Environment" unique_id=1793283456]
 environment = ExtResource("2_oaiob")
 
-[node name="SunPivot" type="Node3D" parent="Environment" unique_id=530159136]
+[node name="SunPivot" type="Node3D" parent="World/Environment" unique_id=530159136]
 transform = Transform3D(4.371139e-08, -1, -8.742278e-08, -1, -4.371139e-08, 0, -3.821371e-15, 8.742278e-08, -1, 0, 0, 0)
 
-[node name="Sun" type="DirectionalLight3D" parent="Environment/SunPivot" unique_id=840323454]
+[node name="Sun" type="DirectionalLight3D" parent="World/Environment/SunPivot" unique_id=840323454]
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0, 0, 0)
 shadow_enabled = true
 shadow_bias = 0.6
@@ -39,8 +42,6 @@ directional_shadow_blend_splits = true
 directional_shadow_fade_start = 1.0
 directional_shadow_max_distance = 40.0
 directional_shadow_pancake_size = 0.0
-
-[node name="World" type="Node3D" parent="." unique_id=421522664]
 
 [node name="Player" parent="." unique_id=825439093 instance=ExtResource("2_nni6g")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 30, 0)
