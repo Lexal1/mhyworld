@@ -134,13 +134,11 @@ func update():
 	self.call_deferred("set_visible", true)
 
 func check_transparency(x,y,z):
-	if Global.gameIsQuitting:
-		return true # fuck it
+	if Global.gameIsQuitting: return true # fuck it
 	if x >= 0 and x < Global.CHUNK_SIZE.x and \
 		y >= 0 and y < Global.CHUNK_SIZE.y and \
 		z >= 0 and z < Global.CHUNK_SIZE.z:
-			if Global.gameIsQuitting:
-				return true # fuck it
+			if Global.gameIsQuitting: return true # fuck it
 			if typeof(blocks[x][y][z]) != TYPE_INT:
 				print(blocks[x][y][z])
 			return not BlockRegistry.get_by_idx(blocks[x][y][z]).solid
@@ -149,8 +147,7 @@ func check_transparency(x,y,z):
 func create_block(x,y,z):
 	#print("creating block %s %s %s" % [x,y,z])
 	var block = blocks[x][y][z]
-	if block == BlockRegistry.get_idx_of(&"air"):
-		return
+	if block == BlockRegistry.get_idx_of(&"air"): return
 	
 	var block_data: Block = BlockRegistry.get_by_idx(block)
 	var atlas_data = block_data.atlas_position

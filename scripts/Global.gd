@@ -22,7 +22,7 @@ var Tasks: TaskManager = TaskManager.new()
 
 const CHUNK_SIZE = Vector3(16,32,16)
 
-const TEXTURE_ATLAS_SIZE = Vector2(4,4)
+const TEXTURE_ATLAS_SIZE = Vector2(16,16)
 
 var time = Time.get_time_dict_from_system()
 
