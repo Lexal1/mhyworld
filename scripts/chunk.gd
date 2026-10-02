@@ -48,9 +48,10 @@ var chunk_position = Vector2.ZERO:
 func _ready():
 	if Engine.is_editor_hint():
 		noise.seed = 128
+		_generate_and_update()
 	else:
 		noise.seed = Global.world_seed
-	Global.Tasks.add_task(generate_and_update())
+		#Global.Tasks.add_task(generate_and_update())
 
 func generate_and_update():
 	if Engine.is_editor_hint():

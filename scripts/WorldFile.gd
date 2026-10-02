@@ -13,7 +13,7 @@ func write_chunk(chunk: Chunk, file: FileAccess) -> void:
 	file.store_var(chunk.blocks) # unsafe as FUCK
 	chunk.blocksMutex.unlock()
 
-func read_chunk(file: FileAccess, pos: Vector3) -> WFChunk:
+func read_chunk(file: FileAccess, pos: Vector2) -> WFChunk:
 	var blocks: Array = file.get_var()
 	var wfc = WFChunk.new()
 	wfc.position = pos

@@ -9,11 +9,24 @@ var chunk_scene = preload("res://scenes/chunk.tscn")
 @onready var environment: WorldEnvironment = $Environment/Sky
 
 func _ready() -> void:
+	var wf = WorldFile.new()
 	for i in range(0, render_distance):
 		for j in range(0, render_distance):
 			var chunk: Chunk = chunk_scene.instantiate()
 			chunk.chunk_position = Vector2(i,j)
-			chunk.on_chunk_ready.connect(save_chunk_to_file)
+			#chunk.on_chunk_ready.connect(save_chunk_to_file)
+			var file: FileAccess = FileAccess.open("user://world/test/chunk/c.%d.%d.chunk" % [int(chunk.chunk_position.x), int(chunk.chunk_position.y)], FileAccess.READ)
+			if file == null:
+				printerr(error_string(FileAccess.get_open_error()))
+				print("generating user://world/test/chunk/c.%d.%d.chunk" % [chunk.chunk_position.x, chunk.chunk_position.y])
+				#Global.Tasks.add_task(chunk.generate_and_update())
+				#chunk._generate_and_update()
+			else:
+				#print("loaded", chunk.chunk_position)
+				chunk.blocksMutex.lock()
+				chunk.blocks = wf.read_chunk(file, chunk.chunk_position).blocks
+				chunk.blocksMutex.unlock()
+				chunk.update()
 			add_child(chunk)
 
 func _process(delta: float) -> void:
@@ -101,6 +114,7 @@ func _unhandled_input(event: InputEvent) -> void:
 func save_chunk_to_file(chunk: Chunk):
 	if not DirAccess.dir_exists_absolute("user://world/test/chunk"):
 		DirAccess.make_dir_recursive_absolute("user://world/test/chunk")
+	print("saving [%d, %d]" % [chunk.chunk_position.x, chunk.chunk_position.y])
 	var file = FileAccess.open("user://world/test/chunk/c.%d.%d.chunk" % [chunk.chunk_position.x, chunk.chunk_position.y], FileAccess.WRITE)
 	var wf = WorldFile.new()
 	wf.write_chunk(chunk, file)
