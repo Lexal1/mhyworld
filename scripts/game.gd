@@ -6,7 +6,7 @@ var chunk_scene = preload("res://scenes/chunk.tscn")
 
 @onready var player: CharacterBody3D = $Player
 @onready var die: AudioStreamPlayer = $die
-@onready var environment: Node = $World/Environment
+@onready var environment: Node = $World/Environment/Sky
 @onready var world: Node3D = $World
 @onready var pause_menu: Control = $PauseMenu
 
