@@ -1,6 +1,8 @@
 @tool
 class_name Chunk extends StaticBody3D
 
+signal on_chunk_ready
+
 const vertices = [
 	Vector3(0,0,0),
 	Vector3(1,0,0),
@@ -132,6 +134,7 @@ func update():
 	self.call_deferred("add_child",mesh_instance)
 	mesh_instance.create_trimesh_collision.call_deferred()
 	self.call_deferred("set_visible", true)
+	on_chunk_ready.emit.call_deferred(self)
 
 func check_transparency(x,y,z):
 	if Global.gameIsQuitting:

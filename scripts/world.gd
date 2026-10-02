@@ -11,8 +11,9 @@ var chunk_scene = preload("res://scenes/chunk.tscn")
 func _ready() -> void:
 	for i in range(0, render_distance):
 		for j in range(0, render_distance):
-			var chunk = chunk_scene.instantiate()
+			var chunk: Chunk = chunk_scene.instantiate()
 			chunk.chunk_position = Vector2(i,j)
+			chunk.on_chunk_ready.connect(save_chunk_to_file)
 			add_child(chunk)
 
 func _process(delta: float) -> void:
@@ -99,3 +100,10 @@ func _unhandled_input(event: InputEvent) -> void:
 			print("%d bytes" % len(lebytes))
 			byteSum += len(lebytes)
 		print("total of %d bytes" % byteSum)
+
+func save_chunk_to_file(chunk: Chunk):
+	if not DirAccess.dir_exists_absolute("user://world/test/chunk"):
+		DirAccess.make_dir_recursive_absolute("user://world/test/chunk")
+	var file = FileAccess.open("user://world/test/chunk/%d-%d.chunk" % [chunk.chunk_position.x, chunk.chunk_position.y], FileAccess.WRITE)
+	var wf = WorldFile.new()
+	wf.write_chunk(chunk, file)
