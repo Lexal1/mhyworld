@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://cradyr4imf0tk"]
 
 [ext_resource type="Script" uid="uid://d0jinjwheg73p" path="res://scripts/game.gd" id="1_5dhsp"]
-[ext_resource type="Script" uid="uid://b68eysrf87yjn" path="res://scenes/world.gd" id="2_0tnpc"]
+[ext_resource type="Script" uid="uid://b68eysrf87yjn" path="res://scripts/world.gd" id="2_0tnpc"]
 [ext_resource type="Script" uid="uid://c4rnoxgp2qfxf" path="res://scripts/day_night.gd" id="2_gee14"]
 [ext_resource type="PackedScene" uid="uid://dl24p08af224r" path="res://scenes/player.tscn" id="2_nni6g"]
 [ext_resource type="Environment" uid="uid://brc6bsfocnk1h" path="res://assets/resources/game_enviroment.tres" id="2_oaiob"]

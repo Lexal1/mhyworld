@@ -32,5 +32,5 @@ func _notification(what: int) -> void:
 	if what == NOTIFICATION_WM_CLOSE_REQUEST:
 		print("Mhyworld is closing, we gotta clean up!")
 		Global.gameIsQuitting = true
-		world._force_wait_for_tasks()
+		Global.Tasks.force_wait_for_tasks()
 		get_tree().quit()

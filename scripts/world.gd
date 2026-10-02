@@ -8,8 +8,6 @@ var chunk_scene = preload("res://scenes/chunk.tscn")
 
 @onready var environment: WorldEnvironment = $Environment/Sky
 
-var _unfinished_thread_tasks: Array[int] = []
-
 func _ready() -> void:
 	for i in range(0, render_distance):
 		for j in range(0, render_distance):
@@ -36,31 +34,8 @@ func chunk_processing():
 		
 		if (newx != cx or newz != cz):
 			c.chunk_position = Vector2(int(newx),int(newz))
-			_unfinished_thread_tasks.push_back(c.generate_and_update())
-	_wait_for_tasks()
-
-func _wait_for_tasks():
-	var newUnfinishedTasks: Array[int] = []
-	for task in _unfinished_thread_tasks:
-		#WorkerThreadPool.wait_for_task_completion(task)
-		if WorkerThreadPool.is_task_completed(task):
-			var err = WorkerThreadPool.wait_for_task_completion(task) # this is needed so godot frees up the resources properly
-			match err:
-				OK:
-					#print("[_wait_for_tasks] Task %d completed" % task)
-					continue
-				ERR_INVALID_PARAMETER:
-					printerr("[_wait_for_tasks] Task %d doesn't exist" % task)
-				ERR_BUSY:
-					printerr("[_wait_for_tasks] Busy task: %d" % task)
-		else:
-			newUnfinishedTasks.push_back(task)
-	_unfinished_thread_tasks = newUnfinishedTasks
-
-func _force_wait_for_tasks():
-	for task in _unfinished_thread_tasks:
-		WorkerThreadPool.wait_for_task_completion(task)
-	_unfinished_thread_tasks = []
+			Global.Tasks.add_task(c.generate_and_update())
+	Global.Tasks.wait_for_tasks()
 
 func get_chunk(pos):
 	for c in get_children():

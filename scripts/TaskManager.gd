@@ -17,7 +17,7 @@ func wait_for_tasks():
 			var err = WorkerThreadPool.wait_for_task_completion(task) # this is needed so godot frees up the resources properly
 			match err:
 				OK:
-					#print("[wait_for_tasks] Task %d completed" % task)
+					print("[wait_for_tasks] Task %d completed" % task)
 					continue
 				ERR_INVALID_PARAMETER:
 					printerr("[wait_for_tasks] Task %d doesn't exist" % task)
