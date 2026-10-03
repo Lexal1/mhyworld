@@ -113,12 +113,6 @@ func _physics_process(delta: float) -> void:
 			emit_signal("break_block", pos)
 		if Input.is_action_just_pressed("mouse2"):
 			emit_signal("place_block", pos +norm, BlockRegistry.get_idx_of(block_selected))
-		if Input.is_action_just_pressed("numpad1"):
-			block_selected = &"plate"
-		if Input.is_action_just_pressed("numpad2"):
-			block_selected = &"turf"
-		if Input.is_action_just_pressed("numpad3"):
-			block_selected = &"light"
 	else:
 		block_outline.visible = false
 	_controllerCam(delta)
@@ -127,6 +121,12 @@ func _physics_process(delta: float) -> void:
 	camera.transform.origin = headbob(t_bob)
 	
 	move_and_slide()
+	
+	if Input.is_action_just_pressed("numpad1"): block_selected = &"plate" #WHAT THE FUCK IS A SWITCH STATEMENT :fire: :fire: :fire:
+	if Input.is_action_just_pressed("numpad2"): block_selected = &"turf"
+	if Input.is_action_just_pressed("numpad3"): block_selected = &"light"
+	if Input.is_action_just_pressed("debug2"):
+		get_viewport().get_texture().get_image().save_png("user://screenshots/"+"SCREENSHOT-"+str(int(Time.get_unix_time_from_system()))+".png")
 
 func headbob(time) -> Vector3:
 	var pos = Vector3.ZERO 
