@@ -1,5 +1,6 @@
 [gd_scene format=3 uid="uid://t2ghc1agq2jn"]
 
+[ext_resource type="Theme" uid="uid://be74h2fudfjk0" path="res://assets/resources/theme_default.tres" id="1_5d2l8"]
 [ext_resource type="Script" uid="uid://dp4dcv7e32wd1" path="res://scripts/pause_menu.gd" id="1_myx47"]
 [ext_resource type="FontFile" uid="uid://bocinqr2prvyh" path="res://assets/resources/consola.ttf" id="1_n87rw"]
 [ext_resource type="Shader" uid="uid://f1ldnbqxs5mr" path="res://scripts/shaders/crt.gdshader" id="3_kukqi"]
@@ -220,6 +221,9 @@ _data = {
 &"tween_out": SubResource("Animation_7l7mv")
 }
 
+[sub_resource type="LabelSettings" id="LabelSettings_5d2l8"]
+font = ExtResource("1_n87rw")
+
 [node name="PauseMenu" type="Control" unique_id=1947755196]
 layout_mode = 3
 anchors_preset = 15
@@ -227,6 +231,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+theme = ExtResource("1_5d2l8")
 script = ExtResource("1_myx47")
 
 [node name="Label" type="Label" parent="." unique_id=1434541707]
@@ -251,3 +256,46 @@ mouse_filter = 2
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="CRT" unique_id=1115737534]
 libraries/ = SubResource("AnimationLibrary_v4r4p")
+
+[node name="MenuOptions" type="VBoxContainer" parent="." unique_id=1199291724]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -134.5
+offset_top = -106.0
+offset_right = 134.5
+offset_bottom = 106.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label2" type="Label" parent="MenuOptions" unique_id=1466753286]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Loaded world: <placeholder>"
+label_settings = SubResource("LabelSettings_5d2l8")
+
+[node name="ContinueButton" type="Button" parent="MenuOptions" unique_id=87385549]
+layout_mode = 2
+text = "Continue"
+
+[node name="OptionsButton" type="Button" parent="MenuOptions" unique_id=791887159]
+layout_mode = 2
+text = "Options"
+
+[node name="DebuggingButton" type="Button" parent="MenuOptions" unique_id=1164266125]
+layout_mode = 2
+text = "Debugging"
+
+[node name="SaveButton" type="Button" parent="MenuOptions" unique_id=1533602621]
+layout_mode = 2
+text = "Save"
+
+[node name="QuitButton" type="Button" parent="MenuOptions" unique_id=323856931]
+layout_mode = 2
+text = "Quit"
+
+[connection signal="pressed" from="MenuOptions/ContinueButton" to="." method="_on_continue_button_pressed"]
+[connection signal="pressed" from="MenuOptions/QuitButton" to="." method="_on_quit_button_pressed"]
