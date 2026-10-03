@@ -1,23 +1,37 @@
 [gd_scene format=3 uid="uid://ccp68jltp664l"]
 
 [ext_resource type="Script" uid="uid://l42d5kskepyc" path="res://scripts/Global.gd" id="1_6kgfw"]
-[ext_resource type="AudioStream" uid="uid://16q3fbo2h5ec" path="res://assets/audio/amby_2.ogg" id="2_m3l3d"]
+[ext_resource type="AudioStream" uid="uid://16q3fbo2h5ec" path="res://assets/audio/newmusic/amby_2.ogg" id="2_m3l3d"]
+[ext_resource type="AudioStream" uid="uid://bdv46xmivoi2s" path="res://assets/audio/newmusic/mhyworld1.ogg" id="3_6rlim"]
 [ext_resource type="AudioStream" uid="uid://c573ht0bo1dw3" path="res://assets/audio/TEMPMUSICANOTHER.mp3" id="3_opebo"]
-[ext_resource type="AudioStream" uid="uid://b22vj0e4va2cp" path="res://assets/audio/crickets.ogg" id="4_m3l3d"]
-[ext_resource type="AudioStream" uid="uid://28rexbx35u0x" path="res://assets/audio/TEMPVIBEMUSIC.mp3" id="4_nelfd"]
+[ext_resource type="AudioStream" uid="uid://b22vj0e4va2cp" path="res://assets/audio/newmusic/crickets.ogg" id="4_m3l3d"]
+[ext_resource type="AudioStream" uid="uid://5350eio6j8uh" path="res://assets/audio/oldmusic/synth6.ogg" id="5_2se67"]
 [ext_resource type="Shader" uid="uid://d3cfhejlrm2dw" path="res://scripts/shaders/postprocessing.gdshader" id="6_6rlim"]
+[ext_resource type="AudioStream" uid="uid://c2gxv8m7f8dxm" path="res://assets/audio/oldmusic/synth1.ogg" id="7_7upwp"]
+[ext_resource type="AudioStream" uid="uid://f3jtvct4b15a" path="res://assets/audio/oldmusic/synth2.ogg" id="8_e7lx3"]
+[ext_resource type="AudioStream" uid="uid://bl7tfpvs6xlxl" path="res://assets/audio/oldmusic/synth3.ogg" id="9_3q7h5"]
+[ext_resource type="AudioStream" uid="uid://oochtta0smaq" path="res://assets/audio/oldmusic/synth4.ogg" id="10_b18l6"]
+[ext_resource type="AudioStream" uid="uid://buw7ighk0itjv" path="res://assets/audio/oldmusic/synth5.ogg" id="11_korfd"]
+[ext_resource type="AudioStream" uid="uid://boleqpf6ma6m4" path="res://assets/audio/oldmusic/synth7.ogg" id="12_dxqtg"]
 
 [sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_g4v7s"]
 random_pitch = 1.005793
-streams_count = 3
+streams_count = 4
 stream_0/stream = ExtResource("2_m3l3d")
-stream_1/stream = ExtResource("3_opebo")
-stream_2/stream = ExtResource("4_nelfd")
+stream_1/stream = ExtResource("3_6rlim")
+stream_2/stream = ExtResource("3_opebo")
+stream_3/stream = ExtResource("5_2se67")
 
 [sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_yf5fn"]
 random_pitch = 1.0594631
-streams_count = 1
+streams_count = 7
 stream_0/stream = ExtResource("4_m3l3d")
+stream_1/stream = ExtResource("7_7upwp")
+stream_2/stream = ExtResource("8_e7lx3")
+stream_3/stream = ExtResource("9_3q7h5")
+stream_4/stream = ExtResource("10_b18l6")
+stream_5/stream = ExtResource("11_korfd")
+stream_6/stream = ExtResource("12_dxqtg")
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_mmyj5"]
 shader = ExtResource("6_6rlim")

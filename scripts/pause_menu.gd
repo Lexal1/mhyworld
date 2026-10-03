@@ -22,11 +22,9 @@ func pause(): $CRT/AnimationPlayer.play("tween_in")
 
 func unpause(): $CRT/AnimationPlayer.play("tween_out")
 
-
 func _on_continue_button_pressed() -> void:
 	print("continuing")
 	Global.resume_game()
-
 
 func _on_quit_button_pressed() -> void:
 	# BUG: doesnt work, bad address index

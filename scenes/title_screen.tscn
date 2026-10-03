@@ -432,8 +432,10 @@ theme_override_constants/margin_right = 32
 theme_override_constants/margin_bottom = 32
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=472168344]
+custom_minimum_size = Vector2(250, 0)
 layout_mode = 2
-alignment = 2
+size_flags_horizontal = 4
+alignment = 1
 
 [node name="NewWorld" type="Button" parent="MarginContainer/VBoxContainer" unique_id=1226479603]
 layout_mode = 2
