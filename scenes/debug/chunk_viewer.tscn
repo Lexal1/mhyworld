@@ -1,0 +1,74 @@
+[gd_scene format=3 uid="uid://bl80vt336ni26"]
+
+[ext_resource type="PackedScene" uid="uid://dsmdch1charhc" path="res://scenes/chunk.tscn" id="1_w3vip"]
+[ext_resource type="Script" uid="uid://2v5twewmbkxs" path="res://scripts/debug_scenes/chunk_viewer.gd" id="1_wmbwq"]
+[ext_resource type="Theme" uid="uid://be74h2fudfjk0" path="res://assets/resources/theme_default.tres" id="3_g1jf0"]
+
+[sub_resource type="Environment" id="Environment_i210l"]
+background_mode = 1
+background_color = Color(0.78775924, 0.78775924, 0.78775924, 1)
+ambient_light_color = Color(1, 1, 1, 1)
+
+[node name="ChunkViewer" type="Node" unique_id=1856630048]
+script = ExtResource("1_wmbwq")
+
+[node name="ChunkPivot" type="Node3D" parent="." unique_id=1427339064]
+
+[node name="Chunk" parent="ChunkPivot" unique_id=939724336 instance=ExtResource("1_w3vip")]
+
+[node name="Camera" type="Camera3D" parent="." unique_id=1528738442]
+transform = Transform3D(0.73135376, 0.39117816, -0.5586603, 0, 0.81915206, 0.57357645, 0.6819983, -0.4194873, 0.5990899, -7.208191, 23.185543, 22)
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=821564108]
+environment = SubResource("Environment_i210l")
+
+[node name="UI" type="Control" parent="." unique_id=476335437]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+theme = ExtResource("3_g1jf0")
+
+[node name="RotationSlider" type="HSlider" parent="UI" unique_id=1802240823]
+layout_mode = 0
+offset_left = 81.0
+offset_top = 441.0
+offset_right = 514.0
+offset_bottom = 464.0
+max_value = 360.0
+
+[node name="GenerateButton" type="Button" parent="UI" unique_id=1257890238]
+layout_mode = 0
+offset_left = 83.0
+offset_top = 394.0
+offset_right = 205.0
+offset_bottom = 427.0
+text = "Generate Chunk"
+
+[node name="UpdateButton" type="Button" parent="UI" unique_id=805389882]
+layout_mode = 0
+offset_left = 391.0
+offset_top = 399.0
+offset_right = 513.0
+offset_bottom = 432.0
+text = "Update Chunk"
+
+[node name="XPosInput" type="SpinBox" parent="UI" unique_id=668643322]
+layout_mode = 0
+offset_left = 530.0
+offset_top = 396.0
+offset_right = 616.5
+offset_bottom = 427.0
+
+[node name="YPosInput" type="SpinBox" parent="UI" unique_id=280256051]
+layout_mode = 0
+offset_left = 533.0
+offset_top = 433.0
+offset_right = 619.5
+offset_bottom = 464.0
+
+[connection signal="value_changed" from="UI/RotationSlider" to="." method="_on_rotation_slider_value_changed"]
+[connection signal="pressed" from="UI/GenerateButton" to="." method="_on_generate_button_pressed"]
+[connection signal="pressed" from="UI/UpdateButton" to="." method="_on_update_button_pressed"]
+[connection signal="value_changed" from="UI/XPosInput" to="." method="_on_x_pos_input_value_changed"]
+[connection signal="value_changed" from="UI/YPosInput" to="." method="_on_y_pos_input_value_changed"]

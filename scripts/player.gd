@@ -71,6 +71,11 @@ func _physics_process(delta: float) -> void:
 		die.emit()
 
 	# add gravity
+	"""if Input.is_action_pressed("ui_down"):
+		velocity += get_gravity() * delta
+	if Input.is_action_pressed("ui_up"):
+		velocity -= get_gravity() * delta""" # debug code
+	
 	if not is_on_floor():
 		velocity += get_gravity() * delta
 

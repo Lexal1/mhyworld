@@ -71,6 +71,7 @@ func _generate_and_update():
 func _generate():
 	blocksMutex.lock()
 	blocks = []
+	hasChunkGenerated = false
 	if Global.gameIsQuitting:
 		blocksMutex.unlock()
 		return
