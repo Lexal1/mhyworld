@@ -80,7 +80,8 @@ func _physics_process(delta: float) -> void:
 		velocity += get_gravity() * delta
 
 	# handle jump
-	if Input.is_action_just_pressed("jump"): $InputBuffer.start()
+	if Input.is_action_pressed("jump"): $InputBuffer.start()
+	elif Input.is_action_just_released("jump"): $InputBuffer.stop()
 	
 	if !$InputBuffer.is_stopped() and !$CoyoteTime.is_stopped():
 		velocity.y = JUMP_VELOCITY
