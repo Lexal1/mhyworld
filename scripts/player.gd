@@ -5,7 +5,7 @@ const JUMP_VELOCITY = 7.0
 const BREAKSFX = preload("res://assets/audio/break.wav")
 const PLACESFX = preload("res://assets/audio/place.wav")
 const BOB_FREQUENCY = 3.0
-const BOB_AMP = 0.025
+const BOB_AMP = 0.03
 
 var selected = 6
 var sensitivity = 0.005
@@ -97,7 +97,7 @@ func _physics_process(delta: float) -> void:
 		velocity.x = lerp(velocity.x, direction.x * SPEED, delta * 5.0) #lerp lerp lerp sahur
 		velocity.z = lerp(velocity.z, direction.z * SPEED, delta * 5.0)
 
-	if raycast.is_colliding():
+	if raycast.is_colliding() and !Global.is_paused():
 		var norm = raycast.get_collision_normal()
 		var pos = raycast.get_collision_point() - norm * 0.5
 		
