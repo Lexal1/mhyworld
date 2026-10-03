@@ -4,6 +4,8 @@ const SPEED = 6.0
 const JUMP_VELOCITY = 7.0
 const BREAKSFX = preload("res://assets/audio/break.wav")
 const PLACESFX = preload("res://assets/audio/place.wav")
+const BOB_FREQUENCY = 3.0
+const BOB_AMP = 0.025
 
 var selected = 6
 var sensitivity = 0.005
@@ -128,8 +130,8 @@ func _physics_process(delta: float) -> void:
 
 func headbob(time) -> Vector3:
 	var pos = Vector3.ZERO 
-	pos.y = sin(time * 3.0) * 0.025     #3.0 = BOB FREQUENCY 0.025 = BOB AMPLITUDE
-	pos.x = cos(time * 3.0 / 2) * 0.025 #TODO: UNHARDCODE THIS
+	pos.y = sin(time * BOB_FREQUENCY) * BOB_AMP
+	pos.x = cos(time * BOB_FREQUENCY / 2.5) * BOB_AMP
 	return pos
 
 
