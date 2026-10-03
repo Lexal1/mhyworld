@@ -126,7 +126,7 @@ func _physics_process(delta: float) -> void:
 	if Input.is_action_just_pressed("numpad2"): block_selected = &"turf"
 	if Input.is_action_just_pressed("numpad3"): block_selected = &"light"
 	if Input.is_action_just_pressed("debug2"):
-		get_viewport().get_texture().get_image().save_png("user://screenshots/"+"SCREENSHOT-"+str(int(Time.get_unix_time_from_system()))+".png")
+		get_viewport().get_texture().get_image().save_png("user://screenshots/"+"SCREENSHOT-"+str(Time.get_unix_time_from_system())+".png")
 
 func headbob(time) -> Vector3:
 	var pos = Vector3.ZERO 
