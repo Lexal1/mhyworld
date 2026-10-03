@@ -9,6 +9,8 @@
 [ext_resource type="AudioStream" uid="uid://cc0nd4rgeqi8h" path="res://assets/audio/die.wav" id="4_7r2ba"]
 [ext_resource type="PackedScene" uid="uid://de37u445imeh7" path="res://scenes/hud.tscn" id="6_p57ef"]
 
+[sub_resource type="BoxShape3D" id="BoxShape3D_upgun"]
+
 [node name="Game" type="Node3D" unique_id=1003255847]
 script = ExtResource("1_5dhsp")
 render_distance = 10
@@ -16,6 +18,7 @@ render_distance = 10
 [node name="World" type="Node3D" parent="." unique_id=421522664 node_paths=PackedStringArray("player")]
 script = ExtResource("2_0tnpc")
 render_distance = 10
+blockShape = SubResource("BoxShape3D_upgun")
 player = NodePath("../Player")
 
 [node name="Environment" type="Node" parent="World" unique_id=1344819257]
