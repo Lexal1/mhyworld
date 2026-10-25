@@ -11,23 +11,25 @@ var chunk_scene = preload("res://scenes/chunk.tscn")
 func _ready() -> void:
 	for i in range(0, render_distance):
 		for j in range(0, render_distance):
-			var chunk: Chunk = chunk_scene.instantiate()
+			var chunk = chunk_scene.instantiate()
 			chunk.chunk_position = Vector2(i,j)
-			chunk.on_chunk_ready.connect(save_chunk_to_file)
+			#Global.Tasks.add_task(chunk.generate_and_update())
+			#chunk._generate_and_update()
+				
 			add_child(chunk)
 
 func _process(delta: float) -> void:
 	if Input.is_action_just_pressed("debug1"):
 		chunk_processing()
-	self.call_deferred("chunk_processing")
+	#self.call_deferred("chunk_processing")
 
 func chunk_processing():
 	for c in get_children():
-		if c is not Chunk: continue
-		var cx = c.chunk_position.x
-		var cz = c.chunk_position.y
+		#if c is not Chunk: continue
+		#var cx = c.chunk_position.x
+		#var cz = c.chunk_position.y
 		
-		var px = floor(player.position.x / Global.CHUNK_SIZE.x)
+		"""var px = floor(player.position.x / Global.CHUNK_SIZE.x)
 		var pz = floor(player.position.z / Global.CHUNK_SIZE.z)
 		
 		var newx = posmod(cx - px + render_distance/2, render_distance) + px - render_distance/2
@@ -35,12 +37,12 @@ func chunk_processing():
 		
 		if (newx != cx or newz != cz):
 			c.chunk_position = Vector2(int(newx),int(newz))
-			Global.Tasks.add_task(c.generate_and_update())
+			Global.Tasks.add_task(c.generate_and_update())"""
 	Global.Tasks.wait_for_tasks()
 
 func get_chunk(pos):
 	for c in get_children():
-		if c is not Chunk: continue
+		#if c is not Chunk: continue
 		if c.chunk_position == pos: return c
 	return null
 
@@ -59,7 +61,7 @@ func will_collide_with_player(pos: Vector3):
 	return false
 
 func _on_player_place_block(pos: Vector3, t: Variant) -> void:
-	var cx = int(floor(pos.x / Global.CHUNK_SIZE.x))
+	"""var cx = int(floor(pos.x / Global.CHUNK_SIZE.x))
 	var cz = int(floor(pos.z / Global.CHUNK_SIZE.z))
 	
 	var bx = posmod(floor(pos.x), Global.CHUNK_SIZE.x)
@@ -83,7 +85,8 @@ func _on_player_place_block(pos: Vector3, t: Variant) -> void:
 			player.play_break_sfx()
 		else:
 			player.play_place_sfx()
-		c.blocksMutex.unlock()
+		c.blocksMutex.unlock()"""
+	pass
 
 func _on_player_break_block(pos: Variant) -> void: _on_player_place_block(pos, BlockRegistry.get_idx_of(&"air"))
 
@@ -97,10 +100,3 @@ func _unhandled_input(event: InputEvent) -> void:
 			print("%d bytes" % len(lebytes))
 			byteSum += len(lebytes)
 		print("total of %d bytes" % byteSum)
-
-func save_chunk_to_file(chunk: Chunk):
-	if not DirAccess.dir_exists_absolute("user://world/test/chunk"):
-		DirAccess.make_dir_recursive_absolute("user://world/test/chunk")
-	var file = FileAccess.open("user://world/test/chunk/c.%d.%d.chunk" % [chunk.chunk_position.x, chunk.chunk_position.y], FileAccess.WRITE)
-	var wf = WorldFile.new()
-	wf.write_chunk(chunk, file)

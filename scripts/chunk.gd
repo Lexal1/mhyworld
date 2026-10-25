@@ -48,11 +48,12 @@ var chunk_position = Vector2.ZERO:
 func _ready():
 	if Engine.is_editor_hint():
 		noise.seed = 128
+		#_generate_and_update()
 	else:
 		noise.seed = Global.world_seed
-	Global.Tasks.add_task(generate_and_update())
+	#Global.Tasks.add_task(generate_and_update())
 
-func generate_and_update():
+"""func generate_and_update():
 	if Engine.is_editor_hint():
 		_generate_and_update()
 		return
@@ -182,5 +183,4 @@ func create_face(i, x,y,z, atlas_offset): #what is this, miitopia?
 	var uv_d = uv_offset + Vector2(width,0)
 	
 	st.add_triangle_fan(([a,b,c]), ([uv_a,uv_b,uv_c]))
-	st.add_triangle_fan(([a,c,d]), ([uv_a,uv_c,uv_d]))
-	
+	st.add_triangle_fan(([a,c,d]), ([uv_a,uv_c,uv_d]))"""

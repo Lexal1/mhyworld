@@ -21,9 +21,14 @@ var Tasks: TaskManager = TaskManager.new()
 @onready var music_two: AudioStreamPlayer = $Music/MusicTwo
 @onready var canvas_layer: CanvasLayer = $CanvasLayer
 
-const CHUNK_SIZE = Vector3(16,32,16)
+#const CHUNK_SIZE = Vector3(16,32,16)
+const CHUNK_SIZE := 16
+const CHUNK_VOLUME := CHUNK_SIZE**3
+
+const BLOCK_SIZE = 1 # TODO: not hardcode this
 
 const TEXTURE_ATLAS_SIZE = Vector2(16,16)
+const ATLAS_RESOLUTION = Vector2(256, 256) # TODO: not hardcode this
 
 var time = Time.get_time_dict_from_system()
 
