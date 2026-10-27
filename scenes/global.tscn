@@ -3,7 +3,6 @@
 [ext_resource type="Script" uid="uid://l42d5kskepyc" path="res://scripts/Global.gd" id="1_6kgfw"]
 [ext_resource type="AudioStream" uid="uid://16q3fbo2h5ec" path="res://assets/audio/newmusic/amby_2.ogg" id="2_m3l3d"]
 [ext_resource type="AudioStream" uid="uid://bdv46xmivoi2s" path="res://assets/audio/newmusic/mhyworld1.ogg" id="3_6rlim"]
-[ext_resource type="AudioStream" uid="uid://c573ht0bo1dw3" path="res://assets/audio/TEMPMUSICANOTHER.mp3" id="3_opebo"]
 [ext_resource type="AudioStream" uid="uid://b22vj0e4va2cp" path="res://assets/audio/newmusic/crickets.ogg" id="4_m3l3d"]
 [ext_resource type="AudioStream" uid="uid://5350eio6j8uh" path="res://assets/audio/oldmusic/synth6.ogg" id="5_2se67"]
 [ext_resource type="Shader" uid="uid://d3cfhejlrm2dw" path="res://scripts/shaders/postprocessing.gdshader" id="6_6rlim"]
@@ -16,11 +15,10 @@
 
 [sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_g4v7s"]
 random_pitch = 1.005793
-streams_count = 4
+streams_count = 3
 stream_0/stream = ExtResource("2_m3l3d")
 stream_1/stream = ExtResource("3_6rlim")
-stream_2/stream = ExtResource("3_opebo")
-stream_3/stream = ExtResource("5_2se67")
+stream_2/stream = ExtResource("5_2se67")
 
 [sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_yf5fn"]
 random_pitch = 1.0594631
