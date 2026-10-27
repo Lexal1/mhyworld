@@ -21,13 +21,26 @@ const SOUTH =  [2,0,1,3]
 const EAST =   [3,1,5,7]
 const WEST =   [6,4,0,2]
 
+const SX := Global.CHUNK_SIZE.x
+const SY := Global.CHUNK_SIZE.y
+const SZ := Global.CHUNK_SIZE.z
+
+
 @export var shaderMaterial: ShaderMaterial
 
-var noise = FastNoiseLite.new()
+var noise := FastNoiseLite.new()
 
-var blocksMutex: Mutex = Mutex.new()
+var blocksMutex := Mutex.new()
+var _mesh_lock := Mutex.new()    # one meshing at a time (st is shared)
+var _state_mutex := Mutex.new()  # guards the two flags below
+var _meshing := false
+var _dirty := false
+
 var blocks = []
-var hasChunkGenerated: bool = false
+var hasChunkGenerated := false
+
+var solid_table: PackedByteArray
+var size: Vector3i
 
 var st = SurfaceTool.new()
 var mesh : Mesh = null
@@ -47,6 +60,8 @@ var chunk_position = Vector2.ZERO:
 		self.visible = false
 
 func _ready():
+	solid_table = BlockRegistry.solid_table
+	size = Vector3i(Global.CHUNK_SIZE)
 	air_idx = BlockRegistry.get_idx_of(&"air")
 	if Engine.is_editor_hint():
 		noise.seed = 128
@@ -116,64 +131,86 @@ func _generate():
 	hasChunkGenerated = true
 
 func update():
-	## unloads chunk if it exists
+	_mesh_lock.lock()
+	_update_mesh()
+	_mesh_lock.unlock()
+
+func update_async() -> int:
+	return WorkerThreadPool.add_task(update)
+
+func _update_mesh():
 	if Global.gameIsQuitting: return
-	if mesh != null:
-		mesh_instance.call_deferred("queue_free")
-		mesh_instance = null
+
+	blocksMutex.lock()
+	var snap: Array = blocks.duplicate(true)   # the only time the lock is held
+	blocksMutex.unlock()
+
+	var old_instance := mesh_instance          # free it last, so collision never disappears
 	mesh = ArrayMesh.new()
 	mesh_instance = MeshInstance3D.new()
 	st.begin(Mesh.PRIMITIVE_TRIANGLES)
 	st.set_smooth_group(-1)
-	blocksMutex.lock()
-	for x in Global.CHUNK_SIZE.x:
-		for y in Global.CHUNK_SIZE.y:
-			for z in Global.CHUNK_SIZE.z:
-				if Global.gameIsQuitting:
-					blocksMutex.unlock()
-					return
-				create_block(x,y,z)
-	blocksMutex.unlock()
+	for x in size.x:
+		for y in size.y:
+			for z in size.z:
+				if Global.gameIsQuitting: return
+				create_block(snap, x, y, z)
 	st.generate_normals(false)
 	st.set_material(shaderMaterial)
 	mesh = st.commit()
 	mesh_instance.set_mesh(mesh)
 	if Engine.is_editor_hint():
+		if old_instance: old_instance.queue_free()
 		add_child(mesh_instance)
 		mesh_instance.create_trimesh_collision()
 		set_visible(true)
 		return
-	self.call_deferred("add_child",mesh_instance)
+	if old_instance: old_instance.queue_free.call_deferred()
+	self.call_deferred("add_child", mesh_instance)
 	mesh_instance.create_trimesh_collision.call_deferred()
 	self.call_deferred("set_visible", true)
 	on_chunk_ready.emit.call_deferred(self)
 
-func check_transparency(x,y,z):
-	if Global.gameIsQuitting: return true # fuck it
-	if x >= 0 and x < Global.CHUNK_SIZE.x and \
-		y >= 0 and y < Global.CHUNK_SIZE.y and \
-		z >= 0 and z < Global.CHUNK_SIZE.z:
-			if Global.gameIsQuitting: return true # fuck it
-			if typeof(blocks[x][y][z]) != TYPE_INT:
-				print(blocks[x][y][z])
-			return not BlockRegistry.get_by_idx(blocks[x][y][z]).solid
-	return true
+func request_remesh() -> void:
+	_state_mutex.lock()
+	if _meshing:
+		_dirty = true            # worker will loop again when it finishes
+		_state_mutex.unlock()
+		return
+	_meshing = true
+	_state_mutex.unlock()
+	Global.Tasks.add_task(WorkerThreadPool.add_task(_remesh_loop))
 
-func create_block(x,y,z):
-	#print("creating block %s %s %s" % [x,y,z])
-	var block = blocks[x][y][z]
+func _remesh_loop() -> void:
+	while true:
+		update()
+		_state_mutex.lock()
+		if not _dirty:
+			_meshing = false
+			_state_mutex.unlock()
+			return
+		_dirty = false
+		_state_mutex.unlock()
+
+func check_transparency(b: Array, x: int, y: int, z: int) -> bool:
+	if x < 0 or x >= SX or y < 0 or y >= SY or z < 0 or z >= SZ:
+		return true
+	return solid_table[b[x][y][z]] == 0
+
+func create_block(b: Array, x, y, z):
+	var block = b[x][y][z]
 	if block == air_idx: return
-	
+
 	var block_data: Block = BlockRegistry.get_by_idx(block)
 	var atlas_data = block_data.atlas_position
-	
-	if check_transparency(x, y+1, z): create_face(TOP, x,y,z, atlas_data.TOP)
-	if check_transparency(x, y-1, z): create_face(BOTTOM, x,y,z, atlas_data.BOTTOM)
-	if check_transparency(x, y, z+1): create_face(NORTH, x,y,z, atlas_data.NORTH)
-	if check_transparency(x, y, z-1): create_face(SOUTH, x,y,z, atlas_data.SOUTH)
-	if check_transparency(x+1, y, z): create_face(EAST, x,y,z, atlas_data.EAST)
-	if check_transparency(x-1, y, z): create_face(WEST, x,y,z, atlas_data.WEST)
-	
+
+	if check_transparency(b, x, y+1, z): create_face(TOP, x,y,z, atlas_data.TOP)
+	if check_transparency(b, x, y-1, z): create_face(BOTTOM, x,y,z, atlas_data.BOTTOM)
+	if check_transparency(b, x, y, z+1): create_face(NORTH, x,y,z, atlas_data.NORTH)
+	if check_transparency(b, x, y, z-1): create_face(SOUTH, x,y,z, atlas_data.SOUTH)
+	if check_transparency(b, x+1, y, z): create_face(EAST, x,y,z, atlas_data.EAST)
+	if check_transparency(b, x-1, y, z): create_face(WEST, x,y,z, atlas_data.WEST)
+
 	if block_data.has_method("on_block_created"):
 		block_data.on_block_created(Vector3i(x, y, z), chunk_position, self)
 

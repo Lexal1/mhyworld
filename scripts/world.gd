@@ -78,7 +78,8 @@ func _on_player_place_block(pos: Vector3, t: Variant) -> void:
 				blockData.on_block_destroyed(Vector3i(bx, by, bz), c.chunk_position, c)
 
 		c.blocks[bx][by][bz] = t
-		c.update()
+		c.blocksMutex.unlock()
+		c.request_remesh()
 		if t == BlockRegistry.get_idx_of(&"air"):
 			player.play_break_sfx()
 		else:

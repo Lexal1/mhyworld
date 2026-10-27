@@ -2,6 +2,7 @@
 extends Node
 
 var _blocks: Array[Block] = []
+var solid_table := PackedByteArray()
 
 func register(block: Block, fname: String = ""):
 	if _blocks.has(block):
@@ -56,3 +57,6 @@ func _ready():
 		#print(evilBlock)
 		register(evilBlock, block)
 		print("loaded block %s (%s)" % [evilBlock.id, block])
+	solid_table.resize(_blocks.size())
+	for i in _blocks.size():
+		solid_table[i] = 1 if _blocks[i].solid else 0
