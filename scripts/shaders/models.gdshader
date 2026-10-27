@@ -18,7 +18,7 @@ void vertex() {
 	vec4 view_space_pos = MODELVIEW_MATRIX * vec4(VERTEX, 1.0);
 	vec4 clip_space_pos = PROJECTION_MATRIX * view_space_pos;
 
-	if (snap_enabled) {
+	if (snap_enabled && !IN_SHADOW_PASS) {
 		vec2 ndc = clip_space_pos.xy / clip_space_pos.w;
 		ndc = round(ndc * snap_resolution) / snap_resolution;
 		clip_space_pos.xy = ndc * clip_space_pos.w;
