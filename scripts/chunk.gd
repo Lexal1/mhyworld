@@ -51,7 +51,7 @@ var air_idx: int
 var material = preload("res://assets/resources/new_standard_material_3d.tres")
 
 var _chunk_position: Vector2
-var chunk_position = Vector2.ZERO:
+var chunk_position := Vector2.ZERO:
 	get:
 		return _chunk_position
 	set(value):
@@ -193,8 +193,12 @@ func _remesh_loop() -> void:
 		_state_mutex.unlock()
 
 func check_transparency(b: Array, x: int, y: int, z: int) -> bool:
-	if x < 0 or x >= SX or y < 0 or y >= SY or z < 0 or z >= SZ:
-		return true
+	if y < 0: return false   # nothing renders under the world (REPLACE WITH CUBIC CHUNKS IMPL!!!!!)
+	if y >= SY: return true  # open sky
+	if x < 0 or x >= SX or z < 0 or z >= SZ:
+		var global_pos := chunk_position * Vector2(SX, SZ) + Vector2(x, z)
+		var height := int((noise.get_noise_2dv(global_pos) + 1) / 2 * SY)
+		return y > height    # above the ground = transparent
 	return solid_table[b[x][y][z]] == 0
 
 func create_block(b: Array, x, y, z):
