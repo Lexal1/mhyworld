@@ -33,6 +33,7 @@ var st = SurfaceTool.new()
 var mesh : Mesh = null
 var mesh_instance : MeshInstance3D = null
 var block_tags: Dictionary[Vector3, Variant] = {}
+var air_idx: int
 
 var material = preload("res://assets/resources/new_standard_material_3d.tres")
 
@@ -46,6 +47,7 @@ var chunk_position = Vector2.ZERO:
 		self.visible = false
 
 func _ready():
+	air_idx = BlockRegistry.get_idx_of(&"air")
 	if Engine.is_editor_hint():
 		noise.seed = 128
 	else:
@@ -75,31 +77,41 @@ func _generate():
 	if Global.gameIsQuitting:
 		blocksMutex.unlock()
 		return
-	blocks.resize(Global.CHUNK_SIZE.x)
-	for i in range(0, Global.CHUNK_SIZE.x):
+
+	var size := Vector3i(Global.CHUNK_SIZE)
+	var air := BlockRegistry.get_idx_of(&"air")
+	var stone := BlockRegistry.get_idx_of(&"stone")
+	var dirt := BlockRegistry.get_idx_of(&"dirt")
+	var grass := BlockRegistry.get_idx_of(&"grass")
+
+	blocks.resize(size.x)
+	for i in size.x:
+		# height only depends on x and z, so compute it once per column
+		var heights := PackedInt32Array()
+		heights.resize(size.z)
+		for k in size.z:
+			var global_pos = chunk_position * Vector2(size.x, size.z) + Vector2(i, k)
+			heights[k] = int((noise.get_noise_2dv(global_pos) + 1) / 2 * size.y)
+
 		blocks[i] = []
-		blocks[i].resize(Global.CHUNK_SIZE.y)
-		for j in range(0, Global.CHUNK_SIZE.y):
+		blocks[i].resize(size.y)
+		for j in size.y:
 			blocks[i][j] = []
-			blocks[i][j].resize(Global.CHUNK_SIZE.z)
-			for k in range(0, Global.CHUNK_SIZE.z):
+			blocks[i][j].resize(size.z)
+			for k in size.z:
 				if Global.gameIsQuitting:
 					blocksMutex.unlock()
 					return
-				var global_pos = chunk_position * Vector2(Global.CHUNK_SIZE.x,Global.CHUNK_SIZE.z) + Vector2(i,k)
-				var height = int((noise.get_noise_2dv(global_pos) + 1)/ 2 * Global.CHUNK_SIZE.y)
-				
-				var block = BlockRegistry.get_idx_of(&"air")
-				
+				var height := heights[k]
+				var block := air
 				if j < height / 2:
-					block = BlockRegistry.get_idx_of(&"stone")
+					block = stone
 				elif j < height:
-					block = BlockRegistry.get_idx_of(&"dirt")
+					block = dirt
 				elif j == height:
-					block = BlockRegistry.get_idx_of(&"grass")
-				if typeof(block) != TYPE_INT:
-					print("unint block: ", block)
+					block = grass
 				blocks[i][j][k] = block
+
 	blocksMutex.unlock()
 	hasChunkGenerated = true
 
@@ -150,7 +162,7 @@ func check_transparency(x,y,z):
 func create_block(x,y,z):
 	#print("creating block %s %s %s" % [x,y,z])
 	var block = blocks[x][y][z]
-	if block == BlockRegistry.get_idx_of(&"air"): return
+	if block == air_idx: return
 	
 	var block_data: Block = BlockRegistry.get_by_idx(block)
 	var atlas_data = block_data.atlas_position

@@ -27,7 +27,7 @@ func update_environment() -> void:
 	if is_night(deg_x):
 		sun.light_energy = 0 #HACK FIX! PLEASE FIX LATER
 
-func is_day(degree : float) -> bool: return degree > 90 and degree < 270
+func is_day(degree : float) -> bool: return degree > 90 and degree < 275
 
 func is_night(degree : float) -> bool: return not is_day(degree)
 
