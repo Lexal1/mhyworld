@@ -1,24 +1,6 @@
 @tool
 extends StaticBody3D
 
-const vertices = [
-	Vector3(0,0,0),
-	Vector3(1,0,0),
-	Vector3(0,1,0),
-	Vector3(1,1,0),
-	Vector3(0,0,1),
-	Vector3(1,0,1),
-	Vector3(0,1,1),
-	Vector3(1,1,1)
-]
-
-const TOP =    [2,3,7,6]
-const BOTTOM = [0,4,5,1]
-const NORTH =  [7,5,4,6]
-const SOUTH =  [2,0,1,3]
-const EAST =   [3,1,5,7]
-const WEST =   [6,4,0,2]
-
 @export var shaderMaterial: ShaderMaterial:
 	set(value):
 		shaderMaterial = value
@@ -36,18 +18,13 @@ const WEST =   [6,4,0,2]
 var block_tags: Dictionary[Vector3, Variant] = {} # LightBlock stores its light here
 var mesh_instance: MeshInstance3D = null
 
+
 func _ready() -> void:
 	update()
 
-func update() -> void:
-	if mesh_instance != null:
-		mesh_instance.queue_free()
-		mesh_instance = null
-	for obj in block_tags.values():
-		if obj.has_method("queue_free"):
-			obj.queue_free()
-	block_tags = {}
 
+func update() -> void:
+	_clear()
 	if previewBlock == null or previewBlock.id == &"air":
 		return
 
@@ -55,14 +32,14 @@ func update() -> void:
 	st.begin(Mesh.PRIMITIVE_TRIANGLES)
 	st.set_smooth_group(-1)
 
-	# a lone block has no neighbours, so all 6 faces are always visible
+	# A lone block has no neighbours, so all 6 faces are visible.
 	var atlas := previewBlock.atlas_position
-	create_face(st, TOP, atlas.TOP)
-	create_face(st, BOTTOM, atlas.BOTTOM)
-	create_face(st, NORTH, atlas.NORTH)
-	create_face(st, SOUTH, atlas.SOUTH)
-	create_face(st, EAST, atlas.EAST)
-	create_face(st, WEST, atlas.WEST)
+	BlockMesh.add_face(st, BlockMesh.TOP,    Vector3.ZERO, atlas.TOP)
+	BlockMesh.add_face(st, BlockMesh.BOTTOM, Vector3.ZERO, atlas.BOTTOM)
+	BlockMesh.add_face(st, BlockMesh.NORTH,  Vector3.ZERO, atlas.NORTH)
+	BlockMesh.add_face(st, BlockMesh.SOUTH,  Vector3.ZERO, atlas.SOUTH)
+	BlockMesh.add_face(st, BlockMesh.EAST,   Vector3.ZERO, atlas.EAST)
+	BlockMesh.add_face(st, BlockMesh.WEST,   Vector3.ZERO, atlas.WEST)
 
 	st.generate_normals(false)
 	st.set_material(shaderMaterial)
@@ -75,20 +52,12 @@ func update() -> void:
 	if previewBlock.has_method("on_block_created"):
 		previewBlock.on_block_created(Vector3.ZERO, Vector2.ZERO, self)
 
-func create_face(st: SurfaceTool, i: Array, atlas_offset: Vector2) -> void:
-	var a = vertices[i[0]]
-	var b = vertices[i[1]]
-	var c = vertices[i[2]]
-	var d = vertices[i[3]]
 
-	var uv_offset = atlas_offset / Global.TEXTURE_ATLAS_SIZE
-	var height = 1.0 / Global.TEXTURE_ATLAS_SIZE.y
-	var width = 1.0 / Global.TEXTURE_ATLAS_SIZE.x
-
-	var uv_a = uv_offset
-	var uv_b = uv_offset + Vector2(0, height)
-	var uv_c = uv_offset + Vector2(width, height)
-	var uv_d = uv_offset + Vector2(width, 0)
-
-	st.add_triangle_fan([a, b, c], [uv_a, uv_b, uv_c])
-	st.add_triangle_fan([a, c, d], [uv_a, uv_c, uv_d])
+func _clear() -> void:
+	if mesh_instance != null:
+		mesh_instance.queue_free()
+		mesh_instance = null
+	for obj in block_tags.values():
+		if obj.has_method("queue_free"):
+			obj.queue_free()
+	block_tags = {}

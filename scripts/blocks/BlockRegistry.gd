@@ -1,62 +1,62 @@
 @tool
 extends Node
 
-var _blocks: Array[Block] = []
-var solid_table := PackedByteArray()
+const BLOCK_DIR := "res://assets/resources/blocks/"
 
-func register(block: Block, fname: String = ""):
+var _blocks: Array[Block] = []
+var _idx_by_id: Dictionary = {} # StringName -> int
+var solid_table := PackedByteArray() # solid_table[idx] = 1 if solid
+
+
+func _ready() -> void:
+	for filename in DirAccess.get_files_at(BLOCK_DIR):
+		var block_file := filename.replace(".remap", "") # exported builds rename resources
+		var block := load(BLOCK_DIR + block_file) as Block
+		if block == null:
+			printerr("Failed to load block %s" % block_file)
+			continue
+		register(block, block_file)
+		print("loaded block %s (%s)" % [block.id, block_file])
+	_build_solid_table()
+
+
+func register(block: Block, fname: String = "") -> void:
 	if _blocks.has(block):
-		printerr("Attempt to register a block (%s) twice!" % [fname, block.id])
+		printerr("Attempt to register a block (%s) twice!" % fname)
 		return
 	if id_exists(block.id):
 		printerr("Duplicate ID '%s' while loading '%s'!" % [block.id, fname])
 		return
+	_idx_by_id[block.id] = _blocks.size()
 	_blocks.push_back(block)
 
-func get_by_id(id: StringName):
-	for block in _blocks:
-		if block.id == id:
-			return block
 
-func get_by_idx(idx: int):
-	return _blocks[idx]
-
-func id_exists(id: StringName):
-	for block in _blocks:
-		if block.id == id:
-			return true
-	return false
-
-func block_exists(block: Block):
-	return _blocks.has(block)
-
-func get_idx_of_block(block: Block):
-	var index = 0
-	for item in _blocks:
-		if item == block:
-			return index
-		index += 1
-	return -1
-
-func get_idx_of(id: StringName) -> int:
-	var index = 0
-	for item in _blocks:
-		if item.id == id:
-			return index
-		index += 1
-	return -1
-
-
-func _ready():
-	for filename in DirAccess.get_files_at("res://assets/resources/blocks/"):
-		var block = filename.replace(".remap", "")
-		var evilBlock = load("res://assets/resources/blocks/" + block) as Block
-		if evilBlock == null:
-			printerr("Failed to load block %s" % block)
-			continue
-		#print(evilBlock)
-		register(evilBlock, block)
-		print("loaded block %s (%s)" % [evilBlock.id, block])
+func _build_solid_table() -> void:
 	solid_table.resize(_blocks.size())
 	for i in _blocks.size():
 		solid_table[i] = 1 if _blocks[i].solid else 0
+
+
+func get_by_id(id: StringName) -> Block:
+	var idx: int = _idx_by_id.get(id, -1)
+	return _blocks[idx] if idx >= 0 else null
+
+
+func get_by_idx(idx: int) -> Block:
+	return _blocks[idx]
+
+
+func get_idx_of(id: StringName) -> int:
+	return _idx_by_id.get(id, -1)
+
+
+func get_idx_of_block(block: Block) -> int:
+	return _blocks.find(block)
+
+
+func id_exists(id: StringName) -> bool:
+	return _idx_by_id.has(id)
+
+
+func block_exists(block: Block) -> bool:
+	return _blocks.has(block)
