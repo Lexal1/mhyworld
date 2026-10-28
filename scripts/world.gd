@@ -54,8 +54,9 @@ func _wrap_axis(chunk_coord: int, player_coord: int, count: int) -> int:
 
 
 func get_chunk(pos: Vector3i) -> Chunk:
+	var wrapped := Global.wrap_chunk(pos)
 	for c in get_children():
-		if c is Chunk and c.chunk_position == pos:
+		if c is Chunk and Global.wrap_chunk(c.chunk_position) == wrapped:
 			return c
 	return null
 
@@ -136,7 +137,7 @@ func _print_chunk_sizes() -> void:
 
 func save_chunk_to_file(chunk: Chunk) -> void:
 	DirAccess.make_dir_recursive_absolute(SAVE_DIR)
-	var cp := chunk.chunk_position
+	var cp := Global.wrap_chunk(chunk.chunk_position)
 	var path := "%s/c.%d.%d.%d.chunk" % [SAVE_DIR, cp.x, cp.y, cp.z]
 	var file := FileAccess.open(path, FileAccess.WRITE)
 	WorldFile.new().write_chunk(chunk, file)

@@ -6,6 +6,7 @@ mie_eccentricity = 0.99
 mie_color = Color(0.70756227, 0.65185845, 0.5522314, 1)
 turbidity = 1.0
 ground_color = Color(0.078732096, 0.124224104, 0.44083405, 1)
+energy_multiplier = 2.0
 
 [sub_resource type="Sky" id="Sky_g4v7s"]
 sky_material = SubResource("PhysicalSkyMaterial_lik7e")

@@ -6,6 +6,7 @@ signal on_chunk_ready
 const SX := Global.CHUNK_SIZE.x
 const SY := Global.CHUNK_SIZE.y
 const SZ := Global.CHUNK_SIZE.z
+const SEAM := 128 ## Blocks before the world edge over which the wrap is blended.
 
 @export var shaderMaterial: ShaderMaterial
 
@@ -83,8 +84,23 @@ func _generate_and_update() -> void:
 
 ## Terrain height in world blocks. Only depends on world x and z.
 func _height_at(gx: int, gz: int) -> int:
-	return int((noise.get_noise_2d(gx, gz) + 1) / 2 * Global.TERRAIN_HEIGHT)
+	return int((_periodic_noise(gx, gz) + 1) / 2 * Global.TERRAIN_HEIGHT)
 
+func _periodic_noise(gx: int, gz: int) -> float:
+	var n := Global.world_size
+	var x := posmod(gx, n)
+	var z := posmod(gz, n)
+	var tx := smoothstep(n - SEAM, n, x) # 0 away from the edge, 1 right at it
+	var a := _blend_z(x, z)
+	if tx == 0.0: return a
+	return lerpf(a, _blend_z(x - n, z), tx)
+
+func _blend_z(x: int, z: int) -> float:
+	var n := Global.world_size
+	var a := noise.get_noise_2d(x, z)
+	var tz := smoothstep(n - SEAM, n, z)
+	if tz == 0.0: return a
+	return lerpf(a, noise.get_noise_2d(x, z - n), tz)
 
 ## gy is the block's WORLD y, not its y inside the chunk.
 @warning_ignore("integer_division")

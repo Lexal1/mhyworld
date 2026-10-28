@@ -5,6 +5,7 @@ signal on_pause
 signal on_resume
 
 enum GameState { TITLE, GAMEPLAY, UI, DIALOG, CUTSCENE }
+enum WorldSize { SMALL = 2048, MEDIUM = 4096, LARGE = 8192 }
 
 const CHUNK_SIZE := Vector3i(16, 16, 16)
 const TERRAIN_HEIGHT := 48 # max terrain height in blocks (was CHUNK_SIZE.y)
@@ -16,6 +17,7 @@ var state := GameState.GAMEPLAY
 var paused := false
 var gameIsQuitting := false
 var world_seed := int(Time.get_unix_time_from_system())
+var world_size: int = WorldSize.SMALL ## Blocks across on each axis. Set before the world loads.
 
 var Tasks := TaskManager.new()
 
@@ -37,6 +39,10 @@ func _input(event: InputEvent) -> void:
 		DisplayServer.window_set_mode(
 			DisplayServer.WINDOW_MODE_WINDOWED if is_fullscreen else DisplayServer.WINDOW_MODE_FULLSCREEN)
 
+## Maps any chunk coordinate into 0..(world_size / CHUNK_SIZE) on each axis.
+func wrap_chunk(c: Vector3i) -> Vector3i:
+	var n := world_size / CHUNK_SIZE.x # chunks across (same on X and Z)
+	return Vector3i(posmod(c.x, n), c.y, posmod(c.z, n))
 
 #region Music
 
