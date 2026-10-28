@@ -21,3 +21,5 @@ atlas_position = SubResource("Resource_rkvui")
 
 [node name="LightComponent" type="Node" parent="." unique_id=1187142909]
 script = ExtResource("2_uj6im")
+energy = 2.0
+light_range = 16.0

@@ -25,6 +25,7 @@ func _process(delta: float) -> void:
 func update_environment() -> void:
 	var deg := sun.rotation_degrees.x
 	sun.light_energy = sun_intensity(deg) if is_day(deg) else 0.0 # HACK FIX! PLEASE FIX LATER
+	sky.environment.fog_light_energy = lerp(0.0,1.0,sun_intensity(deg))
 
 
 func is_day(degree: float) -> bool:
