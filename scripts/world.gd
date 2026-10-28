@@ -64,6 +64,7 @@ func _check_player_chunk(chunk: Chunk) -> void:
 	if player_released: return
 	var player_chunk := Vector3i((player.position / Vector3(Global.CHUNK_SIZE)).floor())
 	if chunk.chunk_position == player_chunk:
+		player.position.y = chunk._height_at(0, 0) + 2
 		player_released = true
 		player.frozen = false
 
