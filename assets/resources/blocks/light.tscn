@@ -18,6 +18,7 @@ metadata/_custom_type_script = "uid://c2j5n5wf30urt"
 script = ExtResource("1_qwiw2")
 id = &"light"
 atlas_position = SubResource("Resource_rkvui")
+emission = 1.0
 
 [node name="LightComponent" type="Node" parent="." unique_id=1187142909]
 script = ExtResource("2_uj6im")

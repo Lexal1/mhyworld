@@ -10,9 +10,13 @@ uniform float snap_resolution : hint_range(60.0, 480.0, 1.0) = 148.0;
 
 uniform float affine_weight : hint_range(0.0, 1.0) = 0.1; //0 = no affine, 1 = full affine
 
+uniform float emission_energy : hint_range(0.0, 8.0) = 1.0;
+
 varying vec2 uv_affine;
 varying vec2 uv_persp;
 varying float clip_w;
+
+varying float emit;
 
 void vertex() {
 	vec4 view_space_pos = MODELVIEW_MATRIX * vec4(VERTEX, 1.0);
@@ -26,6 +30,7 @@ void vertex() {
 	clip_w    = clip_space_pos.w;
 	uv_affine = UV * clip_w;
 	uv_persp  = UV;
+	emit = 1.0 - COLOR.r; // no vertex color = white = no emission
 	
 	POSITION = clip_space_pos;
 }
@@ -37,4 +42,6 @@ void fragment() {
 	vec4 albedo = texture(albedo_texture, uv_final * texture_tile);
 	ALBEDO = albedo.rgb;
 	ALPHA = albedo.a;
+	
+	EMISSION = albedo.rgb * emit * emission_energy;
 }

@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="Block" format=3 uid="uid://djp6c8ftkp78s"]
+
+[ext_resource type="Script" uid="uid://c2j5n5wf30urt" path="res://scripts/blocks/BlockAtlasPosition.gd" id="1_mc638"]
+[ext_resource type="Script" uid="uid://bvocj4r036lxu" path="res://scripts/blocks/Block.gd" id="2_1ltw6"]
+
+[sub_resource type="Resource" id="Resource_mje64"]
+script = ExtResource("1_mc638")
+TOP = Vector2(1, 3)
+BOTTOM = Vector2(1, 3)
+NORTH = Vector2(1, 3)
+SOUTH = Vector2(1, 3)
+WEST = Vector2(1, 3)
+EAST = Vector2(1, 3)
+metadata/_custom_type_script = "uid://c2j5n5wf30urt"
+
+[resource]
+script = ExtResource("2_1ltw6")
+id = &"leaf_soft"
+atlas_position = SubResource("Resource_mje64")
+metadata/_custom_type_script = "uid://bvocj4r036lxu"

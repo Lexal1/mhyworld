@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="Block" format=3 uid="uid://br03af5utls35"]
+
+[ext_resource type="Script" uid="uid://c2j5n5wf30urt" path="res://scripts/blocks/BlockAtlasPosition.gd" id="1_pr07f"]
+[ext_resource type="Script" uid="uid://bvocj4r036lxu" path="res://scripts/blocks/Block.gd" id="1_qjg3u"]
+
+[sub_resource type="Resource" id="Resource_pr07f"]
+script = ExtResource("1_pr07f")
+TOP = Vector2(1, 4)
+BOTTOM = Vector2(1, 4)
+NORTH = Vector2(2, 4)
+SOUTH = Vector2(2, 4)
+WEST = Vector2(2, 4)
+EAST = Vector2(2, 4)
+metadata/_custom_type_script = "uid://c2j5n5wf30urt"
+
+[resource]
+script = ExtResource("1_qjg3u")
+id = &"log_hardwood"
+atlas_position = SubResource("Resource_pr07f")
+metadata/_custom_type_script = "uid://bvocj4r036lxu"

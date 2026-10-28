@@ -34,12 +34,12 @@ func update() -> void:
 
 	# A lone block has no neighbours, so all 6 faces are visible.
 	var atlas := previewBlock.atlas_position
-	BlockMesh.add_face(st, BlockMesh.TOP,    Vector3.ZERO, atlas.TOP)
-	BlockMesh.add_face(st, BlockMesh.BOTTOM, Vector3.ZERO, atlas.BOTTOM)
-	BlockMesh.add_face(st, BlockMesh.NORTH,  Vector3.ZERO, atlas.NORTH)
-	BlockMesh.add_face(st, BlockMesh.SOUTH,  Vector3.ZERO, atlas.SOUTH)
-	BlockMesh.add_face(st, BlockMesh.EAST,   Vector3.ZERO, atlas.EAST)
-	BlockMesh.add_face(st, BlockMesh.WEST,   Vector3.ZERO, atlas.WEST)
+	BlockMesh.add_face(st, BlockMesh.TOP,    Vector3.ZERO, atlas.TOP, previewBlock.emission)
+	BlockMesh.add_face(st, BlockMesh.BOTTOM, Vector3.ZERO, atlas.BOTTOM, previewBlock.emission)
+	BlockMesh.add_face(st, BlockMesh.NORTH,  Vector3.ZERO, atlas.NORTH, previewBlock.emission)
+	BlockMesh.add_face(st, BlockMesh.SOUTH,  Vector3.ZERO, atlas.SOUTH, previewBlock.emission)
+	BlockMesh.add_face(st, BlockMesh.EAST,   Vector3.ZERO, atlas.EAST, previewBlock.emission)
+	BlockMesh.add_face(st, BlockMesh.WEST,   Vector3.ZERO, atlas.WEST, previewBlock.emission)
 
 	st.generate_normals(false)
 	st.set_material(shaderMaterial)

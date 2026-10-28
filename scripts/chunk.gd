@@ -204,22 +204,23 @@ func _create_block(snap: PackedInt32Array, pos: Vector3i) -> void:
 
 	var block_data: Block = BlockRegistry.get_by_idx(block)
 	var atlas := block_data.atlas_position
+	var e := block_data.emission
 
-	_add_face_if_exposed(snap, BlockMesh.TOP,    pos, Vector3i(0, 1, 0),  atlas.TOP)
-	_add_face_if_exposed(snap, BlockMesh.BOTTOM, pos, Vector3i(0, -1, 0), atlas.BOTTOM)
-	_add_face_if_exposed(snap, BlockMesh.NORTH,  pos, Vector3i(0, 0, 1),  atlas.NORTH)
-	_add_face_if_exposed(snap, BlockMesh.SOUTH,  pos, Vector3i(0, 0, -1), atlas.SOUTH)
-	_add_face_if_exposed(snap, BlockMesh.EAST,   pos, Vector3i(1, 0, 0),  atlas.EAST)
-	_add_face_if_exposed(snap, BlockMesh.WEST,   pos, Vector3i(-1, 0, 0), atlas.WEST)
+	_add_face_if_exposed(snap, BlockMesh.TOP,    pos, Vector3i(0, 1, 0),  atlas.TOP, e)
+	_add_face_if_exposed(snap, BlockMesh.BOTTOM, pos, Vector3i(0, -1, 0), atlas.BOTTOM, e)
+	_add_face_if_exposed(snap, BlockMesh.NORTH,  pos, Vector3i(0, 0, 1),  atlas.NORTH, e)
+	_add_face_if_exposed(snap, BlockMesh.SOUTH,  pos, Vector3i(0, 0, -1), atlas.SOUTH, e)
+	_add_face_if_exposed(snap, BlockMesh.EAST,   pos, Vector3i(1, 0, 0),  atlas.EAST, e)
+	_add_face_if_exposed(snap, BlockMesh.WEST,   pos, Vector3i(-1, 0, 0), atlas.WEST, e)
 
 	if block_data.has_method("on_block_created"):
 		block_data.on_block_created(pos, chunk_position, self)
 
 
-func _add_face_if_exposed(snap: PackedInt32Array, face: Array, pos: Vector3i, dir: Vector3i, atlas_offset: Vector2) -> void:
+func _add_face_if_exposed(snap: PackedInt32Array, face: Array, pos: Vector3i, dir: Vector3i, atlas_offset: Vector2, emission: float) -> void:
 	var n := pos + dir
 	if _is_transparent(snap, n.x, n.y, n.z):
 		_face_count += 1
-		BlockMesh.add_face(st, face, Vector3(pos), atlas_offset)
+		BlockMesh.add_face(st, face, Vector3(pos), atlas_offset, emission)
 
 #endregion

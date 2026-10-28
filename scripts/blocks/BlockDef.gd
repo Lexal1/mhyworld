@@ -5,10 +5,12 @@ class_name BlockDef extends Node
 @export var solid := true
 @export var atlas_position: BlockAtlasPosition
 @export var hardness := 1.0
+@export_range(0.0, 1.0) var emission := 0.0
 
 func build() -> SceneBlock:
 	var block := SceneBlock.new(id, solid)
 	block.hardness = hardness
+	block.emission = emission
 	if atlas_position != null:
 		block.atlas_position = atlas_position
 	for child in get_children():

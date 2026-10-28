@@ -16,7 +16,7 @@ const WEST   := [6, 4, 0, 2] # -X
 
 
 ## Adds one textured quad (two triangles) to `st`.
-static func add_face(st: SurfaceTool, face: Array, offset: Vector3, atlas_offset: Vector2) -> void:
+static func add_face(st: SurfaceTool, face: Array, offset: Vector3, atlas_offset: Vector2, emission := 0.0) -> void:
 	var a: Vector3 = VERTICES[face[0]] + offset
 	var b: Vector3 = VERTICES[face[1]] + offset
 	var c: Vector3 = VERTICES[face[2]] + offset
@@ -29,5 +29,6 @@ static func add_face(st: SurfaceTool, face: Array, offset: Vector3, atlas_offset
 	var uv_c := uv + tile
 	var uv_d := uv + Vector2(tile.x, 0)
 
-	st.add_triangle_fan([a, b, c], [uv_a, uv_b, uv_c])
-	st.add_triangle_fan([a, c, d], [uv_a, uv_c, uv_d])
+	var col := Color(1.0 - emission, 1.0, 1.0, 1.0)
+	st.add_triangle_fan([a, b, c], [uv_a, uv_b, uv_c], [col, col, col])
+	st.add_triangle_fan([a, c, d], [uv_a, uv_c, uv_d], [col, col, col])
