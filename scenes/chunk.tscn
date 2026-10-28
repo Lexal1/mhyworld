@@ -12,7 +12,9 @@ shader_parameter/texture_tile = Vector2(1, 1)
 shader_parameter/snap_enabled = true
 shader_parameter/snap_resolution = 100.0
 shader_parameter/affine_weight = 0.750000035625
+shader_parameter/emission_energy = 1.0
 
 [node name="Chunk" type="StaticBody3D" unique_id=939724336]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 16, 0)
 script = ExtResource("1_16sgi")
 shaderMaterial = SubResource("ShaderMaterial_c3gog")

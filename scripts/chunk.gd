@@ -194,6 +194,7 @@ func _is_transparent(snap: PackedInt32Array, x: int, y: int, z: int) -> bool:
 	if x < 0 or x >= SX or y < 0 or y >= SY or z < 0 or z >= SZ:
 		# Outside this chunk (any of the 6 sides): ask the terrain instead of loading the neighbour.
 		var origin := _chunk_position * Global.CHUNK_SIZE
+		if Engine.is_editor_hint(): return true
 		return not terrain.is_solid(origin.x + x, origin.y + y, origin.z + z)
 	return solid_table[snap[block_index(x, y, z)]] == 0
 
@@ -213,7 +214,7 @@ func _create_block(snap: PackedInt32Array, pos: Vector3i) -> void:
 	_add_face_if_exposed(snap, BlockMesh.EAST,   pos, Vector3i(1, 0, 0),  atlas.EAST, e)
 	_add_face_if_exposed(snap, BlockMesh.WEST,   pos, Vector3i(-1, 0, 0), atlas.WEST, e)
 
-	if block_data.has_method("on_block_created"):
+	if block_data.has_method("on_block_created") and not Engine.is_editor_hint():
 		block_data.on_block_created(pos, chunk_position, self)
 
 
