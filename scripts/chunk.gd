@@ -6,6 +6,10 @@ signal on_chunk_ready
 const SX := Global.CHUNK_SIZE.x
 const SY := Global.CHUNK_SIZE.y
 const SZ := Global.CHUNK_SIZE.z
+const NEIGHBOR_DIRS: Array[Vector3i] = [
+	Vector3i(1, 0, 0), Vector3i(-1, 0, 0),
+	Vector3i(0, 1, 0), Vector3i(0, -1, 0),
+	Vector3i(0, 0, 1), Vector3i(0, 0, -1)]
 
 @export var shaderMaterial: ShaderMaterial
 @export var auto_generate := true ## World turns this off and schedules generation itself.
@@ -20,6 +24,9 @@ var _mesh_lock := Mutex.new()   # one meshing at a time (st is shared)
 var _state_mutex := Mutex.new() # guards _meshing and _dirty
 var _meshing := false
 var _dirty := false
+var generated_at := Vector3i.ZERO # chunk position the current `blocks` were generated for
+var _world: Node
+var _neighbor_snaps: Array[PackedInt32Array] = [] # parallel to NEIGHBOR_DIRS, empty = not available
 
 var solid_table: PackedByteArray
 var air_idx: int
@@ -45,6 +52,7 @@ static func block_index(x: int, y: int, z: int) -> int:
 
 
 func _ready() -> void:
+	_world = get_parent()
 	solid_table = BlockRegistry.solid_table
 	air_idx = BlockRegistry.get_idx_of(&"air")
 	terrain = TerrainGenerator.for_seed(128 if Engine.is_editor_hint() else Global.world_seed)
@@ -102,6 +110,7 @@ func _generate() -> void:
 				new_blocks[block_index(x, y, z)] = terrain.block_at(
 					origin.x + x, origin.y + y, origin.z + z, col)
 
+	generated_at = _chunk_position
 	blocks = new_blocks
 	blocksMutex.unlock()
 	hasChunkGenerated = true
@@ -120,6 +129,7 @@ func _update_mesh() -> void:
 	if Global.gameIsQuitting: return
 
 	blocksMutex.lock()
+	_snapshot_neighbors()
 	var snap := blocks.duplicate() # the only time the lock is held
 	blocksMutex.unlock()
 
@@ -188,9 +198,16 @@ func _remesh_loop() -> void:
 
 func _is_transparent(snap: PackedInt32Array, x: int, y: int, z: int) -> bool:
 	if x < 0 or x >= SX or y < 0 or y >= SY or z < 0 or z >= SZ:
-		# Outside this chunk (any of the 6 sides): ask the terrain instead of loading the neighbour.
-		var origin := _chunk_position * Global.CHUNK_SIZE
 		if Engine.is_editor_hint(): return true
+		var d := Vector3i(
+			-1 if x < 0 else (1 if x >= SX else 0),
+			-1 if y < 0 else (1 if y >= SY else 0),
+			-1 if z < 0 else (1 if z >= SZ else 0))
+		var ns := _neighbor_snaps[NEIGHBOR_DIRS.find(d)]
+		if not ns.is_empty():
+			return solid_table[ns[block_index(posmod(x, SX), posmod(y, SY), posmod(z, SZ))]] == 0
+		# Neighbour not loaded or busy: fall back to the noise like before.
+		var origin := _chunk_position * Global.CHUNK_SIZE
 		return not terrain.is_solid(origin.x + x, origin.y + y, origin.z + z)
 	return solid_table[snap[block_index(x, y, z)]] == 0
 
@@ -219,5 +236,22 @@ func _add_face_if_exposed(snap: PackedInt32Array, face: Array, pos: Vector3i, di
 	if _is_transparent(snap, n.x, n.y, n.z):
 		_face_count += 1
 		BlockMesh.add_face(st, face, Vector3(pos), atlas_offset, emission)
+
+
+## Copies each neighbour's blocks, or leaves an empty array if it can't be used right now.
+func _snapshot_neighbors() -> void:
+	_neighbor_snaps.clear()
+	var can_look := not Engine.is_editor_hint() and _world != null and _world.has_method("lookup_chunk")
+	for d in NEIGHBOR_DIRS:
+		var snap := PackedInt32Array()
+		if can_look:
+			var n: Chunk = _world.lookup_chunk(_chunk_position + d)
+			# try_lock never waits, so two chunks meshing each other can't deadlock.
+			if n != null and n != self and n.hasChunkGenerated and n.blocksMutex.try_lock():
+				if n.generated_at == n._chunk_position: # skip chunks that moved and have stale data
+					snap = n.blocks.duplicate()
+				n.blocksMutex.unlock()
+		_neighbor_snaps.push_back(snap)
+
 
 #endregion

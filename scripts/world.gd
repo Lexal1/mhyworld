@@ -12,17 +12,29 @@ const MAX_IN_FLIGHT := 4 ## Generation tasks running at once. Try around your CP
 
 var air_idx: int
 var player_released := false
+var _pending: Array[Chunk] = []    # chunks waiting to be generated
+var _generating: Array[Chunk] = [] # chunks currently on a worker thread
+var _chunk_map := {}  # wrapped chunk position -> Chunk
+var _map_mutex := Mutex.new()
 
 func _ready() -> void:
 	air_idx = BlockRegistry.get_idx_of(&"air")
+	var pc := _player_chunk()
 	for x in render_distance:
 		for y in vertical_render_distance:
 			for z in render_distance:
 				var chunk: Chunk = CHUNK_SCENE.instantiate()
-				chunk.chunk_position = Vector3i(x, y, z)
+				chunk.auto_generate = false # we schedule it ourselves
+				# Put it straight into its slot around the player, no wrap-around later.
+				chunk.chunk_position = Vector3i(
+					_wrap_axis(x, pc.x, render_distance),
+					_wrap_axis(y, pc.y, vertical_render_distance),
+					_wrap_axis(z, pc.z, render_distance))
+				_register_chunk(chunk, chunk.chunk_position, chunk.chunk_position)
 				chunk.on_chunk_ready.connect(save_chunk_to_file)
 				chunk.on_chunk_ready.connect(_check_player_chunk)
 				add_child(chunk)
+				_pending.push_back(chunk)
 
 
 func _process(_delta: float) -> void:
@@ -39,11 +51,25 @@ func _chunks() -> Array[Chunk]:
 
 
 func get_chunk(pos: Vector3i) -> Chunk:
-	var wrapped := Global.wrap_chunk(pos)
-	for c in _chunks():
-		if Global.wrap_chunk(c.chunk_position) == wrapped:
-			return c
-	return null
+	return lookup_chunk(pos)
+
+
+## Thread-safe. Chunks call this from worker threads while meshing.
+func lookup_chunk(pos: Vector3i) -> Chunk:
+	var key := Global.wrap_chunk(pos)
+	_map_mutex.lock()
+	var c: Chunk = _chunk_map.get(key)
+	_map_mutex.unlock()
+	return c
+
+
+func _register_chunk(c: Chunk, old_pos: Vector3i, new_pos: Vector3i) -> void:
+	_map_mutex.lock()
+	var old_key := Global.wrap_chunk(old_pos)
+	if _chunk_map.get(old_key) == c: # another chunk may already own this slot
+		_chunk_map.erase(old_key)
+	_chunk_map[Global.wrap_chunk(new_pos)] = c
+	_map_mutex.unlock()
 
 
 func _player_chunk() -> Vector3i:
@@ -77,9 +103,54 @@ func chunk_processing() -> void:
 			_wrap_axis(cp.y, player_chunk.y, vertical_render_distance),
 			_wrap_axis(cp.z, player_chunk.z, render_distance))
 		if new_pos != cp:
+			_register_chunk(c, cp, new_pos)
 			c.chunk_position = new_pos
-			Global.Tasks.add_task(c.generate_and_update())
+			if not _pending.has(c): _pending.push_back(c)
+	_dispatch_pending(player_chunk)
 	Global.Tasks.wait_for_tasks()
+
+
+## Lower = load sooner. Vertical distance counts extra so chunks directly
+## under the player don't beat the surface chunks beside them.
+func _priority(c: Chunk, pc: Vector3i) -> int:
+	var d := c.chunk_position - pc
+	return d.x * d.x + d.z * d.z + d.y * d.y * 4
+
+
+func _dispatch_pending(pc: Vector3i) -> void:
+	# Forget chunks whose terrain has finished generating.
+	var still: Array[Chunk] = []
+	for c in _generating:
+		if not c.hasChunkGenerated: still.append(c)
+	_generating = still
+
+	if _pending.is_empty(): return
+	_pending.sort_custom(func(a: Chunk, b: Chunk): return _priority(a, pc) < _priority(b, pc))
+
+	var i := 0
+	while i < _pending.size() and _generating.size() < MAX_IN_FLIGHT:
+		var c := _pending[i]
+		if _generating.has(c): # moved again mid-generation: wait for it to finish
+			i += 1
+			continue
+		_pending.remove_at(i)
+		c.hasChunkGenerated = false
+		_generating.push_back(c)
+		Global.Tasks.add_task(c.generate_and_update())
+
+
+## A block on a chunk's edge changes the faces of the chunk next to it.
+## Corner blocks touch up to 3 neighbours, so this checks each axis.
+func _remesh_border_neighbors(chunk: Chunk, local: Vector3i) -> void:
+	var cs := Global.CHUNK_SIZE
+	for axis in 3:
+		var dir := Vector3i.ZERO
+		if local[axis] == 0: dir[axis] = -1
+		elif local[axis] == cs[axis] - 1: dir[axis] = 1
+		else: continue
+		var n := get_chunk(chunk.chunk_position + dir)
+		if n != null and n.hasChunkGenerated:
+			n.request_remesh()
 
 
 ## Moves a chunk coordinate to its slot inside a grid of `count` chunks centred on the player.
@@ -130,6 +201,7 @@ func _on_player_place_block(pos: Vector3, block_idx: int) -> void:
 	chunk.blocksMutex.unlock()
 
 	chunk.request_remesh()
+	_remesh_border_neighbors(chunk, local)
 	if is_breaking:
 		player.play_break_sfx()
 	else:
