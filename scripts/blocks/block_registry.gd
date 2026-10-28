@@ -9,7 +9,9 @@ var solid_table := PackedByteArray() # solid_table[idx] = 1 if solid
 var _scene_roots: Array[Node] = [] # templates stay alive; components live in them
 
 func _ready() -> void:
-	for filename in DirAccess.get_files_at(BLOCK_DIR):
+	var files := DirAccess.get_files_at(BLOCK_DIR)
+	files.sort()
+	for filename in files:
 		var block_file := filename.replace(".remap", "")
 		var res := load(BLOCK_DIR + block_file)
 		var block: Block = null
