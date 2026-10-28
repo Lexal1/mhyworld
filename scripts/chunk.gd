@@ -56,6 +56,10 @@ func _ready() -> void:
 	grass_idx = BlockRegistry.get_idx_of(&"grass")
 	noise.seed = 128 if Engine.is_editor_hint() else int(Global.world_seed)
 
+	if Engine.is_editor_hint():
+		# Noise seed is fixed in the editor, so this lands on the surface.
+		chunk_position.y = _height_at(0, 0) / Global.CHUNK_SIZE.y
+
 	var task := generate_and_update()
 	if task >= 0:
 		Global.Tasks.add_task(task)
