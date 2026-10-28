@@ -3,7 +3,8 @@ extends Node3D
 const CHUNK_SCENE := preload("res://scenes/chunk.tscn")
 const SAVE_DIR := "user://world/test/chunk"
 
-@export var render_distance := 5 ## How many chunks to keep loaded along each axis.
+@export var render_distance := 5 ## How many chunks to keep loaded along X and Z.
+@export var vertical_render_distance := 4 ## How many chunks to keep loaded along Y.
 @export var blockShape: Shape3D
 @export var player: CharacterBody3D
 
@@ -13,11 +14,12 @@ var air_idx: int
 func _ready() -> void:
 	air_idx = BlockRegistry.get_idx_of(&"air")
 	for x in render_distance:
-		for z in render_distance:
-			var chunk: Chunk = CHUNK_SCENE.instantiate()
-			chunk.chunk_position = Vector2(x, z)
-			chunk.on_chunk_ready.connect(save_chunk_to_file)
-			add_child(chunk)
+		for y in vertical_render_distance:
+			for z in render_distance:
+				var chunk: Chunk = CHUNK_SCENE.instantiate()
+				chunk.chunk_position = Vector3i(x, y, z)
+				chunk.on_chunk_ready.connect(save_chunk_to_file)
+				add_child(chunk)
 
 
 func _process(_delta: float) -> void:
@@ -26,30 +28,31 @@ func _process(_delta: float) -> void:
 
 # ---------- Chunk streaming ----------
 
-## Chunks form a render_distance x render_distance grid that wraps around the player.
+## Chunks form a grid that wraps around the player on all 3 axes.
 func chunk_processing() -> void:
-	var player_cx := floori(player.position.x / Global.CHUNK_SIZE.x)
-	var player_cz := floori(player.position.z / Global.CHUNK_SIZE.z)
+	var player_chunk := Vector3i((player.position / Vector3(Global.CHUNK_SIZE)).floor())
 
 	for c in get_children():
 		if c is not Chunk: continue
-		var new_pos := Vector2(
-			_wrap_axis(c.chunk_position.x, player_cx),
-			_wrap_axis(c.chunk_position.y, player_cz))
-		if new_pos != c.chunk_position:
+		var cp: Vector3i = c.chunk_position
+		var new_pos := Vector3i(
+			_wrap_axis(cp.x, player_chunk.x, render_distance),
+			_wrap_axis(cp.y, player_chunk.y, vertical_render_distance),
+			_wrap_axis(cp.z, player_chunk.z, render_distance))
+		if new_pos != cp:
 			c.chunk_position = new_pos
 			Global.Tasks.add_task(c.generate_and_update())
 	Global.Tasks.wait_for_tasks()
 
 
-## Moves a chunk coordinate to its slot inside the grid centred on the player.
+## Moves a chunk coordinate to its slot inside a grid of `count` chunks centred on the player.
 @warning_ignore("integer_division")
-func _wrap_axis(chunk_coord: float, player_coord: int) -> int:
-	var half := render_distance / 2
-	return posmod(int(chunk_coord) - player_coord + half, render_distance) + player_coord - half
+func _wrap_axis(chunk_coord: int, player_coord: int, count: int) -> int:
+	var half := count / 2
+	return posmod(chunk_coord - player_coord + half, count) + player_coord - half
 
 
-func get_chunk(pos: Vector2) -> Chunk:
+func get_chunk(pos: Vector3i) -> Chunk:
 	for c in get_children():
 		if c is Chunk and c.chunk_position == pos:
 			return c
@@ -70,21 +73,25 @@ func will_collide_with_player(pos: Vector3) -> bool:
 
 func _on_player_place_block(pos: Vector3, block_idx: int) -> void:
 	var is_breaking := block_idx == air_idx
-	var chunk := get_chunk(Vector2(
-		floori(pos.x / Global.CHUNK_SIZE.x),
-		floori(pos.z / Global.CHUNK_SIZE.z)))
+	var cs := Global.CHUNK_SIZE
+	var b := Vector3i(pos.floor()) # global block coords
+	var chunk := get_chunk(Vector3i(
+		floori(float(b.x) / cs.x),
+		floori(float(b.y) / cs.y),
+		floori(float(b.z) / cs.z)))
 	if chunk == null or not chunk.hasChunkGenerated: return
 	if not is_breaking and will_collide_with_player(pos): return
 
-	var bx := posmod(floori(pos.x), int(Global.CHUNK_SIZE.x))
-	var by := posmod(floori(pos.y), int(Global.CHUNK_SIZE.y))
-	var bz := posmod(floori(pos.z), int(Global.CHUNK_SIZE.z))
+	var bx := posmod(b.x, cs.x)
+	var by := posmod(b.y, cs.y)
+	var bz := posmod(b.z, cs.z)
 
 	if not chunk.blocksMutex.try_lock(): return
-	var old_block := BlockRegistry.get_by_idx(chunk.blocks[bx][by][bz])
+	var i := Chunk.block_index(bx, by, bz)
+	var old_block := BlockRegistry.get_by_idx(chunk.blocks[i])
 	if old_block != null and old_block.has_method("on_block_destroyed"):
 		old_block.on_block_destroyed(Vector3i(bx, by, bz), chunk.chunk_position, chunk)
-	chunk.blocks[bx][by][bz] = block_idx
+	chunk.blocks[i] = block_idx
 	chunk.blocksMutex.unlock()
 
 	chunk.request_remesh()
@@ -117,6 +124,7 @@ func _print_chunk_sizes() -> void:
 
 func save_chunk_to_file(chunk: Chunk) -> void:
 	DirAccess.make_dir_recursive_absolute(SAVE_DIR)
-	var path := "%s/c.%d.%d.chunk" % [SAVE_DIR, chunk.chunk_position.x, chunk.chunk_position.y]
+	var cp := chunk.chunk_position
+	var path := "%s/c.%d.%d.%d.chunk" % [SAVE_DIR, cp.x, cp.y, cp.z]
 	var file := FileAccess.open(path, FileAccess.WRITE)
 	WorldFile.new().write_chunk(chunk, file)

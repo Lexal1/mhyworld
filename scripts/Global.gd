@@ -6,7 +6,8 @@ signal on_resume
 
 enum GameState { TITLE, GAMEPLAY, UI, DIALOG, CUTSCENE }
 
-const CHUNK_SIZE := Vector3(16, 32, 16)
+const CHUNK_SIZE := Vector3i(16, 16, 16)
+const TERRAIN_HEIGHT := 64 # max terrain height in blocks (was CHUNK_SIZE.y)
 const TEXTURE_ATLAS_SIZE := Vector2(16, 16)
 const NIGHT_START_HOUR := 21 # night music plays after this hour...
 const NIGHT_END_HOUR := 7    # ...and before this one

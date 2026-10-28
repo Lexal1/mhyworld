@@ -13,8 +13,8 @@ func write_chunk(chunk: Chunk, file: FileAccess) -> void:
 	file.store_var(chunk.blocks) # unsafe as FUCK
 	chunk.blocksMutex.unlock()
 
-func read_chunk(file: FileAccess, pos: Vector3) -> WFChunk:
-	var blocks: Array = file.get_var()
+func read_chunk(file, pos: Vector3i) -> WFChunk:
+	var blocks: PackedInt32Array = file.get_var()
 	var wfc = WFChunk.new()
 	wfc.position = pos
 	wfc.blocks = blocks
@@ -27,6 +27,6 @@ func read_chunk(file: FileAccess, pos: Vector3) -> WFChunk:
 # entityState is an index into a map of entity states inside the chunk
 # id is just the block id
 class WFChunk extends RefCounted:
-	var position: Vector2i
+	var position: Vector3i
 	var blocks: Array
 	

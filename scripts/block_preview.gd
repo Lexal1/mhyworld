@@ -50,7 +50,7 @@ func update() -> void:
 	mesh_instance.create_trimesh_collision()
 
 	if previewBlock.has_method("on_block_created"):
-		previewBlock.on_block_created(Vector3.ZERO, Vector2.ZERO, self)
+		previewBlock.on_block_created(Vector3.ZERO, Vector3i.ZERO, self)
 
 
 func _clear() -> void:

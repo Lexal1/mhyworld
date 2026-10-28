@@ -12,6 +12,9 @@ func _on_x_pos_input_value_changed(value: float) -> void:
 func _on_y_pos_input_value_changed(value: float) -> void:
 	chunk.chunk_position.y = int(value)
 
+func _on_z_pos_input_value_changed(value: float) -> void:
+	chunk.chunk_position.z = int(value)
+
 func _on_generate_button_pressed() -> void:
 	chunk._generate()
 

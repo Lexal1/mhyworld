@@ -1,6 +1,6 @@
 class_name LightBlock extends Block
 
-func on_block_created(block_pos: Vector3, _chunk_pos: Vector2, node: StaticBody3D) -> void:
+func on_block_created(block_pos: Vector3, _chunk_pos: Vector3i, node: StaticBody3D) -> void:
 	if has_tag(block_pos, node): return
 	var source = OmniLight3D.new()
 	source.position = block_pos+Vector3(0.5,0.5,0.5)
