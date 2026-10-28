@@ -79,7 +79,7 @@ func _generate_and_update() -> void:
 	update()
 
 
-# ---------- Terrain generation ----------
+#region TerrainGen
 
 ## Terrain height in world blocks. Only depends on world x and z.
 func _height_at(gx: int, gz: int) -> int:
@@ -117,8 +117,9 @@ func _generate() -> void:
 	blocksMutex.unlock()
 	hasChunkGenerated = true
 
+#endregion
 
-# ---------- Meshing ----------
+#region Meshing
 
 func update() -> void:
 	_mesh_lock.lock()
@@ -231,3 +232,5 @@ func _add_face_if_exposed(snap: PackedInt32Array, face: Array, pos: Vector3i, di
 	if _is_transparent(snap, n.x, n.y, n.z):
 		_face_count += 1
 		BlockMesh.add_face(st, face, Vector3(pos), atlas_offset)
+
+#endregion

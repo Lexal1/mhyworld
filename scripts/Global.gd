@@ -38,7 +38,7 @@ func _input(event: InputEvent) -> void:
 			DisplayServer.WINDOW_MODE_WINDOWED if is_fullscreen else DisplayServer.WINDOW_MODE_FULLSCREEN)
 
 
-# ---------- Music ----------
+#region Music
 
 func _is_night() -> bool:
 	var hour: int = Time.get_time_dict_from_system()["hour"]
@@ -55,8 +55,9 @@ func _on_timer_timeout() -> void:
 	music_timer.wait_time = randi_range(9, 99)
 	music_timer.start()
 
+#endregion
 
-# ---------- Game state ----------
+#region GameState
 
 func set_game_state(g_state: GameState) -> void:
 	if g_state == GameState.UI:
@@ -78,3 +79,5 @@ func is_paused() -> bool: return paused
 
 func toggle_pause_state() -> void:
 	set_game_state(GameState.GAMEPLAY if state == GameState.UI else GameState.UI)
+
+#endregion

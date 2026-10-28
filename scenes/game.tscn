@@ -40,7 +40,6 @@ transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0, 0
 shadow_enabled = true
 directional_shadow_mode = 0
 directional_shadow_blend_splits = true
-directional_shadow_max_distance = 10.0
 directional_shadow_pancake_size = 0.0
 
 [node name="Player" parent="." unique_id=825439093 instance=ExtResource("2_nni6g")]

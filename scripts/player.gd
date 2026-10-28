@@ -75,7 +75,7 @@ func _physics_process(delta: float) -> void:
 	_handle_hotbar_and_debug()
 
 
-# ---------- Looking ----------
+#region Camera
 
 func _look(amount: Vector2) -> void:
 	head.rotate_y(amount.x)
@@ -102,8 +102,9 @@ func _headbob(time: float) -> Vector3:
 		sin(time * BOB_FREQUENCY) * BOB_AMP,
 		0.0)
 
+#endregion
 
-# ---------- Movement ----------
+#region Movement
 
 func _check_death() -> void:
 	if position.y <= DEATH_Y and not dead:
@@ -145,8 +146,9 @@ func _handle_movement(delta: float) -> void:
 	velocity.x = lerp(velocity.x, target.x, delta * friction)
 	velocity.z = lerp(velocity.z, target.z, delta * friction)
 
+#endregion
 
-# ---------- Block interaction ----------
+#region BlockInteraction
 
 func _update_block_target() -> void:
 	if not raycast.is_colliding() or Global.is_paused():
@@ -176,8 +178,9 @@ func _handle_hotbar_and_debug() -> void:
 		var path := "user://screenshots/SCREENSHOT-%s.png" % Time.get_unix_time_from_system()
 		get_viewport().get_texture().get_image().save_png(path)
 
+#endregion
 
-# ---------- Audio ----------
+#region Audio
 
 func play_break_sfx() -> void: _play_sfx(BREAK_SFX)
 
@@ -186,3 +189,5 @@ func play_place_sfx() -> void: _play_sfx(PLACE_SFX)
 func _play_sfx(stream: AudioStream) -> void:
 	blok.stream = stream
 	blok.play()
+
+#endregion

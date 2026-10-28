@@ -27,7 +27,7 @@ func _process(_delta: float) -> void:
 	chunk_processing.call_deferred()
 
 
-# ---------- Chunk streaming ----------
+#region ChunkStreaming
 
 ## Chunks form a grid that wraps around the player on all 3 axes.
 func chunk_processing() -> void:
@@ -68,8 +68,9 @@ func _check_player_chunk(chunk: Chunk) -> void:
 		player_released = true
 		player.frozen = false
 
+#endregion
 
-# ---------- Block editing ----------
+#region BlockEditing
 
 func will_collide_with_player(pos: Vector3) -> bool:
 	var params := PhysicsShapeQueryParameters3D.new()
@@ -114,8 +115,9 @@ func _on_player_place_block(pos: Vector3, block_idx: int) -> void:
 func _on_player_break_block(pos: Vector3) -> void:
 	_on_player_place_block(pos, air_idx)
 
+#endregion
 
-# ---------- Debug / saving ----------
+#region SavingAndDebug
 
 func _unhandled_input(_event: InputEvent) -> void:
 	if Input.is_action_just_pressed("debug4"):
@@ -138,3 +140,5 @@ func save_chunk_to_file(chunk: Chunk) -> void:
 	var path := "%s/c.%d.%d.%d.chunk" % [SAVE_DIR, cp.x, cp.y, cp.z]
 	var file := FileAccess.open(path, FileAccess.WRITE)
 	WorldFile.new().write_chunk(chunk, file)
+
+#endregion
