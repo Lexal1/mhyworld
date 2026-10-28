@@ -2,7 +2,9 @@
 
 [ext_resource type="Script" uid="uid://bthusuo82nfye" path="res://scripts/debug_scenes/block_preview.gd" id="1_e5766"]
 [ext_resource type="Material" uid="uid://dq2bo6521l0vq" path="res://assets/resources/model_material.tres" id="2_vofoj"]
+[ext_resource type="Resource" uid="uid://is0puqwc3i3t" path="res://assets/resources/blocks/leaf_conifer.tres" id="3_nu4y5"]
 
 [node name="BlockPreview" type="StaticBody3D" unique_id=1270440796]
 script = ExtResource("1_e5766")
 shaderMaterial = ExtResource("2_vofoj")
+previewBlock = ExtResource("3_nu4y5")

@@ -18,6 +18,7 @@ sky = SubResource("Sky_g4v7s")
 ambient_light_source = 3
 reflected_light_source = 1
 glow_enabled = true
+glow_bloom = 0.35
 fog_enabled = true
 fog_mode = 1
 fog_light_color = Color(0.4129078, 0.55792093, 0.7919725, 1)

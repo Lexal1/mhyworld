@@ -4,9 +4,9 @@ class_name TerrainGenerator extends RefCounted
 const BIOME_DIR := "res://assets/resources/biomes/"
 const SEAM := 128
 const CLIMATE_GAIN := 1.6      ## Raw noise rarely nears +-1; this spreads biomes out.
-const BLEND_SHARPNESS := 6.0   ## Higher = sharper biome borders.
-const CAVE_THRESHOLD := 0.3    ## Lower = more caves.
-const CAVE_SURFACE_BONUS := 0.45  ## Extra threshold at the surface. Higher = fewer surface caves.
+const BLEND_SHARPNESS := 12.0   ## Higher = sharper biome borders.
+const CAVE_THRESHOLD := 0.4    ## Lower = more caves.
+const CAVE_SURFACE_BONUS := 0.35  ## Extra threshold at the surface. Higher = fewer surface caves.
 const CAVE_SURFACE_FADE := 12.0   ## Blocks of depth over which the bonus fades to 0.
 
 static var _cache := {} # seed -> TerrainGenerator
