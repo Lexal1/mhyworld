@@ -238,6 +238,7 @@ func play_place_sfx() -> void: _play_sfx(PLACE_SFX)
 
 func _play_sfx(stream: AudioStream) -> void:
 	blok.stream = stream
+	blok.pitch_scale = randf_range(0.95,1.05)
 	blok.play()
 
 #endregion

@@ -58,7 +58,7 @@ func _on_timer_timeout() -> void:
 	track.play()
 	await track.finished
 
-	music_timer.wait_time = randi_range(9, 99)
+	music_timer.wait_time = randi_range(256, 512)
 	music_timer.start()
 
 #endregion
