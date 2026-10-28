@@ -22,6 +22,7 @@ var humidity := FastNoiseLite.new()
 var caves := FastNoiseLite.new()
 
 var biomes: Array[Biome] = []
+var features: FeaturePlacer
 var air_idx := 0
 var stone_idx := 0
 var _surface_idx := PackedInt32Array()
@@ -43,6 +44,7 @@ func _init(world_seed: int) -> void:
 	air_idx = BlockRegistry.get_idx_of(&"air")
 	stone_idx = BlockRegistry.get_idx_of(&"stone")
 	_load_biomes()
+	features = FeaturePlacer.new(self, world_seed)
 
 
 func _load_biomes() -> void:

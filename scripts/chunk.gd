@@ -109,6 +109,7 @@ func _generate() -> void:
 			for y in SY:
 				new_blocks[block_index(x, y, z)] = terrain.block_at(
 					origin.x + x, origin.y + y, origin.z + z, col)
+	terrain.features.apply(new_blocks, origin)
 
 	generated_at = _chunk_position
 	blocks = new_blocks

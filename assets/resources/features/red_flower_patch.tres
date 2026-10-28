@@ -1,0 +1,8 @@
+[gd_resource type="Resource" script_class="PatchFeature" format=3 uid="uid://cgjh7damtmoli"]
+
+[ext_resource type="Script" uid="uid://bjod1rto1lcfe" path="res://scripts/terrain/features/patch_feature.gd" id="1_qwvue"]
+
+[resource]
+script = ExtResource("1_qwvue")
+id = &"red_flower_patch"
+metadata/_custom_type_script = "uid://bjod1rto1lcfe"
