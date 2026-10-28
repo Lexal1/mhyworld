@@ -2,6 +2,8 @@ extends Node3D
 
 const CHUNK_SCENE := preload("res://scenes/chunk.tscn")
 const SAVE_DIR := "user://world/test/chunk"
+const MAX_IN_FLIGHT := 4 ## Generation tasks running at once. Try around your CPU core count.
+
 
 @export var render_distance := 5 ## How many chunks to keep loaded along X and Z.
 @export var vertical_render_distance := 5 ## How many chunks to keep loaded along Y.
@@ -10,7 +12,6 @@ const SAVE_DIR := "user://world/test/chunk"
 
 var air_idx: int
 var player_released := false
-
 
 func _ready() -> void:
 	air_idx = BlockRegistry.get_idx_of(&"air")

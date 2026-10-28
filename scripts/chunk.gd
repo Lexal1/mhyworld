@@ -71,7 +71,7 @@ func _generate_and_update() -> void:
 	for key in block_tags:
 		var obj: Variant = block_tags[key]
 		if obj.has_method("queue_free"):
-			obj.queue_free()
+			obj.queue_free.call_deferred()
 	block_tags = {}
 	_generate()
 	update()

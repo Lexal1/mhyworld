@@ -5,6 +5,7 @@ signal break_block(pos)
 signal die()
 
 const SPEED := 6.0
+const NOCLIP_SPEED := 14.0 ## double jump velocity so it's consistent
 const JUMP_VELOCITY := 7.0
 const GROUND_FRICTION := 17.0
 const AIR_FRICTION := 5.0
@@ -41,6 +42,7 @@ var break_pos := Vector3i.ZERO
 var break_progress := 0.0
 var breaking := false
 var noclip := false
+var fast_break := false
 
 @onready var world: Node3D = %World
 @onready var head: Node3D = $Head
@@ -123,7 +125,7 @@ func _check_death() -> void:
 func _apply_gravity(delta: float) -> void:
 	if not is_on_floor():
 		velocity += get_gravity() * delta
-		if velocity.y < 0 and noclip: # TODO: make this thing approximate things to zero instead
+		if velocity.y < 0 and noclip or velocity.y > 0 and noclip: # TODO: make this thing approximate things to zero instead
 			velocity.y = 0
 			return
 
@@ -132,15 +134,15 @@ func _handle_jump() -> void:
 	# Input buffer: a press shortly before landing still counts.
 	# Coyote time: a jump shortly after leaving a ledge still counts.
 	if noclip and Input.is_action_pressed("jump"):
-		velocity.y = JUMP_VELOCITY
+		velocity.y += JUMP_VELOCITY * 2
 		return
 	if noclip and Input.is_action_pressed("crouch"):
-		velocity.y -= JUMP_VELOCITY
+		velocity.y -= JUMP_VELOCITY * 2
 		return
 	if Input.is_action_pressed("jump"): input_buffer.start()
 	elif Input.is_action_just_released("jump"): input_buffer.stop()
 
-	if not input_buffer.is_stopped() and not coyote_time.is_stopped():
+	if not input_buffer.is_stopped() and not coyote_time.is_stopped() and not noclip:
 		velocity.y = JUMP_VELOCITY
 		coyote_time.stop()
 		input_buffer.stop()
@@ -149,7 +151,7 @@ func _handle_jump() -> void:
 func _handle_movement(delta: float) -> void:
 	var input_dir := Input.get_vector("left", "right", "forward", "backward")
 	var direction := (head.transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
-	var target := direction * SPEED
+	var target := direction * SPEED if !noclip else direction * NOCLIP_SPEED
 	var on_floor := is_on_floor()
 
 	if on_floor:
@@ -160,16 +162,21 @@ func _handle_movement(delta: float) -> void:
 			return
 
 	var friction := GROUND_FRICTION if on_floor else AIR_FRICTION
-	velocity.x = lerp(velocity.x, target.x, delta * friction)
-	velocity.z = lerp(velocity.z, target.z, delta * friction)
+	if noclip:
+		velocity.x = target.x
+		velocity.z = target.z
+	else:
+		velocity.x = lerp(velocity.x, target.x, delta * friction)
+		velocity.z = lerp(velocity.z, target.z, delta * friction)
 
-func enable_noclip():
-	noclip = true
-	collision_mask = 0
 
-func disable_noclip():
-	noclip = false
-	collision_mask = 1
+func toggle_noclip():
+	noclip = !noclip
+	if noclip == true:
+		collision_mask = 0
+	else: collision_mask = 1
+
+
 #endregion
 
 #region BlockInteraction
@@ -190,26 +197,31 @@ func _update_block_target(delta: float) -> void:
 	_update_breaking(delta, hit_pos)
 	if Input.is_action_just_pressed("mouse2"):
 		place_block.emit(hit_pos + normal, BlockRegistry.get_idx_of(block_selected))
+	if Input.is_action_just_pressed("mouse3"):
+		block_selected = world.get_block_at(hit_pos).id
 
 
 func _update_breaking(delta: float, hit_pos: Vector3) -> void:
-	if not Input.is_action_pressed("mouse1"):
-		_reset_breaking()
-		return
-	var pos := Vector3i(hit_pos.floor())
-	if not breaking or pos != break_pos: # new target: start over
-		break_pos = pos
-		break_progress = 0.0
-		breaking = true
-	var block: Block = world.get_block_at(hit_pos)
-	if block == null: return
-	break_progress += delta * mine_speed
-	if break_progress >= block.hardness:
+	if Input.is_action_just_pressed("mouse1") and fast_break:
 		break_block.emit(hit_pos)
-		_reset_breaking()
-		return
-	var t := clampf(break_progress / block.hardness, 0.0, 1.0)
-	outline_material.albedo_color = Color.from_hsv(t * 0.8, 0.8, 0.8 - t * 0.8, 0.5)
+	if not fast_break:
+		if not Input.is_action_pressed("mouse1"):
+			_reset_breaking()
+			return
+		var pos := Vector3i(hit_pos.floor())
+		if not breaking or pos != break_pos: # new target: start over
+			break_pos = pos
+			break_progress = 0.0
+			breaking = true
+		var block: Block = world.get_block_at(hit_pos)
+		if block == null: return
+		break_progress += delta * mine_speed
+		if break_progress >= block.hardness:
+			break_block.emit(hit_pos)
+			_reset_breaking()
+			return
+		var t := clampf(break_progress / block.hardness, 0.0, 1.0)
+		outline_material.albedo_color = Color.from_hsv(t * 0.8, 0.8, 0.8 - t * 0.8, 0.5)
 
 
 func _reset_breaking() -> void:
@@ -227,6 +239,11 @@ func _handle_hotbar_and_debug() -> void:
 		DirAccess.make_dir_recursive_absolute("user://screenshots")
 		var path := "user://screenshots/SCREENSHOT-%s.png" % Time.get_unix_time_from_system()
 		get_viewport().get_texture().get_image().save_png(path)
+
+
+func toggle_fastbreak():
+	fast_break = !fast_break
+
 
 #endregion
 

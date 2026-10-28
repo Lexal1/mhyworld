@@ -7,9 +7,9 @@ extends Node3D
 func _ready() -> void:
 	Global.on_pause.connect(pause_menu.show)
 	Global.on_resume.connect(pause_menu.hide)
-	LimboConsole.register_command(func(): $Player.enable_noclip(), "noclip", "Enable noclip.")
-	LimboConsole.register_command(func(): $Player.disable_noclip(), "clip", "Disable noclip.")
-	
+	LimboConsole.register_command(func(): $Player.toggle_noclip(), "noclip", "Toggle noclip.")
+	LimboConsole.register_command(func(): _on_player_die(), "kill", "Kill yourself.")
+	LimboConsole.register_command(func(): $Player.toggle_fastbreak(), "fast_break", "Break blocks instantly.")
 
 func _on_player_die() -> void:
 	Global.gameIsQuitting = true
