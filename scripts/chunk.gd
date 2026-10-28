@@ -116,10 +116,6 @@ func update() -> void:
 	_mesh_lock.unlock()
 
 
-func update_async() -> int:
-	return WorkerThreadPool.add_task(update)
-
-
 func _update_mesh() -> void:
 	if Global.gameIsQuitting: return
 

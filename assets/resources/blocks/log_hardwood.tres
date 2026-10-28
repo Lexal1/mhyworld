@@ -1,7 +1,7 @@
 [gd_resource type="Resource" script_class="Block" format=3 uid="uid://br03af5utls35"]
 
-[ext_resource type="Script" uid="uid://c2j5n5wf30urt" path="res://scripts/blocks/BlockAtlasPosition.gd" id="1_pr07f"]
-[ext_resource type="Script" uid="uid://bvocj4r036lxu" path="res://scripts/blocks/Block.gd" id="1_qjg3u"]
+[ext_resource type="Script" uid="uid://c2j5n5wf30urt" path="res://scripts/blocks/block_atlas_position.gd" id="1_pr07f"]
+[ext_resource type="Script" uid="uid://bvocj4r036lxu" path="res://scripts/blocks/block.gd" id="1_qjg3u"]
 
 [sub_resource type="Resource" id="Resource_pr07f"]
 script = ExtResource("1_pr07f")

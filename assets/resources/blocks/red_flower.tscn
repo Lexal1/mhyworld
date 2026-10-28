@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://flq43cvpe64"]
 
-[ext_resource type="Script" uid="uid://b5nqgefcth643" path="res://scripts/blocks/BlockDef.gd" id="1_luseg"]
+[ext_resource type="Script" uid="uid://b5nqgefcth643" path="res://scripts/blocks/block_def.gd" id="1_luseg"]
 [ext_resource type="Texture2D" uid="uid://dooex1b22t0kv" path="res://assets/resources/mhycraftblocks.png" id="2_6ii6m"]
 
 [node name="RedFlower" type="Node" unique_id=1920317047]
