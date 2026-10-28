@@ -38,3 +38,7 @@ func _on_quit_button_pressed() -> void:
 	Global.paused = false
 	Global.state = Global.GameState.TITLE
 	get_tree().change_scene_to_file("res://scenes/title_screen.tscn")
+
+
+func _on_debugging_button_pressed() -> void:
+	LimboConsole.toggle_console()

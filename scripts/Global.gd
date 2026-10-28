@@ -32,7 +32,6 @@ func _ready() -> void:
 	if not Engine.is_editor_hint():
 		canvas_layer.visible = true
 
-
 func _input(event: InputEvent) -> void:
 	if Engine.is_editor_hint(): return
 	if event.is_action_pressed("debug2b"):

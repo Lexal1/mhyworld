@@ -298,4 +298,5 @@ layout_mode = 2
 text = "Quit"
 
 [connection signal="pressed" from="MenuOptions/ContinueButton" to="." method="_on_continue_button_pressed"]
+[connection signal="pressed" from="MenuOptions/DebuggingButton" to="." method="_on_debugging_button_pressed"]
 [connection signal="pressed" from="MenuOptions/QuitButton" to="." method="_on_quit_button_pressed"]
