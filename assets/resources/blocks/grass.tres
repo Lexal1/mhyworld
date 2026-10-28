@@ -5,6 +5,7 @@
 
 [sub_resource type="Resource" id="Resource_t20kv"]
 script = ExtResource("1_t20kv")
+TOP = Vector2(4, 0)
 BOTTOM = Vector2(2, 0)
 NORTH = Vector2(1, 0)
 SOUTH = Vector2(1, 0)

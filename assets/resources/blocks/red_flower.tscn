@@ -1,0 +1,17 @@
+[gd_scene format=3 uid="uid://flq43cvpe64"]
+
+[ext_resource type="Script" uid="uid://b5nqgefcth643" path="res://scripts/blocks/BlockDef.gd" id="1_luseg"]
+[ext_resource type="Texture2D" uid="uid://dooex1b22t0kv" path="res://assets/resources/mhycraftblocks.png" id="2_6ii6m"]
+
+[node name="RedFlower" type="Node" unique_id=1920317047]
+script = ExtResource("1_luseg")
+id = &"flower_red"
+metadata/_custom_type_script = "uid://b5nqgefcth643"
+
+[node name="Sprite3D" type="Sprite3D" parent="." unique_id=1660129426]
+billboard = 1
+shaded = true
+texture_filter = 0
+texture = ExtResource("2_6ii6m")
+region_enabled = true
+region_rect = Rect2(240, 0, 16, 16)
