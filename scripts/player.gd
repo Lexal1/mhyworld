@@ -34,6 +34,7 @@ var third_person := false
 var dead := false
 var t_bob := 0.0
 var rotation_velocity := Vector2.ZERO
+var frozen := true
 
 @onready var head: Node3D = $Head
 @onready var camera: Camera3D = $Head/Camera
@@ -59,6 +60,7 @@ func _unhandled_input(event: InputEvent) -> void:
 
 
 func _physics_process(delta: float) -> void:
+	if frozen: return
 	if Input.is_action_just_pressed("pause"):
 		Global.toggle_pause_state()
 

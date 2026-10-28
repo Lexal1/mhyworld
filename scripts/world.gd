@@ -4,12 +4,12 @@ const CHUNK_SCENE := preload("res://scenes/chunk.tscn")
 const SAVE_DIR := "user://world/test/chunk"
 
 @export var render_distance := 5 ## How many chunks to keep loaded along X and Z.
-@export var vertical_render_distance := 4 ## How many chunks to keep loaded along Y.
+@export var vertical_render_distance := 5 ## How many chunks to keep loaded along Y.
 @export var blockShape: Shape3D
 @export var player: CharacterBody3D
 
 var air_idx: int
-
+var player_released := false
 
 func _ready() -> void:
 	air_idx = BlockRegistry.get_idx_of(&"air")
@@ -19,6 +19,7 @@ func _ready() -> void:
 				var chunk: Chunk = CHUNK_SCENE.instantiate()
 				chunk.chunk_position = Vector3i(x, y, z)
 				chunk.on_chunk_ready.connect(save_chunk_to_file)
+				chunk.on_chunk_ready.connect(_check_player_chunk) # new
 				add_child(chunk)
 
 
@@ -57,6 +58,14 @@ func get_chunk(pos: Vector3i) -> Chunk:
 		if c is Chunk and c.chunk_position == pos:
 			return c
 	return null
+
+
+func _check_player_chunk(chunk: Chunk) -> void:
+	if player_released: return
+	var player_chunk := Vector3i((player.position / Vector3(Global.CHUNK_SIZE)).floor())
+	if chunk.chunk_position == player_chunk:
+		player_released = true
+		player.frozen = false
 
 
 # ---------- Block editing ----------
