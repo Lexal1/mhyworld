@@ -185,7 +185,7 @@ func request_remesh() -> void:
 		return
 	_meshing = true
 	_state_mutex.unlock()
-	Global.Tasks.add_task(WorkerThreadPool.add_task(_remesh_loop))
+	Global.Tasks.add_task(WorkerThreadPool.add_task(_remesh_loop, true))
 
 
 func _remesh_loop() -> void:
