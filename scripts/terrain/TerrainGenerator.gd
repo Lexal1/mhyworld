@@ -6,6 +6,8 @@ const SEAM := 128
 const CLIMATE_GAIN := 1.6      ## Raw noise rarely nears +-1; this spreads biomes out.
 const BLEND_SHARPNESS := 6.0   ## Higher = sharper biome borders.
 const CAVE_THRESHOLD := 0.3    ## Lower = more caves.
+const CAVE_SURFACE_BONUS := 0.45  ## Extra threshold at the surface. Higher = fewer surface caves.
+const CAVE_SURFACE_FADE := 12.0   ## Blocks of depth over which the bonus fades to 0.
 
 static var _cache := {} # seed -> TerrainGenerator
 
@@ -133,7 +135,9 @@ func sample_column(gx: int, gz: int) -> Vector2i:
 func block_at(gx: int, gy: int, gz: int, column: Vector2i) -> int:
 	var height := column.x
 	if gy > height: return air_idx
-	if _wrap3(caves, gx, gy, gz) > CAVE_THRESHOLD: return air_idx
+	var depth := height - gy
+	var threshold := CAVE_THRESHOLD + CAVE_SURFACE_BONUS * (1.0 - smoothstep(0.0, CAVE_SURFACE_FADE, depth))
+	if _wrap3(caves, gx, gy, gz) > threshold: return air_idx
 	if gy == height: return _surface_idx[column.y]
 	if gy >= height - biomes[column.y].filler_depth: return _filler_idx[column.y]
 	return stone_idx
