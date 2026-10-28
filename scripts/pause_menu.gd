@@ -27,6 +27,14 @@ func _on_continue_button_pressed() -> void:
 
 
 func _on_quit_button_pressed() -> void:
-	# BUG: doesn't work, bad address index.
-	# The game scene has to be torn down (chunk threads stopped, etc.) before switching scenes.
+	Global.gameIsQuitting = true
+	$"../World".process_mode = Node.PROCESS_MODE_DISABLED # stop queuing new chunk tasks
+	Global.Tasks.force_wait_for_tasks()
+	await get_tree().process_frame # let already-queued deferred calls run (they can add tasks)
+	Global.Tasks.force_wait_for_tasks()
+
+	# Global is an autoload, so it survives the scene change. Reset it.
+	Global.gameIsQuitting = false
+	Global.paused = false
+	Global.state = Global.GameState.TITLE
 	get_tree().change_scene_to_file("res://scenes/title_screen.tscn")
