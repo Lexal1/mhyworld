@@ -15,6 +15,7 @@ const THIRD_PERSON_OFFSET := Vector3(0, 3, 5)
 const LOOK_LIMIT := deg_to_rad(89)
 const BREAK_SFX := preload("res://assets/audio/break.wav")
 const PLACE_SFX := preload("res://assets/audio/place.wav")
+const OUTLINE_IDLE := Color(1, 0.459, 0.055, 0.17) # the color set in player.tscn
 
 # Numpad action -> block id
 const HOTBAR := {
@@ -35,12 +36,18 @@ var dead := false
 var t_bob := 0.0
 var rotation_velocity := Vector2.ZERO
 var frozen := true
+var mine_speed := 1.0 # later: pickaxe raises this, no tool lowers it
+var break_pos := Vector3i.ZERO
+var break_progress := 0.0
+var breaking := false
 
+@onready var world: Node3D = %World
 @onready var head: Node3D = $Head
 @onready var camera: Camera3D = $Head/Camera
 @onready var raycast: RayCast3D = $Head/Camera/RayCast
 @onready var blok: AudioStreamPlayer3D = $Head/Camera/RayCast/blok
 @onready var block_outline: MeshInstance3D = $BlockOutline
+@onready var outline_material: StandardMaterial3D = block_outline.mesh.material
 @onready var coyote_time: Timer = $CoyoteTime
 @onready var input_buffer: Timer = $InputBuffer
 @onready var camera_base_pos: Vector3 = camera.position
@@ -68,7 +75,7 @@ func _physics_process(delta: float) -> void:
 	_apply_gravity(delta)
 	_handle_jump()
 	_handle_movement(delta)
-	_update_block_target()
+	_update_block_target(delta)
 	_controller_look(delta)
 	_update_camera(delta)
 	move_and_slide()
@@ -150,9 +157,10 @@ func _handle_movement(delta: float) -> void:
 
 #region BlockInteraction
 
-func _update_block_target() -> void:
+func _update_block_target(delta: float) -> void:
 	if not raycast.is_colliding() or Global.is_paused():
 		block_outline.visible = false
+		_reset_breaking()
 		return
 
 	var normal := raycast.get_collision_normal()
@@ -162,10 +170,35 @@ func _update_block_target() -> void:
 	block_outline.position = block_center - position
 	block_outline.visible = true
 
-	if Input.is_action_just_pressed("mouse1"):
-		break_block.emit(hit_pos)
+	_update_breaking(delta, hit_pos)
 	if Input.is_action_just_pressed("mouse2"):
 		place_block.emit(hit_pos + normal, BlockRegistry.get_idx_of(block_selected))
+
+
+func _update_breaking(delta: float, hit_pos: Vector3) -> void:
+	if not Input.is_action_pressed("mouse1"):
+		_reset_breaking()
+		return
+	var pos := Vector3i(hit_pos.floor())
+	if not breaking or pos != break_pos: # new target: start over
+		break_pos = pos
+		break_progress = 0.0
+		breaking = true
+	var block: Block = world.get_block_at(hit_pos)
+	if block == null: return
+	break_progress += delta * mine_speed
+	if break_progress >= block.hardness:
+		break_block.emit(hit_pos)
+		_reset_breaking()
+		return
+	var t := clampf(break_progress / block.hardness, 0.0, 1.0)
+	outline_material.albedo_color = Color.from_hsv(t * 0.8, 0.8, 0.8 - t * 0.8, 0.5)
+
+
+func _reset_breaking() -> void:
+	breaking = false
+	break_progress = 0.0
+	outline_material.albedo_color = OUTLINE_IDLE
 
 
 func _handle_hotbar_and_debug() -> void:

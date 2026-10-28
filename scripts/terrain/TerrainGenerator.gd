@@ -124,8 +124,9 @@ func sample_column(gx: int, gz: int) -> Vector2i:
 			best_w = w
 			best = i
 
-	var height := int(base / total + _wrap2(shape, gx, gz) * (amp / total))
-	return Vector2i(clampi(height, 1, Global.TERRAIN_HEIGHT), best)
+	var h := float(Global.world_height)
+	var height := int((base / total + _wrap2(shape, gx, gz) * (amp / total)) * h)
+	return Vector2i(clampi(height, 1, Global.world_height - 1), best)
 
 
 ## `column` is the result of sample_column(gx, gz), passed in so a whole column only samples it once.

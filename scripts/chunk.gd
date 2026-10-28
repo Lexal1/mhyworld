@@ -8,7 +8,7 @@ const SY := Global.CHUNK_SIZE.y
 const SZ := Global.CHUNK_SIZE.z
 
 @export var shaderMaterial: ShaderMaterial
-
+@export var auto_generate := true ## World turns this off and schedules generation itself.
 
 # blocks[block_index(x, y, z)] = block index. Guarded by blocksMutex.
 var blocks := PackedInt32Array()
@@ -24,7 +24,7 @@ var _dirty := false
 var solid_table: PackedByteArray
 var air_idx: int
 
-var terrain: TerrainGenerator   # replaces the noise + idx vars
+var terrain: TerrainGenerator
 var st := SurfaceTool.new()
 var mesh_instance: MeshInstance3D = null
 var block_tags: Dictionary[Vector3, Variant] = {} # LightBlock stores its light here
@@ -53,7 +53,7 @@ func _ready() -> void:
 		# Noise seed is fixed in the editor, so this lands on the surface.
 		chunk_position.y = _height_at(0, 0) / Global.CHUNK_SIZE.y
 
-	var task := generate_and_update()
+	var task := generate_and_update() if auto_generate else -1
 	if task >= 0:
 		Global.Tasks.add_task(task)
 

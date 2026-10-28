@@ -9,7 +9,6 @@ enum WorldSize { SMALL = 2048, MEDIUM = 4096, LARGE = 8192 }
 enum WorldHeights { SMALL = 64, MEDIUM = 128, LARGE = 256 }
 
 const CHUNK_SIZE := Vector3i(16, 16, 16)
-const TERRAIN_HEIGHT := 48 # max terrain height in blocks (was CHUNK_SIZE.y)
 const TEXTURE_ATLAS_SIZE := Vector2(16, 16)
 const NIGHT_START_HOUR := 21 # night music plays after this hour...
 const NIGHT_END_HOUR := 6    # ...and before this one
@@ -19,6 +18,7 @@ var paused := false
 var gameIsQuitting := false
 var world_seed := int(Time.get_unix_time_from_system())
 var world_size: int = WorldSize.SMALL ## Blocks across on each axis. Set before the world loads.
+var world_height: int = WorldHeights.SMALL ## Blocks tall. Set before the world loads.
 
 var Tasks := TaskManager.new()
 

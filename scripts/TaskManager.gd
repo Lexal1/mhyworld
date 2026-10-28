@@ -9,6 +9,9 @@ var _unfinished_thread_tasks: Array[int] = []
 func add_task(tid: int) -> void:
 	_unfinished_thread_tasks.push_back(tid)
 
+func count() -> int:
+	return _unfinished_thread_tasks.size()
+
 func wait_for_tasks():
 	var newUnfinishedTasks: Array[int] = []
 	for task in _unfinished_thread_tasks:

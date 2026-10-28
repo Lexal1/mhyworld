@@ -7,9 +7,9 @@ class_name Biome extends Resource
 @export_range(-1, 1) var temperature := 0.0
 @export_range(-1, 1) var humidity := 0.0
 
-@export_group("Shape")
-@export var base_height := 24.0 ## Average ground level, in blocks.
-@export var amplitude := 8.0    ## How far the ground swings around that level.
+@export_group("Shape") # Fractions of Global.world_height, so biomes scale with it.
+@export_range(0.0, 1.0) var base_height := 0.35 ## Average ground level.
+@export_range(0.0, 1.0) var amplitude := 0.15   ## How far the ground swings around that level.
 
 @export_group("Blocks")
 @export var surface_block: StringName = &"grass"

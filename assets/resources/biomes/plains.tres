@@ -5,6 +5,5 @@
 [resource]
 script = ExtResource("1_qpb58")
 id = &"plains"
-base_height = 22.0
-amplitude = 3.0
+amplitude = 0.06
 metadata/_custom_type_script = "uid://cd1lv5412sviq"
