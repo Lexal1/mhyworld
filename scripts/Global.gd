@@ -6,6 +6,7 @@ signal on_resume
 
 enum GameState { TITLE, GAMEPLAY, UI, DIALOG, CUTSCENE }
 enum WorldSize { SMALL = 2048, MEDIUM = 4096, LARGE = 8192 }
+enum WorldHeights { SMALL = 64, MEDIUM = 128, LARGE = 256 }
 
 const CHUNK_SIZE := Vector3i(16, 16, 16)
 const TERRAIN_HEIGHT := 48 # max terrain height in blocks (was CHUNK_SIZE.y)

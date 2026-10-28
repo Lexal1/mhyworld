@@ -6,11 +6,9 @@ signal on_chunk_ready
 const SX := Global.CHUNK_SIZE.x
 const SY := Global.CHUNK_SIZE.y
 const SZ := Global.CHUNK_SIZE.z
-const SEAM := 128 ## Blocks before the world edge over which the wrap is blended.
 
 @export var shaderMaterial: ShaderMaterial
 
-var noise := FastNoiseLite.new()
 
 # blocks[block_index(x, y, z)] = block index. Guarded by blocksMutex.
 var blocks := PackedInt32Array()
@@ -25,10 +23,8 @@ var _dirty := false
 
 var solid_table: PackedByteArray
 var air_idx: int
-var stone_idx: int
-var dirt_idx: int
-var grass_idx: int
 
+var terrain: TerrainGenerator   # replaces the noise + idx vars
 var st := SurfaceTool.new()
 var mesh_instance: MeshInstance3D = null
 var block_tags: Dictionary[Vector3, Variant] = {} # LightBlock stores its light here
@@ -51,10 +47,7 @@ static func block_index(x: int, y: int, z: int) -> int:
 func _ready() -> void:
 	solid_table = BlockRegistry.solid_table
 	air_idx = BlockRegistry.get_idx_of(&"air")
-	stone_idx = BlockRegistry.get_idx_of(&"stone")
-	dirt_idx = BlockRegistry.get_idx_of(&"dirt")
-	grass_idx = BlockRegistry.get_idx_of(&"grass")
-	noise.seed = 128 if Engine.is_editor_hint() else int(Global.world_seed)
+	terrain = TerrainGenerator.for_seed(128 if Engine.is_editor_hint() else Global.world_seed)
 
 	if Engine.is_editor_hint():
 		# Noise seed is fixed in the editor, so this lands on the surface.
@@ -88,32 +81,7 @@ func _generate_and_update() -> void:
 
 ## Terrain height in world blocks. Only depends on world x and z.
 func _height_at(gx: int, gz: int) -> int:
-	return int((_periodic_noise(gx, gz) + 1) / 2 * Global.TERRAIN_HEIGHT)
-
-func _periodic_noise(gx: int, gz: int) -> float:
-	var n := Global.world_size
-	var x := posmod(gx, n)
-	var z := posmod(gz, n)
-	var tx := smoothstep(n - SEAM, n, x) # 0 away from the edge, 1 right at it
-	var a := _blend_z(x, z)
-	if tx == 0.0: return a
-	return lerpf(a, _blend_z(x - n, z), tx)
-
-func _blend_z(x: int, z: int) -> float:
-	var n := Global.world_size
-	var a := noise.get_noise_2d(x, z)
-	var tz := smoothstep(n - SEAM, n, z)
-	if tz == 0.0: return a
-	return lerpf(a, noise.get_noise_2d(x, z - n), tz)
-
-## gy is the block's WORLD y, not its y inside the chunk.
-@warning_ignore("integer_division")
-func _block_for_height(gy: int, height: int) -> int:
-	if gy < height / 2: return stone_idx
-	if gy < height: return dirt_idx
-	if gy == height: return grass_idx
-	return air_idx
-
+	return terrain.sample_column(gx, gz).x
 
 func _generate() -> void:
 	blocksMutex.lock()
@@ -129,9 +97,10 @@ func _generate() -> void:
 				blocksMutex.unlock()
 				return
 			# Height only depends on x and z, so compute it once per column.
-			var height := _height_at(origin.x + x, origin.z + z)
+			var col := terrain.sample_column(origin.x + x, origin.z + z)
 			for y in SY:
-				new_blocks[block_index(x, y, z)] = _block_for_height(origin.y + y, height)
+				new_blocks[block_index(x, y, z)] = terrain.block_at(
+					origin.x + x, origin.y + y, origin.z + z, col)
 
 	blocks = new_blocks
 	blocksMutex.unlock()
@@ -225,7 +194,7 @@ func _is_transparent(snap: PackedInt32Array, x: int, y: int, z: int) -> bool:
 	if x < 0 or x >= SX or y < 0 or y >= SY or z < 0 or z >= SZ:
 		# Outside this chunk (any of the 6 sides): ask the terrain instead of loading the neighbour.
 		var origin := _chunk_position * Global.CHUNK_SIZE
-		return origin.y + y > _height_at(origin.x + x, origin.z + z)
+		return not terrain.is_solid(origin.x + x, origin.y + y, origin.z + z)
 	return solid_table[snap[block_index(x, y, z)]] == 0
 
 
