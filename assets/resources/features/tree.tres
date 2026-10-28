@@ -6,4 +6,7 @@
 script = ExtResource("1_wun0r")
 max_height = 6
 id = &"tree"
+biomes = Array[StringName]([&"hills"])
+cell_size = 11
+chance = 0.342
 metadata/_custom_type_script = "uid://rfdpks3cwrhw"

@@ -14,11 +14,13 @@ var air_idx: int
 var player_released := false
 var _pending: Array[Chunk] = []    # chunks waiting to be generated
 var _generating: Array[Chunk] = [] # chunks currently on a worker thread
+var _spawn_chunks: Array[Vector3i] = [] # must be ready before the player is released
 var _chunk_map := {}  # wrapped chunk position -> Chunk
 var _map_mutex := Mutex.new()
 
 func _ready() -> void:
 	air_idx = BlockRegistry.get_idx_of(&"air")
+	_place_player_at_spawn()
 	var pc := _player_chunk()
 	for x in render_distance:
 		for y in vertical_render_distance:
@@ -160,12 +162,34 @@ func _wrap_axis(chunk_coord: int, player_coord: int, count: int) -> int:
 	return posmod(chunk_coord - player_coord + half, count) + player_coord - half
 
 
-func _check_player_chunk(chunk: Chunk) -> void:
+## Puts the player just above solid ground and records which chunks must exist first.
+func _place_player_at_spawn() -> void:
+	var terrain := TerrainGenerator.for_seed(Global.world_seed)
+	var gx := floori(player.position.x)
+	var gz := floori(player.position.z)
+
+	# Noise height ignores caves, so walk down to the first block that is really solid.
+	var ground := terrain.sample_column(gx, gz).x
+	while ground > 0 and not terrain.is_solid(gx, ground, gz):
+		ground -= 1
+
+	player.position.y = ground + 2
+	_spawn_chunks.clear()
+	for y in [ground, ground + 2]: # the block we stand on, and where our head is
+		var cp := _chunk_of_block(Vector3i(gx, y, gz))
+		if not _spawn_chunks.has(cp): _spawn_chunks.push_back(cp)
+
+
+func _check_player_chunk(_chunk: Chunk) -> void:
 	if player_released: return
-	if chunk.chunk_position == _player_chunk():
-		player.position.y = chunk._height_at(0, 0) + 2
-		player_released = true
-		player.frozen = false
+	for cp in _spawn_chunks:
+		var c := get_chunk(cp)
+		# visible = meshed, and generated_at check = not stale from being moved
+		if c == null or not c.hasChunkGenerated or not c.visible \
+				or c.generated_at != c.chunk_position:
+			return
+	player_released = true
+	player.frozen = false
 
 #endregion
 

@@ -5,4 +5,5 @@
 [resource]
 script = ExtResource("1_qwvue")
 id = &"red_flower_patch"
+biomes = Array[StringName]([&"plains"])
 metadata/_custom_type_script = "uid://bjod1rto1lcfe"
