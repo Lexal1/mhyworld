@@ -17,7 +17,7 @@ func generate(ctx: FeatureContext) -> void:
 	for y in h:
 		ctx.place(Vector3i(0, y, 0), trunk)
 	for dy in range(h - 2, h + 2):
-		var r := crown_radius if dy < h else crown_radius - 1
+		var r := crown_radius
 		for dx in range(-r, r + 1):
 			for dz in range(-r, r + 1):
 				var corner := absi(dx) == r and absi(dz) == r
