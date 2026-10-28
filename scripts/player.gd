@@ -40,6 +40,7 @@ var mine_speed := 1.0 # later: pickaxe raises this, no tool lowers it
 var break_pos := Vector3i.ZERO
 var break_progress := 0.0
 var breaking := false
+var noclip := false
 
 @onready var world: Node3D = %World
 @onready var head: Node3D = $Head
@@ -122,11 +123,20 @@ func _check_death() -> void:
 func _apply_gravity(delta: float) -> void:
 	if not is_on_floor():
 		velocity += get_gravity() * delta
+		if velocity.y < 0 and noclip: # TODO: make this thing approximate things to zero instead
+			velocity.y = 0
+			return
 
 
 func _handle_jump() -> void:
 	# Input buffer: a press shortly before landing still counts.
 	# Coyote time: a jump shortly after leaving a ledge still counts.
+	if noclip and Input.is_action_pressed("jump"):
+		velocity.y = JUMP_VELOCITY
+		return
+	if noclip and Input.is_action_pressed("crouch"):
+		velocity.y -= JUMP_VELOCITY
+		return
 	if Input.is_action_pressed("jump"): input_buffer.start()
 	elif Input.is_action_just_released("jump"): input_buffer.stop()
 
@@ -153,6 +163,13 @@ func _handle_movement(delta: float) -> void:
 	velocity.x = lerp(velocity.x, target.x, delta * friction)
 	velocity.z = lerp(velocity.z, target.z, delta * friction)
 
+func enable_noclip():
+	noclip = true
+	collision_mask = 0
+
+func disable_noclip():
+	noclip = false
+	collision_mask = 1
 #endregion
 
 #region BlockInteraction

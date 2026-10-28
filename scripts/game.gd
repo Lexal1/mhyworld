@@ -4,11 +4,12 @@ extends Node3D
 @onready var sky: WorldEnvironment = $World/Environment/Sky
 @onready var pause_menu: Control = $PauseMenu
 
-
 func _ready() -> void:
 	Global.on_pause.connect(pause_menu.show)
 	Global.on_resume.connect(pause_menu.hide)
-
+	LimboConsole.register_command(func(): $Player.enable_noclip(), "noclip", "Enable noclip.")
+	LimboConsole.register_command(func(): $Player.disable_noclip(), "clip", "Disable noclip.")
+	
 
 func _on_player_die() -> void:
 	Global.gameIsQuitting = true

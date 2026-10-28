@@ -18,7 +18,14 @@ func _ready() -> void:
 	sun.rotation_degrees.y = 90
 	time = start_hour / 24.0
 	update_environment()
-
+	LimboConsole.register_command(
+		func(): LimboConsole.info(get_time()),
+		"time get", "Get the current time in the world.")
+	LimboConsole.register_command(
+		func(p_time: float): self.time = p_time,
+		"time set raw", "Set raw time to a value"
+	)
+	
 
 func _process(delta: float) -> void:
 	time = fposmod(time + delta / day_duration, 1.0)
