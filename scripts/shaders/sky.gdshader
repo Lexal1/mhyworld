@@ -136,10 +136,22 @@ void sky() {
 		float lit = step(density_sun, density); // PSX: two tones, lit or shaded
 
 		// Heavy cover = darker, greyer clouds.
-		float overcast = smoothstep(0.6, 1.0, cloud_cover);
-		vec3 lit_col = mix(vec3(1.0), glow_color, dusk * 0.75) * mix(1.0, 0.6, overcast);
-		vec3 shade_col = lit_col * mix(vec3(0.55, 0.6, 0.75), vec3(0.5, 0.52, 0.58), overcast);
-		vec3 cloud = mix(shade_col, lit_col, lit) * mix(0.05, 1.0, daylight);
+		// Heavy cover = darker, greyer clouds.
+float overcast = smoothstep(0.6, 1.0, cloud_cover);
+
+		// Clouds on the sun's side of the sky glow more at dusk.
+		float sun_side = pow(max(dot(flat_dir, flat_sun), 0.0), 2.0);
+		float tint = dusk * mix(0.5, 1.0, sun_side);
+		vec3 lit_col = mix(vec3(1.0), glow_color, tint) * mix(1.0, 0.6, overcast);
+
+		// Shaded undersides go from blue-grey (day) to purple (dusk).
+		vec3 shade_tone = mix(vec3(0.55, 0.6, 0.75), vec3(0.45, 0.4, 0.6), dusk);
+		vec3 shade_col = lit_col * mix(shade_tone, vec3(0.5, 0.52, 0.58), overcast);
+
+		// Keep clouds lit while the sun is near the horizon, but not once it's well below it.
+		float dusk_light = dusk * smoothstep(-0.2, 0.0, sun_dir.y) * 0.8;
+		float brightness = max(mix(0.05, 1.0, daylight), dusk_light);
+		vec3 cloud = mix(shade_col, lit_col, lit) * brightness;
 		// The ambient light is sampled from this sky. Bright white clouds would flood the world with light
 		// (more cloud = brighter), so the ambient copy of the clouds is much dimmer than what you see.
 		if (AT_CUBEMAP_PASS) cloud *= 0.35;

@@ -4,7 +4,7 @@ extends Node
 @export var sky: WorldEnvironment
 @export var label: Label
 @export var day_duration := 1440.0 ## Real seconds for a full 24h cycle (night included).
-@export_range(0.0, 24.0) var start_hour := 7.0
+@export_range(0.0, 24.0) var start_hour := 6.0
 
 @export_group("Sun")
 @export var sun_energy := 1.1

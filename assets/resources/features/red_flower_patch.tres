@@ -4,8 +4,8 @@
 
 [resource]
 script = ExtResource("1_qwvue")
-patch_radius = 5
-density = 0.1
+patch_radius = 6
+density = 0.05
 id = &"red_flower_patch"
 biomes = Array[StringName]([&"plains"])
 cell_size = 16

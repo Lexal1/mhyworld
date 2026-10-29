@@ -48,6 +48,7 @@ var fast_break := false
 @onready var head: Node3D = $Head
 @onready var camera: Camera3D = $Head/Camera
 @onready var raycast: RayCast3D = $Head/Camera/RayCast
+@onready var hud: Control = %HUD
 @onready var blok: AudioStreamPlayer3D = $Head/Camera/RayCast/blok
 @onready var block_outline: MeshInstance3D = $BlockOutline
 @onready var outline_material: StandardMaterial3D = block_outline.mesh.material
@@ -243,10 +244,16 @@ func _handle_hotbar_and_debug() -> void:
 		if Input.is_action_just_pressed(action):
 			block_selected = HOTBAR[action]
 
+
 	if Input.is_action_just_pressed("debug2"):
 		DirAccess.make_dir_recursive_absolute("user://screenshots")
 		var path := "user://screenshots/SCREENSHOT-%s.png" % Time.get_unix_time_from_system()
 		get_viewport().get_texture().get_image().save_png(path)
+
+
+	if Input.is_action_just_pressed("debug1"):
+		hud.visible = !hud.visible
+
 
 
 ## Walks the block grid from `from` along `dir`. Returns {} on a miss,

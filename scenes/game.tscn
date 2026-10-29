@@ -55,6 +55,7 @@ visible = false
 player = NodePath("../Player")
 
 [node name="HUD" parent="." unique_id=1430509112 instance=ExtResource("6_p57ef")]
+unique_name_in_owner = true
 z_index = 99
 offset_bottom = 1.5258789e-05
 
