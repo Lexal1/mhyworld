@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="TreeFeature" format=3 uid="uid://wpsyd4m7juvm"]
+
+[ext_resource type="Script" uid="uid://rfdpks3cwrhw" path="res://scripts/terrain/features/tree_feature.gd" id="1_bjfj5"]
+
+[resource]
+script = ExtResource("1_bjfj5")
+id = &"tree_hills"
+biomes = Array[StringName]([&"hills"])
+cell_size = 16
+chance = 0.35
+metadata/_custom_type_script = "uid://rfdpks3cwrhw"

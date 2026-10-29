@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="PatchFeature" format=3 uid="uid://u365l2gi6e6e"]
+
+[ext_resource type="Script" uid="uid://bjod1rto1lcfe" path="res://scripts/terrain/features/patch_feature.gd" id="1_ckqou"]
+
+[resource]
+script = ExtResource("1_ckqou")
+block = &"flower_yellow"
+patch_radius = 5
+density = 0.1
+id = &"yellow_flower_patch"
+biomes = Array[StringName]([&"mountains"])
+cell_size = 16
+chance = 0.25
+metadata/_custom_type_script = "uid://bjod1rto1lcfe"

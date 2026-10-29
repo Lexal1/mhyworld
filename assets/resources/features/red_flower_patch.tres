@@ -4,6 +4,10 @@
 
 [resource]
 script = ExtResource("1_qwvue")
+patch_radius = 5
+density = 0.1
 id = &"red_flower_patch"
 biomes = Array[StringName]([&"plains"])
+cell_size = 16
+chance = 0.25
 metadata/_custom_type_script = "uid://bjod1rto1lcfe"

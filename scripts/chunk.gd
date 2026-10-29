@@ -221,12 +221,13 @@ func _create_block(snap: PackedInt32Array, pos: Vector3i) -> void:
 	var atlas := block_data.atlas_position
 	var e := block_data.emission
 
-	_add_face_if_exposed(snap, BlockMesh.TOP,    pos, Vector3i(0, 1, 0),  atlas.TOP, e)
-	_add_face_if_exposed(snap, BlockMesh.BOTTOM, pos, Vector3i(0, -1, 0), atlas.BOTTOM, e)
-	_add_face_if_exposed(snap, BlockMesh.NORTH,  pos, Vector3i(0, 0, 1),  atlas.NORTH, e)
-	_add_face_if_exposed(snap, BlockMesh.SOUTH,  pos, Vector3i(0, 0, -1), atlas.SOUTH, e)
-	_add_face_if_exposed(snap, BlockMesh.EAST,   pos, Vector3i(1, 0, 0),  atlas.EAST, e)
-	_add_face_if_exposed(snap, BlockMesh.WEST,   pos, Vector3i(-1, 0, 0), atlas.WEST, e)
+	if block_data.render_cube:
+		_add_face_if_exposed(snap, BlockMesh.TOP,    pos, Vector3i(0, 1, 0),  atlas.TOP, e)
+		_add_face_if_exposed(snap, BlockMesh.BOTTOM, pos, Vector3i(0, -1, 0), atlas.BOTTOM, e)
+		_add_face_if_exposed(snap, BlockMesh.NORTH,  pos, Vector3i(0, 0, 1),  atlas.NORTH, e)
+		_add_face_if_exposed(snap, BlockMesh.SOUTH,  pos, Vector3i(0, 0, -1), atlas.SOUTH, e)
+		_add_face_if_exposed(snap, BlockMesh.EAST,   pos, Vector3i(1, 0, 0),  atlas.EAST, e)
+		_add_face_if_exposed(snap, BlockMesh.WEST,   pos, Vector3i(-1, 0, 0), atlas.WEST, e)
 
 	if block_data.has_method("on_block_created") and not Engine.is_editor_hint():
 		block_data.on_block_created(pos, chunk_position, self)

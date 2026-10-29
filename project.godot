@@ -24,6 +24,7 @@ config/icon="res://assets/resources/icon.svg"
 [autoload]
 
 Global="*res://scenes/global.tscn"
+Blocks="*res://scripts/Blocks.gd"
 BlockRegistry="*uid://dbf5s4yk08yjw"
 LimboConsole="*uid://dyxornv8vwibg"
 

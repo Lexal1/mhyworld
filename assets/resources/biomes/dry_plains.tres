@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_8o0hh")
 id = &"dry_plains"
-temperature = 0.44999999999999996
+temperature = 0.45
 humidity = -0.5
 amplitude = 0.06
 surface_block = &"grass_dry"

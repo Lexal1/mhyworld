@@ -4,7 +4,7 @@ class_name TreeFeature extends TerrainFeature
 @export var trunk_block: StringName = &"log_wood"
 @export var leaf_block: StringName = &"leaf_soft"
 @export var min_height := 4
-@export var max_height := 7
+@export var max_height := 6
 @export var crown_radius := 2
 
 func get_extent() -> Vector3i:

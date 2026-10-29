@@ -6,5 +6,5 @@
 script = ExtResource("1_kcp4m")
 id = &"tree_conifer"
 biomes = Array[StringName]([&"mountains"])
-chance = 0.25
+chance = 0.2
 metadata/_custom_type_script = "uid://8le5ajo5bny4"

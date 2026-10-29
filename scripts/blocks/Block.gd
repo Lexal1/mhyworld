@@ -4,6 +4,7 @@ class_name Block extends Resource
 @export var solid: bool = true
 @export var atlas_position: BlockAtlasPosition
 @export var hardness: float = 1.0
+@export var render_cube := true ## false = no cube mesh (the block draws itself, e.g. via a component).
 @export_range(0.0, 1.0) var emission := 0.0 ## 0 = normal, 1 = full brightness regardless of light.
 
 func _init(p_id: StringName = "", p_solid: bool = true, p_atlas_position: BlockAtlasPosition = null) -> void:

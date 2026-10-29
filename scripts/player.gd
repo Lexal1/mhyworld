@@ -182,16 +182,24 @@ func toggle_noclip():
 #region BlockInteraction
 
 func _update_block_target(delta: float) -> void:
-	if not raycast.is_colliding() or Global.is_paused():
+	if Global.is_paused():
 		block_outline.visible = false
 		_reset_breaking()
 		return
 
-	var normal := raycast.get_collision_normal()
-	var hit_pos := raycast.get_collision_point() - normal * 0.5 # a point inside the targeted block
-	var block_center := hit_pos.floor() + Vector3(0.5, 0.5, 0.5)
+	var hit := _voxel_raycast(
+		raycast.global_position,
+		-raycast.global_transform.basis.z,
+		raycast.target_position.length())
+	if hit.is_empty():
+		block_outline.visible = false
+		_reset_breaking()
+		return
 
-	block_outline.position = block_center - position
+	var normal: Vector3 = hit.normal
+	var hit_pos := Vector3(hit.cell) + Vector3(0.5, 0.5, 0.5) # centre of the targeted block
+
+	block_outline.position = hit_pos - position
 	block_outline.visible = true
 
 	_update_breaking(delta, hit_pos)
@@ -239,6 +247,40 @@ func _handle_hotbar_and_debug() -> void:
 		DirAccess.make_dir_recursive_absolute("user://screenshots")
 		var path := "user://screenshots/SCREENSHOT-%s.png" % Time.get_unix_time_from_system()
 		get_viewport().get_texture().get_image().save_png(path)
+
+
+## Walks the block grid from `from` along `dir`. Returns {} on a miss,
+## otherwise {"cell": Vector3i, "normal": Vector3} for the first non-air block.
+func _voxel_raycast(from: Vector3, dir: Vector3, max_dist: float) -> Dictionary:
+	var cell := Vector3i(from.floor())
+	var step := Vector3i.ZERO
+	var t_max := Vector3.INF   # distance along the ray to the next cell edge, per axis
+	var t_delta := Vector3.INF # distance along the ray to cross one whole cell, per axis
+	for a in 3:
+		if dir[a] > 0.0:
+			step[a] = 1
+			t_delta[a] = 1.0 / dir[a]
+			t_max[a] = (cell[a] + 1 - from[a]) / dir[a]
+		elif dir[a] < 0.0:
+			step[a] = -1
+			t_delta[a] = -1.0 / dir[a]
+			t_max[a] = (from[a] - cell[a]) / -dir[a]
+
+	for _i in 64: # hard cap; max_dist normally ends it in ~15 steps
+		var axis := 0 # step along whichever axis hits a cell edge first
+		if t_max.y < t_max.x: axis = 1
+		if t_max.z < t_max[axis]: axis = 2
+		if t_max[axis] > max_dist: return {}
+
+		cell[axis] += step[axis]
+		t_max[axis] += t_delta[axis]
+
+		var block: Block = world.get_block_at(Vector3(cell))
+		if block != null and block.id != &"air":
+			var normal := Vector3.ZERO
+			normal[axis] = -step[axis] # the face we came in through
+			return {"cell": cell, "normal": normal}
+	return {}
 
 
 func toggle_fastbreak():
