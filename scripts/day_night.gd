@@ -38,6 +38,7 @@ extends Node
 @export var night_horizon := Color("141b3a")
 
 var time := 0.0 ## 0.0 = midnight, 0.5 = noon. Wraps at 1.0.
+var day := 0 ## Counts up each noon. Drives the moon phase.
 
 var _moon: DirectionalLight3D
 var _cover_tween: Tween
@@ -71,6 +72,13 @@ func _ready() -> void:
 		func(): LimboConsole.info(get_time()),
 		"time get", "Get the current time in the world.")
 	LimboConsole.register_command(
+		func(): LimboConsole.info(str(get_day())),
+		"time day get", "Get the current day.")
+	@warning_ignore("narrowing_conversion")
+	LimboConsole.register_command(
+		func(p_day: float): set_day(p_day),
+		"time day set", "Set the day number.")
+	LimboConsole.register_command(
 		func(p_time: float): self.time = p_time,
 		"time set raw", "Set raw time to a value")
 	LimboConsole.register_command(
@@ -85,7 +93,9 @@ func _ready() -> void:
 
 
 func _process(delta: float) -> void:
+	var prev := time
 	time = fposmod(time + delta / day_duration, 1.0)
+	if prev < 0.5 and time >= 0.5: day += 1
 	update_environment()
 	label.text = get_time()
 
@@ -100,6 +110,14 @@ func fade_cloud_cover(value: float, seconds: float = 30.0) -> void:
 	if _cover_tween != null: _cover_tween.kill()
 	_cover_tween = create_tween()
 	_cover_tween.tween_property(self, "cloud_cover", clampf(value, 0.0, 1.0), seconds)
+
+
+func get_day() -> int:
+	return day
+
+
+func set_day(value: int):
+	day = value
 
 
 ## The sun's path is a circle in the XY plane, leaned over by sun_tilt_degrees.
@@ -138,6 +156,7 @@ func update_environment() -> void:
 	var daylight := smoothstep(-0.1, 0.25, h)
 
 	if _sky_mat != null:
+		var atlas: Vector2 = _sky_mat.get_shader_parameter("moon_atlas")
 		_sky_mat.set_shader_parameter("sky_top", top)
 		_sky_mat.set_shader_parameter("sky_horizon", horizon)
 		_sky_mat.set_shader_parameter("glow_color", horizon_sun_color)
@@ -147,6 +166,7 @@ func update_environment() -> void:
 		_sky_mat.set_shader_parameter("dusk", dusk)
 		_sky_mat.set_shader_parameter("daylight", daylight)
 		_sky_mat.set_shader_parameter("star_amount", 1.0 - smoothstep(-0.15, 0.05, h))
+		_sky_mat.set_shader_parameter("moon_frame", day % maxi(1, int(atlas.x * atlas.y)))
 
 	var env := sky.environment
 	env.fog_light_color = horizon
@@ -160,10 +180,10 @@ func update_environment() -> void:
 
 
 ## Night -> dusk -> day, picked by sun height. Dusk colours sit exactly at the horizon.
-func _ramp(night: Color, dusk: Color, day: Color, h: float) -> Color:
+func _ramp(night_color: Color, dusk_color: Color, day_color: Color, h: float) -> Color:
 	if h >= 0.0:
-		return dusk.lerp(day, smoothstep(0.0, 0.45, h))
-	return dusk.lerp(night, smoothstep(0.0, 0.3, -h))
+		return dusk_color.lerp(day_color, smoothstep(0.0, 0.45, h))
+	return dusk_color.lerp(night_color, smoothstep(0.0, 0.3, -h))
 
 
 func _grey_out(c: Color, amount: float) -> Color:

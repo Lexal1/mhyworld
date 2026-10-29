@@ -12,7 +12,15 @@ uniform float star_amount : hint_range(0.0, 1.0) = 0.0; // 1 at night
 
 // Look, tweak these on the material.
 uniform float sun_size = 0.045;   // angular radius in radians (real sun is ~0.005, too tiny for a game)
+uniform sampler2D sun_texture : source_color, filter_nearest, repeat_disable;
+uniform vec2 sun_atlas = vec2(1.0, 1.0);   // columns, rows
+uniform float sun_frame = 0.0;
+
 uniform float moon_size = 0.05;
+uniform sampler2D moon_texture : source_color, filter_nearest, repeat_disable;
+uniform vec2 moon_atlas = vec2(4.0, 2.0);  // columns, rows
+uniform float moon_frame = 0.0;
+
 uniform float cloud_cover : hint_range(0.0, 1.0) = 0.5; // set by day_night.gd: 0 = clear, 1 = overcast
 uniform float cloud_scale = 1.5;
 uniform vec2 cloud_wind = vec2(0.02, 0.0); // drift, in noise units per second
@@ -75,6 +83,26 @@ vec3 stars(vec3 dir) {
 	return tint * s * (0.6 + 2.0 * fract(h * 97.0));
 }
 
+// Returns (u, v, inside). Maps a view direction onto a square facing `body_dir`.
+// `size` is the half-width in radians, same meaning as before.
+vec3 body_uv(vec3 dir, vec3 body_dir, float size, vec3 up_axis) {
+	float c = dot(dir, body_dir);
+	if (c <= 0.0) return vec3(0.0);
+	vec3 off = dir / c - body_dir;
+	vec3 right = normalize(cross(body_dir, up_axis));
+	vec2 p = vec2(dot(off, right), dot(off, up_axis)) / tan(size) * 0.5 + 0.5;
+	p.y = 1.0 - p.y; // texture v runs downward
+	float inside = step(0.0, p.x) * step(p.x, 1.0) * step(0.0, p.y) * step(p.y, 1.0);
+	return vec3(p, inside);
+}
+
+// Picks one cell of a row-major atlas (frame 0 = top-left).
+vec2 atlas_uv(vec2 uv, vec2 grid, float frame) {
+	float f = mod(floor(frame), grid.x * grid.y);
+	vec2 cell = vec2(mod(f, grid.x), floor(f / grid.x));
+	return (cell + uv) / grid;
+}
+
 void sky() {
 	vec3 dir = EYEDIR;
 	float y = max(dir.y, 0.0); // below the horizon we just keep the horizon colour (matches the fog)
@@ -102,18 +130,25 @@ void sky() {
 
 	// Sun, moon and stars are left out of the ambient-light cubemap so they don't light the world twice.
 	if (!AT_CUBEMAP_PASS) {
-		float sun_ang = acos(clamp(sun_cos, -1.0, 1.0));
-		float disc = step(sun_ang, sun_size); // PSX: hard edge, no antialiasing
-		col += mix(vec3(1.0, 0.95, 0.85), glow_color, dusk * 0.7) * disc * 4.0 * step(0.0, dir.y);
+		col += stars(dir) * star_amount * above; // first, so the moon draws over them
 
-		vec3 moon_dir = -sun_dir;
-		float moon_cos = dot(dir, moon_dir);
-		float moon_ang = acos(clamp(moon_cos, -1.0, 1.0));
-		float moon = step(moon_ang, moon_size);
-		float moon_halo = floor(pow(max(moon_cos, 0.0), 48.0) * 4.0) / 4.0 * 0.15;
+		// The sun's path rotates around this axis, so using it as "up" keeps the sprites upright.
+		vec3 up_axis = transpose(celestial_basis) * vec3(0.0, 0.0, 1.0);
+
+		vec3 m = body_uv(dir, -sun_dir, moon_size, up_axis);
+		float moon_halo = floor(pow(max(dot(dir, -sun_dir), 0.0), 48.0) * 4.0) / 4.0 * 0.15;
 		col += vec3(0.5, 0.6, 1.0) * moon_halo * star_amount * above;
-		col += vec3(0.85, 0.9, 1.0) * moon * 1.5 * star_amount * step(0.0, dir.y);
-		col += stars(dir) * star_amount * above;
+		if (m.z > 0.5) {
+			vec4 t = textureLod(moon_texture, atlas_uv(m.xy, moon_atlas, moon_frame), 0.0);
+			col = mix(col, t.rgb * 1.5, t.a * star_amount * step(0.0, dir.y));
+		}
+
+		vec3 s = body_uv(dir, sun_dir, sun_size, up_axis);
+		if (s.z > 0.5) {
+			vec4 t = textureLod(sun_texture, atlas_uv(s.xy, sun_atlas, sun_frame), 0.0);
+			vec3 tint = mix(vec3(1.0, 0.95, 0.85), glow_color, dusk * 0.7);
+			col = mix(col, t.rgb * tint * 2.0, t.a * step(0.0, dir.y));
+		}
 	}
 
 	// Clouds: the sky is treated as a flat layer overhead

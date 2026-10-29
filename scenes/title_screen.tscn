@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://b42ins7fl6gre" path="res://scripts/title.gd" id="1_ak2if"]
 [ext_resource type="Script" uid="uid://bsco42r87rq4k" path="res://scripts/title_screen.gd" id="1_dc4i4"]
-[ext_resource type="Texture2D" uid="uid://pbmld36ovdnw" path="res://assets/resources/model_0.png" id="2_ig5kc"]
+[ext_resource type="Texture2D" uid="uid://3lp5asvxwll0" path="res://assets/resources/models/model_0.png" id="2_ig5kc"]
 [ext_resource type="Shader" uid="uid://bnobd3qinwotm" path="res://scripts/shaders/models.gdshader" id="2_s4lrb"]
 [ext_resource type="Theme" uid="uid://be74h2fudfjk0" path="res://assets/resources/theme_default.tres" id="4_mgrm8"]
 
@@ -28,6 +28,7 @@ shader_parameter/texture_tile = Vector2(1, 1)
 shader_parameter/snap_enabled = true
 shader_parameter/snap_resolution = 100.0
 shader_parameter/affine_weight = 0.50000002375
+shader_parameter/emission_energy = 1.0
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_gvftj"]
 resource_name = "material_0"
@@ -79,6 +80,7 @@ shader_parameter/texture_tile = Vector2(1, 1)
 shader_parameter/snap_enabled = true
 shader_parameter/snap_resolution = 100.0
 shader_parameter/affine_weight = 0.50000002375
+shader_parameter/emission_energy = 1.0
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_b3tyi"]
 _surfaces = [{
@@ -120,6 +122,7 @@ shader_parameter/texture_tile = Vector2(1, 1)
 shader_parameter/snap_enabled = true
 shader_parameter/snap_resolution = 100.0
 shader_parameter/affine_weight = 0.50000002375
+shader_parameter/emission_energy = 1.0
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_34wct"]
 _surfaces = [{
@@ -161,6 +164,7 @@ shader_parameter/texture_tile = Vector2(1, 1)
 shader_parameter/snap_enabled = true
 shader_parameter/snap_resolution = 100.0
 shader_parameter/affine_weight = 0.50000002375
+shader_parameter/emission_energy = 1.0
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_57qw4"]
 _surfaces = [{
@@ -202,6 +206,7 @@ shader_parameter/texture_tile = Vector2(1, 1)
 shader_parameter/snap_enabled = true
 shader_parameter/snap_resolution = 100.0
 shader_parameter/affine_weight = 0.50000002375
+shader_parameter/emission_energy = 1.0
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_j7el6"]
 _surfaces = [{
@@ -243,6 +248,7 @@ shader_parameter/texture_tile = Vector2(1, 1)
 shader_parameter/snap_enabled = true
 shader_parameter/snap_resolution = 100.0
 shader_parameter/affine_weight = 0.50000002375
+shader_parameter/emission_energy = 1.0
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_4ifn8"]
 _surfaces = [{
@@ -284,6 +290,7 @@ shader_parameter/texture_tile = Vector2(1, 1)
 shader_parameter/snap_enabled = true
 shader_parameter/snap_resolution = 100.0
 shader_parameter/affine_weight = 0.50000002375
+shader_parameter/emission_energy = 1.0
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_hd28r"]
 _surfaces = [{
@@ -325,6 +332,7 @@ shader_parameter/texture_tile = Vector2(1, 1)
 shader_parameter/snap_enabled = true
 shader_parameter/snap_resolution = 100.0
 shader_parameter/affine_weight = 0.50000002375
+shader_parameter/emission_energy = 1.0
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_bug71"]
 _surfaces = [{
