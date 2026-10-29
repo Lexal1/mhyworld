@@ -1,15 +1,19 @@
 [gd_resource type="Environment" format=3 uid="uid://brc6bsfocnk1h"]
 
-[sub_resource type="PhysicalSkyMaterial" id="PhysicalSkyMaterial_lik7e"]
-rayleigh_color = Color(0.19921109, 0.3680886, 0.80555856, 1)
-mie_eccentricity = 0.99
-mie_color = Color(0.70756227, 0.65185845, 0.5522314, 1)
-turbidity = 1.0
-ground_color = Color(0.078732096, 0.124224104, 0.44083405, 1)
-energy_multiplier = 2.0
+[ext_resource type="Shader" path="res://scripts/shaders/sky.gdshader" id="1_sky"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_sky"]
+shader = ExtResource("1_sky")
+shader_parameter/sun_size = 0.045
+shader_parameter/moon_size = 0.05
+shader_parameter/cloud_scale = 1.5
+shader_parameter/cloud_wind = Vector2(0.02, 0)
+shader_parameter/cloud_evolve = 0.03
+shader_parameter/cloud_softness = 0.2
 
 [sub_resource type="Sky" id="Sky_g4v7s"]
-sky_material = SubResource("PhysicalSkyMaterial_lik7e")
+sky_material = SubResource("ShaderMaterial_sky")
+process_mode = 3
 radiance_size = 0
 
 [resource]
@@ -17,12 +21,13 @@ background_mode = 2
 sky = SubResource("Sky_g4v7s")
 ambient_light_source = 3
 reflected_light_source = 1
+tonemap_mode = 2
+tonemap_exposure = 0.75
 glow_enabled = true
-glow_bloom = 0.35
+glow_bloom = 0.1
 fog_enabled = true
 fog_mode = 1
-fog_light_color = Color(0.4129078, 0.55792093, 0.7919725, 1)
-fog_sun_scatter = 1.0
+fog_sun_scatter = 0.25
 fog_density = 1.0
 fog_sky_affect = 0.0
 fog_depth_curve = 3.0
