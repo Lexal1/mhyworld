@@ -8,7 +8,7 @@ func _ready() -> void:
 	if OS.is_debug_build():
 		ver.text = "Mhyworld c." + GitStatus.get_hash_string()
 	else:
-		ver.text = "Mhyworld " + ProjectSettings.get_setting("application/config/version")
+		ver.text = "Mhyworld a" + ProjectSettings.get_setting("application/config/version")
 
 
 func _process(_delta: float) -> void:
