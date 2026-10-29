@@ -4,13 +4,20 @@
 [ext_resource type="PackedScene" uid="uid://rgq75vgso8ky" path="res://assets/resources/models/occupants.glb" id="2_s76t6"]
 [ext_resource type="Script" uid="uid://d0ce4lxn6vepx" path="res://scripts/components/entities/health_component.gd" id="3_8q74g"]
 [ext_resource type="Script" uid="uid://cw6ih7np485lt" path="res://scripts/components/entities/intelligence/brain_component.gd" id="4_gyinq"]
+[ext_resource type="Script" uid="uid://c6m65q1fe8w84" path="res://scripts/components/entities/animator_component.gd" id="4_pvkfj"]
+[ext_resource type="Script" uid="uid://d2hcjbkw2yvs4" path="res://scripts/components/entities/facing_component.gd" id="5_0nal0"]
 [ext_resource type="Script" uid="uid://duo1u0xa3n66a" path="res://scripts/components/entities/intelligence/states/idle_state.gd" id="5_h7dbc"]
+[ext_resource type="Script" uid="uid://bqlgvm7i8wegl" path="res://scripts/components/entities/palette_tint_component.gd" id="6_4bemk"]
 [ext_resource type="Script" uid="uid://drfpa77ifj0q6" path="res://scripts/components/entities/intelligence/states/wander_state.gd" id="6_pvkfj"]
+[ext_resource type="Texture2D" uid="uid://dljv3kjmac1c3" path="res://assets/textures/palette.png" id="7_0nal0"]
+[ext_resource type="Script" uid="uid://bcpf7ytx1v6a6" path="res://scripts/components/entities/death_component.gd" id="7_n38f8"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_g4v7s"]
 
-[node name="Occupant" type="CharacterBody3D" unique_id=2103827704]
+[node name="Occupant" type="CharacterBody3D" unique_id=2103827704 node_paths=PackedStringArray("model")]
 script = ExtResource("1_lggnh")
+id = &"occupant"
+model = NodePath("Model")
 metadata/_custom_type_script = "uid://foqhkm45vf8y"
 
 [node name="Model" parent="." unique_id=1434311373 instance=ExtResource("2_s76t6")]
@@ -23,11 +30,27 @@ shape = SubResource("CapsuleShape3D_g4v7s")
 [node name="HealthComponent" type="Node" parent="." unique_id=1433452253]
 script = ExtResource("3_8q74g")
 
+[node name="AnimatorComponent" type="Node" parent="." unique_id=237270380]
+script = ExtResource("4_pvkfj")
+
+[node name="FacingComponent" type="Node" parent="." unique_id=833652575]
+script = ExtResource("5_0nal0")
+
+[node name="PaletteTintComponent" type="Node" parent="." unique_id=2141676603]
+script = ExtResource("6_4bemk")
+palette = ExtResource("7_0nal0")
+body_mesh_name = "toga"
+
+[node name="DeathComponent" type="Node" parent="." unique_id=554614681]
+script = ExtResource("7_n38f8")
+
 [node name="BrainComponent" type="Node" parent="." unique_id=1188311739]
 script = ExtResource("4_gyinq")
 
 [node name="Idle" type="Node" parent="BrainComponent" unique_id=395167447]
 script = ExtResource("5_h7dbc")
+animation = &"idle"
 
 [node name="Wander" type="Node" parent="BrainComponent" unique_id=1017395209]
 script = ExtResource("6_pvkfj")
+animation = &"walk"

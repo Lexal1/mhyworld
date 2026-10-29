@@ -6,8 +6,9 @@ const GROUND_FRICTION := 17.0
 const AIR_FRICTION := 5.0
 
 @export var id: StringName = &""
-@export var move_speed := 2.0
+@export var move_speed := 2.0 
 @export var gravity_scale := 1.0
+@export var model: Node3D ## Visual root. Components (animation, facing, tint, fade) act on it.
 
 var world: Node3D ## Set by World.spawn_entity.
 var wish_dir := Vector3.ZERO ## Where states want to go. Length 0..1, scaled by move_speed.

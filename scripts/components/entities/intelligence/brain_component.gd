@@ -30,7 +30,21 @@ func change_state(state_name: StringName) -> void:
 	if current != null: current.exit()
 	current = next
 	current.enter()
+	_play_state_animation()
 	state_changed.emit(old, state_name)
+
+
+## Shuts the brain down for good (e.g. on death).
+func stop() -> void:
+	if current != null: current.exit()
+	current = null
+	set_physics_process(false)
+
+
+func _play_state_animation() -> void:
+	var animator := entity.get_component(AnimatorComponent) as AnimatorComponent
+	if animator != null:
+		animator.play(current.animation, current.animation_loop, current.animation_speed)
 
 
 func _physics_process(delta: float) -> void:
