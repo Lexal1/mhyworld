@@ -9,6 +9,8 @@ const AIR_FRICTION := 5.0
 @export var move_speed := 2.0 
 @export var gravity_scale := 1.0
 @export var model: Node3D ## Visual root. Components (animation, facing, tint, fade) act on it.
+@export var step_height := 1.1 ## Just over one block.
+@export var step_jump_velocity := 7.0 ## Gravity is 20, so this clears ~1.2 blocks.
 
 var world: Node3D ## Set by World.spawn_entity.
 var wish_dir := Vector3.ZERO ## Where states want to go. Length 0..1, scaled by move_speed.
@@ -39,6 +41,8 @@ func _physics_process(delta: float) -> void:
 	if world != null and not world.is_position_loaded(global_position): return # no collision yet
 
 	var grounded := is_on_floor()
+	if grounded and is_on_wall() and can_step_up():
+		velocity.y = step_jump_velocity
 	if not grounded: velocity += get_gravity() * gravity_scale * delta
 
 	var target := wish_dir * move_speed
@@ -46,3 +50,12 @@ func _physics_process(delta: float) -> void:
 	velocity.x = lerpf(velocity.x, target.x, delta * friction)
 	velocity.z = lerpf(velocity.z, target.z, delta * friction)
 	move_and_slide()
+
+## True if the entity is pushing into something it could hop onto.
+func can_step_up() -> bool:
+	var dir := wish_dir
+	dir.y = 0.0
+	if dir.is_zero_approx(): return false
+	dir = dir.normalized() * 0.3
+	if test_move(global_transform, Vector3.UP * step_height): return false # no headroom
+	return not test_move(global_transform.translated(Vector3.UP * step_height), dir) # clear up there?

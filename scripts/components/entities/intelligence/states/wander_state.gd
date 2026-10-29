@@ -19,7 +19,7 @@ func exit() -> void:
 
 
 func update(delta: float) -> void:
-	if entity.is_on_wall(): _pick_direction() # walked into something, turn
+	if entity.is_on_wall() and not entity.can_step_up(): _pick_direction() # walked into something, turn
 	entity.wish_dir = _dir
 	_time_left -= delta
 	if _time_left <= 0.0: brain.change_state(next_state)

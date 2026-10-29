@@ -17,6 +17,7 @@
 [node name="Occupant" type="CharacterBody3D" unique_id=2103827704 node_paths=PackedStringArray("model")]
 script = ExtResource("1_lggnh")
 id = &"occupant"
+move_speed = 3.0
 model = NodePath("Model")
 metadata/_custom_type_script = "uid://foqhkm45vf8y"
 
@@ -49,8 +50,12 @@ script = ExtResource("4_gyinq")
 
 [node name="Idle" type="Node" parent="BrainComponent" unique_id=395167447]
 script = ExtResource("5_h7dbc")
+min_time = 3.0
+max_time = 10.0
 animation = &"idle"
 
 [node name="Wander" type="Node" parent="BrainComponent" unique_id=1017395209]
 script = ExtResource("6_pvkfj")
+max_time = 5.0
+speed_scale = 0.8
 animation = &"walk"
