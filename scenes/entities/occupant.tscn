@@ -1,0 +1,33 @@
+[gd_scene format=3 uid="uid://cb08mh86kiec4"]
+
+[ext_resource type="Script" uid="uid://foqhkm45vf8y" path="res://scripts/entities/entity.gd" id="1_lggnh"]
+[ext_resource type="PackedScene" uid="uid://rgq75vgso8ky" path="res://assets/resources/models/occupants.glb" id="2_s76t6"]
+[ext_resource type="Script" uid="uid://d0ce4lxn6vepx" path="res://scripts/components/entities/health_component.gd" id="3_8q74g"]
+[ext_resource type="Script" uid="uid://cw6ih7np485lt" path="res://scripts/components/entities/intelligence/brain_component.gd" id="4_gyinq"]
+[ext_resource type="Script" uid="uid://duo1u0xa3n66a" path="res://scripts/components/entities/intelligence/states/idle_state.gd" id="5_h7dbc"]
+[ext_resource type="Script" uid="uid://drfpa77ifj0q6" path="res://scripts/components/entities/intelligence/states/wander_state.gd" id="6_pvkfj"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_g4v7s"]
+
+[node name="Occupant" type="CharacterBody3D" unique_id=2103827704]
+script = ExtResource("1_lggnh")
+metadata/_custom_type_script = "uid://foqhkm45vf8y"
+
+[node name="Model" parent="." unique_id=1434311373 instance=ExtResource("2_s76t6")]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1949501383]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.7, 0)
+shape = SubResource("CapsuleShape3D_g4v7s")
+
+[node name="HealthComponent" type="Node" parent="." unique_id=1433452253]
+script = ExtResource("3_8q74g")
+
+[node name="BrainComponent" type="Node" parent="." unique_id=1188311739]
+script = ExtResource("4_gyinq")
+
+[node name="Idle" type="Node" parent="BrainComponent" unique_id=395167447]
+script = ExtResource("5_h7dbc")
+
+[node name="Wander" type="Node" parent="BrainComponent" unique_id=1017395209]
+script = ExtResource("6_pvkfj")

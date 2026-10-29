@@ -17,8 +17,12 @@ var _generating: Array[Chunk] = [] # chunks currently on a worker thread
 var _spawn_chunks: Array[Vector3i] = [] # must be ready before the player is released
 var _chunk_map := {}  # wrapped chunk position -> Chunk
 var _map_mutex := Mutex.new()
+var _entities: Node3D # parent for every spawned entity
 
 func _ready() -> void:
+	_entities = Node3D.new()
+	_entities.name = "Entities"
+	add_child(_entities)
 	air_idx = BlockRegistry.get_idx_of(&"air")
 	_place_player_at_spawn()
 	var pc := _player_chunk()
@@ -279,3 +283,24 @@ func save_chunk_to_file(chunk: Chunk) -> void:
 	WorldFile.new().write_chunk(chunk, file)
 
 #endregion
+
+
+## `setup` runs on the entity before it enters the tree, so components can be configured first.
+func spawn_entity(scene: PackedScene, pos: Vector3, setup := Callable()) -> Entity:
+	var node := scene.instantiate()
+	if not node is Entity:
+		printerr("%s root isn't an Entity" % scene.resource_path)
+		node.free()
+		return null
+	var e := node as Entity
+	e.world = self
+	e.position = pos
+	if setup.is_valid(): setup.call(e)
+	_entities.add_child(e)
+	return e
+
+
+## True once the chunk at `pos` is meshed, i.e. has collision.
+func is_position_loaded(pos: Vector3) -> bool:
+	var c := get_chunk(_chunk_of_block(Vector3i(pos.floor())))
+	return c != null and c.hasChunkGenerated and c.visible and c.generated_at == c.chunk_position

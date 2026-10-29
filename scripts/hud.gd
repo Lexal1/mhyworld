@@ -1,8 +1,8 @@
-extends Control
+class_name HUD extends Control
 
 @onready var ver: Label = $Ver
 @onready var fps: Label = $FPS
-
+@onready var crosshair: Crosshair = $MarginContainer/Control/Crosshair
 
 func _ready() -> void:
 	if OS.is_debug_build():

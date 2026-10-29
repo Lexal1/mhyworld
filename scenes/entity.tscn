@@ -1,3 +1,8 @@
 [gd_scene format=3 uid="uid://ci2748medac7l"]
 
-[node name="Entity" type="Node3D"]
+[ext_resource type="Script" path="res://scripts/entities/entity.gd" id="1_entity"]
+
+[node name="Entity" type="CharacterBody3D"]
+collision_layer = 2
+collision_mask = 1
+script = ExtResource("1_entity")

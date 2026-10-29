@@ -43,12 +43,13 @@ var break_progress := 0.0
 var breaking := false
 var noclip := false
 var fast_break := false
+var target_entity: Entity = null
 
 @onready var world: Node3D = %World
 @onready var head: Node3D = $Head
 @onready var camera: Camera3D = $Head/Camera
 @onready var raycast: RayCast3D = $Head/Camera/RayCast
-@onready var hud: Control = %HUD
+@onready var hud: HUD = %HUD
 @onready var blok: AudioStreamPlayer3D = $Head/Camera/RayCast/blok
 @onready var block_outline: MeshInstance3D = $BlockOutline
 @onready var outline_material: StandardMaterial3D = block_outline.mesh.material
@@ -80,6 +81,7 @@ func _physics_process(delta: float) -> void:
 	_handle_jump()
 	_handle_movement(delta)
 	_update_block_target(delta)
+	_update_target_entity()
 	_controller_look(delta)
 	_update_camera(delta)
 	move_and_slide()
@@ -295,6 +297,17 @@ func toggle_fastbreak():
 
 
 #endregion
+
+
+func _update_target_entity() -> void:
+	target_entity = null
+	if not Global.is_paused():
+		target_entity = raycast.get_collider() as Entity
+	var health: HealthComponent = null
+	if target_entity != null:
+		health = target_entity.get_component(HealthComponent) as HealthComponent
+	hud.crosshair.heartbeat_source = health # null = back to your own heartbeat
+
 
 #region Audio
 

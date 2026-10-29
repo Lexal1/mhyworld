@@ -1,0 +1,4 @@
+[gd_scene format=3 uid="uid://cikk8had45r64"]
+
+[node name="DroppedItem" type="CharacterBody3D" unique_id=2119296855]
+collision_layer = 2
