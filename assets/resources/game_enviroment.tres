@@ -18,8 +18,8 @@ shader_parameter/cloud_cover = 0.5
 shader_parameter/cloud_scale = 1.5
 shader_parameter/cloud_wind = Vector2(0.02, 0)
 shader_parameter/cloud_evolve = 0.03
-shader_parameter/cloud_softness = 0.2
-shader_parameter/sky_bands = 10.0
+shader_parameter/cloud_softness = 0.0
+shader_parameter/sky_bands = 25.0
 shader_parameter/cloud_pixels = 32.0
 
 [sub_resource type="Sky" id="Sky_g4v7s"]

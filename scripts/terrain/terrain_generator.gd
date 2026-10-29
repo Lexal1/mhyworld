@@ -8,6 +8,7 @@ const BLEND_SHARPNESS := 12.0   ## Higher = sharper biome borders.
 const CAVE_THRESHOLD := 0.4    ## Lower = more caves.
 const CAVE_SURFACE_BONUS := 0.35  ## Extra threshold at the surface. Higher = fewer surface caves.
 const CAVE_SURFACE_FADE := 12.0   ## Blocks of depth over which the bonus fades to 0.
+const LAT_WEIGHT := 0.7 ## 0 = noise only, 1 = perfect latitude stripes.
 
 static var _cache := {} # seed -> TerrainGenerator
 
@@ -102,13 +103,22 @@ func _wrap3(noise: FastNoiseLite, gx: int, gy: int, gz: int) -> float:
 	var d := noise.get_noise_3d(x - n, gy, z - n)
 	return lerpf(lerpf(a, b, tx), lerpf(c, d, tx), tz)
 
+
+## Latitude climate for a world Z. x = temperature, y = humidity, both -1..1.
+## Period is exactly world_size, so it matches across the wraparound seam.
+func _latitude_climate(gz: int) -> Vector2:
+	var angle := float(posmod(gz, Global.world_size)) / Global.world_size * TAU
+	return Vector2(cos(angle), cos(angle * 3.0))
+
+
 #endregion
 
 
 ## Returns Vector2i(ground height, dominant biome index) for a world column.
 func sample_column(gx: int, gz: int) -> Vector2i:
-	var t := clampf(_wrap2(temperature, gx, gz) * CLIMATE_GAIN, -1.0, 1.0)
-	var hum := clampf(_wrap2(humidity, gx, gz) * CLIMATE_GAIN, -1.0, 1.0)
+	var lat := _latitude_climate(gz)
+	var t := clampf(lerpf(_wrap2(temperature, gx, gz) * CLIMATE_GAIN, lat.x, LAT_WEIGHT), -1.0, 1.0)
+	var hum := clampf(lerpf(_wrap2(humidity, gx, gz) * CLIMATE_GAIN, lat.y, LAT_WEIGHT), -1.0, 1.0)
 
 	# Every biome gets a weight based on how close the climate is to its own.
 	# Blending base/amplitude (not picking one biome) makes the borders slope smoothly.

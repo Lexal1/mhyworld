@@ -30,7 +30,7 @@ sky = NodePath("../Sky")
 label = NodePath("../../../HUD/Time")
 start_hour = 6.5
 sun_tilt_degrees = 0.0
-cloud_cover = 0.1
+cloud_cover = 0.258
 day_ambient = 0.8
 
 [node name="Sky" type="WorldEnvironment" parent="World/Environment" unique_id=1793283456]

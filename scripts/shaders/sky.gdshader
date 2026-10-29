@@ -87,7 +87,7 @@ void sky() {
 	vec2 flat_dir = normalize(dir.xz + vec2(1e-5));
 	vec2 flat_sun = normalize(sun_dir.xz + vec2(1e-5));
 	float facing = pow(max(dot(flat_dir, flat_sun), 0.0), 3.0);
-	float band = 1.0 - smoothstep(0.0, 0.45, y);
+	float band = 1.0 - smoothstep(0.0, 0.75, y);
 	float glow_w = floor(dusk * facing * band * 0.85 * 5.0 + 0.5) / 5.0; // PSX: banded sunset
 	col = mix(col, glow_color, glow_w);
 
@@ -97,7 +97,7 @@ void sky() {
 	float sun_up = smoothstep(-0.15, 0.05, sun_dir.y);
 	vec3 halo_col = mix(vec3(1.0, 0.9, 0.7), glow_color, dusk);
 	float halo = pow(max(sun_cos, 0.0), 24.0) * 0.35 + pow(max(sun_cos, 0.0), 6.0) * 0.12;
-	halo = floor(halo * 12.0) / 12.0; // PSX: stepped halo
+	halo = floor(halo * 24.0) / 32.0; // PSX: stepped halo
 	col += halo_col * halo * sun_up * above;
 
 	// Sun, moon and stars are left out of the ambient-light cubemap so they don't light the world twice.
