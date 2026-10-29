@@ -11,7 +11,7 @@ shader_parameter/albedo_texture = ExtResource("3_y5xp6")
 shader_parameter/texture_tile = Vector2(1, 1)
 shader_parameter/snap_enabled = true
 shader_parameter/snap_resolution = 100.0
-shader_parameter/affine_weight = 0.750000035625
+shader_parameter/affine_weight = 1.0
 shader_parameter/emission_energy = 1.0
 
 [node name="Chunk" type="StaticBody3D" unique_id=939724336]

@@ -42,8 +42,6 @@ transform = Transform3D(4.371139e-08, -1, -8.742278e-08, -1, -4.371139e-08, 0, -
 [node name="Sun" type="DirectionalLight3D" parent="World/Environment/SunPivot" unique_id=840323454]
 transform = Transform3D(-4.3711385e-08, 0, 0.99999994, 0, 1, 0, -0.99999994, 0, -4.3711385e-08, 0, 0, 0)
 shadow_enabled = true
-directional_shadow_mode = 1
-directional_shadow_split_1 = 0.079
 directional_shadow_pancake_size = 1.0
 
 [node name="Player" parent="." unique_id=825439093 instance=ExtResource("2_nni6g")]
