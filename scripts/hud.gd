@@ -5,7 +5,10 @@ extends Control
 
 
 func _ready() -> void:
-	ver.text = "Mhyworld c." + GitStatus.get_hash_string()
+	if OS.is_debug_build():
+		ver.text = "Mhyworld c." + GitStatus.get_hash_string()
+	else:
+		ver.text = "Mhyworld " + ProjectSettings.get_setting("application/config/version")
 
 
 func _process(_delta: float) -> void:
