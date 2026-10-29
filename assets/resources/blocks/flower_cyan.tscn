@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://b5nqgefcth643" path="res://scripts/blocks/block_def.gd" id="1_ahgex"]
 [ext_resource type="Script" uid="uid://7qf1mkj2bcm8" path="res://scripts/blocks/components/sprite_component.gd" id="2_phc7k"]
-[ext_resource type="Texture2D" uid="uid://dooex1b22t0kv" path="res://assets/resources/mhycraftblocks.png" id="3_1r3qy"]
+[ext_resource type="Texture2D" uid="uid://dooex1b22t0kv" path="res://assets/textures/mhycraftblocks.png" id="3_1r3qy"]
 
 [node name="CyanFlower" type="Node" unique_id=1920317047]
 script = ExtResource("1_ahgex")

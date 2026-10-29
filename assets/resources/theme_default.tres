@@ -1,7 +1,7 @@
 [gd_resource type="Theme" format=3 uid="uid://be74h2fudfjk0"]
 
 [ext_resource type="FontFile" uid="uid://bocinqr2prvyh" path="res://assets/resources/consola.ttf" id="1_cvpox"]
-[ext_resource type="Texture2D" uid="uid://civayb3yvf1ph" path="res://assets/resources/gui.png" id="2_i0dia"]
+[ext_resource type="Texture2D" uid="uid://civayb3yvf1ph" path="res://assets/textures/gui.png" id="2_i0dia"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_l8mtw"]
 texture = ExtResource("2_i0dia")

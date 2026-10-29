@@ -2,8 +2,8 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dooex1b22t0kv"
-path.s3tc="res://.godot/imported/mhycraftblocks.png-4541e5e7fffe88be1b8f61b19dd81b30.s3tc.ctex"
+uid="uid://pe3ttkphaibb"
+path.s3tc="res://.godot/imported/player.png-965fb12be218bfe81cbf4b66ef213928.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
@@ -11,8 +11,8 @@ metadata={
 
 [deps]
 
-source_file="res://assets/resources/mhycraftblocks.png"
-dest_files=["res://.godot/imported/mhycraftblocks.png-4541e5e7fffe88be1b8f61b19dd81b30.s3tc.ctex"]
+source_file="res://assets/textures/player.png"
+dest_files=["res://.godot/imported/player.png-965fb12be218bfe81cbf4b66ef213928.s3tc.ctex"]
 
 [params]
 
