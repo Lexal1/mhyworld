@@ -129,8 +129,9 @@ func update() -> void:
 func _update_mesh() -> void:
 	if Global.gameIsQuitting: return
 
-	blocksMutex.lock()
 	_snapshot_neighbors()
+
+	blocksMutex.lock()
 	var snap := blocks.duplicate() # the only time the lock is held
 	blocksMutex.unlock()
 
@@ -248,8 +249,8 @@ func _snapshot_neighbors() -> void:
 		var snap := PackedInt32Array()
 		if can_look:
 			var n: Chunk = _world.lookup_chunk(_chunk_position + d)
-			# try_lock never waits, so two chunks meshing each other can't deadlock.
-			if n != null and n != self and n.hasChunkGenerated and n.blocksMutex.try_lock():
+			if n != null and n != self and n.hasChunkGenerated:
+				n.blocksMutex.lock()
 				if n.generated_at == n._chunk_position: # skip chunks that moved and have stale data
 					snap = n.blocks.duplicate()
 				n.blocksMutex.unlock()

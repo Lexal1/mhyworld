@@ -18,6 +18,8 @@ uniform float cloud_scale = 1.5;
 uniform vec2 cloud_wind = vec2(0.02, 0.0); // drift, in noise units per second
 uniform float cloud_evolve = 0.03;         // how fast the shapes morph in place
 uniform float cloud_softness = 0.2;        // higher = fluffier edges
+uniform float sky_bands = 10.0;            // PSX: gradient colour steps from horizon to zenith
+uniform float cloud_pixels = 32.0;         // PSX: cloud cells per noise unit (lower = chunkier)
 
 float hash31(vec3 p) {
 	p = fract(p * 0.1031);
@@ -68,7 +70,7 @@ vec3 stars(vec3 dir) {
 	vec3 id = floor(d);
 	vec3 f = fract(d) - 0.5;
 	float h = hash31(id);
-	float s = step(0.992, h) * smoothstep(0.4, 0.05, length(f));
+	float s = step(0.992, h) * step(length(f), 0.3); // PSX: hard-edged dots
 	vec3 tint = mix(vec3(0.7, 0.8, 1.0), vec3(1.0, 0.9, 0.7), hash31(id + 7.0));
 	return tint * s * (0.6 + 2.0 * fract(h * 97.0));
 }
@@ -78,14 +80,16 @@ void sky() {
 	float y = max(dir.y, 0.0); // below the horizon we just keep the horizon colour (matches the fog)
 
 	// Base gradient
-	vec3 col = mix(sky_horizon, sky_top, pow(y, 0.45));
+	float yq = floor(y * sky_bands + 0.5) / sky_bands; // PSX: hard colour bands, not a smooth gradient
+	vec3 col = mix(sky_horizon, sky_top, pow(yq, 0.45));
 
 	// Warm glow on the side of the sky facing the sun, strongest at sunrise/sunset
 	vec2 flat_dir = normalize(dir.xz + vec2(1e-5));
 	vec2 flat_sun = normalize(sun_dir.xz + vec2(1e-5));
 	float facing = pow(max(dot(flat_dir, flat_sun), 0.0), 3.0);
 	float band = 1.0 - smoothstep(0.0, 0.45, y);
-	col = mix(col, glow_color, dusk * facing * band * 0.85);
+	float glow_w = floor(dusk * facing * band * 0.85 * 5.0 + 0.5) / 5.0; // PSX: banded sunset
+	col = mix(col, glow_color, glow_w);
 
 	// Halo around the sun
 	float sun_cos = dot(dir, sun_dir);
@@ -93,26 +97,29 @@ void sky() {
 	float sun_up = smoothstep(-0.15, 0.05, sun_dir.y);
 	vec3 halo_col = mix(vec3(1.0, 0.9, 0.7), glow_color, dusk);
 	float halo = pow(max(sun_cos, 0.0), 24.0) * 0.35 + pow(max(sun_cos, 0.0), 6.0) * 0.12;
+	halo = floor(halo * 12.0) / 12.0; // PSX: stepped halo
 	col += halo_col * halo * sun_up * above;
 
 	// Sun, moon and stars are left out of the ambient-light cubemap so they don't light the world twice.
 	if (!AT_CUBEMAP_PASS) {
 		float sun_ang = acos(clamp(sun_cos, -1.0, 1.0));
-		float disc = 1.0 - smoothstep(sun_size * 0.8, sun_size, sun_ang);
-		col += mix(vec3(1.0, 0.95, 0.85), glow_color, dusk * 0.7) * disc * 4.0 * above;
+		float disc = step(sun_ang, sun_size); // PSX: hard edge, no antialiasing
+		col += mix(vec3(1.0, 0.95, 0.85), glow_color, dusk * 0.7) * disc * 4.0 * step(0.0, dir.y);
 
 		vec3 moon_dir = -sun_dir;
 		float moon_cos = dot(dir, moon_dir);
 		float moon_ang = acos(clamp(moon_cos, -1.0, 1.0));
-		float moon = 1.0 - smoothstep(moon_size * 0.85, moon_size, moon_ang);
-		col += vec3(0.5, 0.6, 1.0) * pow(max(moon_cos, 0.0), 48.0) * 0.15 * star_amount * above;
-		col += vec3(0.85, 0.9, 1.0) * moon * 1.5 * star_amount * above;
+		float moon = step(moon_ang, moon_size);
+		float moon_halo = floor(pow(max(moon_cos, 0.0), 48.0) * 4.0) / 4.0 * 0.15;
+		col += vec3(0.5, 0.6, 1.0) * moon_halo * star_amount * above;
+		col += vec3(0.85, 0.9, 1.0) * moon * 1.5 * star_amount * step(0.0, dir.y);
 		col += stars(dir) * star_amount * above;
 	}
 
 	// Clouds: the sky is treated as a flat layer overhead
 	if (dir.y > 0.0) {
-		vec2 plane = dir.xz / (dir.y + 0.12) * cloud_scale + TIME * cloud_wind;
+		vec2 plane = dir.xz / (dir.y + 0.12) * cloud_scale;
+		plane = floor(plane * cloud_pixels) / cloud_pixels + TIME * cloud_wind; // PSX: chunky cells, the noise drifts through them
 		vec3 p = vec3(plane, TIME * cloud_evolve);
 
 		// Coverage: a lower threshold lets more of the noise count as cloud.
@@ -122,16 +129,20 @@ void sky() {
 		float cov = smoothstep(thr, thr + cloud_softness, density);
 		cov *= smoothstep(0.0, 0.05, cloud_cover); // exactly clear at 0
 		cov *= smoothstep(0.0, 0.15, dir.y);       // fade at the horizon where the noise gets tiny
+		cov = floor(cov * 3.0 + 0.5) / 3.0;        // PSX: a few opacity steps instead of soft edges
 
 		// Cheap lighting: if it's thinner toward the sun, we're near a sunlit edge.
 		float density_sun = fbm(p + vec3(flat_sun * 0.12, 0.0));
-		float lit = clamp(0.5 + (density - density_sun) * 4.0, 0.0, 1.0);
+		float lit = step(density_sun, density); // PSX: two tones, lit or shaded
 
 		// Heavy cover = darker, greyer clouds.
 		float overcast = smoothstep(0.6, 1.0, cloud_cover);
 		vec3 lit_col = mix(vec3(1.0), glow_color, dusk * 0.75) * mix(1.0, 0.6, overcast);
 		vec3 shade_col = lit_col * mix(vec3(0.55, 0.6, 0.75), vec3(0.5, 0.52, 0.58), overcast);
 		vec3 cloud = mix(shade_col, lit_col, lit) * mix(0.05, 1.0, daylight);
+		// The ambient light is sampled from this sky. Bright white clouds would flood the world with light
+		// (more cloud = brighter), so the ambient copy of the clouds is much dimmer than what you see.
+		if (AT_CUBEMAP_PASS) cloud *= 0.35;
 		col = mix(col, cloud, cov * mix(0.95, 1.0, overcast));
 	}
 

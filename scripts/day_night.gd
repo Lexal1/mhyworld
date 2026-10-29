@@ -168,7 +168,9 @@ func _ramp(night: Color, dusk: Color, day: Color, h: float) -> Color:
 
 func _grey_out(c: Color, amount: float) -> Color:
 	var g := c.get_luminance() * 0.85
-	return c.lerp(Color(g, g, g), amount * 0.6)
+	var grey := c.lerp(Color(g, g, g), amount * 0.6)
+	var k := lerpf(1.0, 0.75, amount) # grey AND darker
+	return Color(grey.r * k, grey.g * k, grey.b * k)
 
 
 func _aim(light: Node3D, travel_dir: Vector3) -> void:
