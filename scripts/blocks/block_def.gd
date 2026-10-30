@@ -7,7 +7,7 @@ class_name BlockDef extends Node
 @export var hardness := 1.0
 @export_range(0.0, 1.0) var emission := 0.0
 @export var render_cube := true ## false = no cube mesh (the block draws itself, e.g. via a component).
-@export var size := 4 ## Inventory space, in KB.
+@export var size := 4096 ## Inventory space, in bytes.
 @export var recycle: Dictionary[StringName, int] = {} ## component id -> amount. Empty = can't be recycled.
 
 func build() -> SceneBlock:

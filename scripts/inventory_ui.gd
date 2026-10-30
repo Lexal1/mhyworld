@@ -6,6 +6,10 @@ const BLOCK_TEX := preload("res://assets/textures/mhycraftblocks.png")
 const ICON_PX := 16.0     ## Size of one icon in gui.png. Adjust if yours differ.
 const ICON_ROW_Y := 144.0  ## Where the icon row starts (bottom half of the sheet).
 const ICON_SCALE := 2.0
+const COMP_TEX := preload("res://assets/textures/components.png")
+const COMP_PX := 32.0
+## Order matches the sheet. "aer" is unused for now, but it still has to be listed so the later icons line up.
+const COMPONENT_ORDER: Array[StringName] = [&"ordo", &"terra", &"aer", &"herba", &"perditio", &"lux", &"metallum"]
 
 enum Icon { FOLDER, TEXT, FILE }
 enum Cmd { OPEN, SPLIT, RECYCLE, RENAME, DELETE, NEW_FOLDER, NEW_TEXT }
@@ -112,7 +116,7 @@ func _refresh() -> void:
 	_path.text = _current.path()
 	_bar.max_value = _inv.capacity
 	_bar.value = _inv.used()
-	_usage.text = "%d / %d KB used" % [_inv.used(), _inv.capacity]
+	_usage.text = "%s / %s used" % [format_size(_inv.used()), format_size(_inv.capacity)]
 
 	for c in _view.get_children():
 		_view.remove_child(c) # out of the layout now, freed at end of frame
@@ -234,6 +238,11 @@ static func make_icon(f: InvFile) -> Control:
 		var block_tex := _block_icon(f.item_id)
 		if block_tex != null:
 			holder.add_child(_tex_rect(block_tex, Vector2(s * 0.25, s * 0.35), Vector2(s, s) * 0.5))
+	if f.kind == InvFile.Kind.COMPONENT:
+		var comp_tex := _component_icon(f.item_id)
+		if comp_tex != null:
+			# 32px drawn at 32px, so the pixels stay crisp (no uneven scaling).
+			holder.add_child(_tex_rect(comp_tex, Vector2((s - COMP_PX) * 0.5, s - COMP_PX - 2.0), Vector2(COMP_PX, COMP_PX)))
 	return holder
 
 
@@ -265,6 +274,14 @@ static func _block_icon(id: StringName) -> AtlasTexture:
 	t.region = Rect2(b.atlas_position.TOP * tile, tile)
 	return t
 
+static func _component_icon(id: StringName) -> AtlasTexture:
+	var i := COMPONENT_ORDER.find(id)
+	if i < 0: return null # unknown component: just shows the plain file sprite
+	var t := AtlasTexture.new()
+	t.atlas = COMP_TEX
+	t.region = Rect2(i * COMP_PX, 0, COMP_PX, COMP_PX)
+	return t
+
 #endregion
 
 
@@ -281,7 +298,7 @@ class FileTile extends VBoxContainer:
 
 	func _init(f: InvFile, label_override := "") -> void:
 		file = f
-		_is_up = label_override != ""
+		if not _is_up: tooltip_text = InventoryUI.format_size(f.size_bytes())
 		mouse_filter = Control.MOUSE_FILTER_STOP
 		custom_minimum_size = Vector2(80, 0)
 		add_theme_constant_override("separation", 0)
@@ -295,7 +312,7 @@ class FileTile extends VBoxContainer:
 		l.custom_minimum_size.x = 80
 		l.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		add_child(l)
-		if not _is_up: tooltip_text = "%d KB" % f.size_kb()
+		if not _is_up: tooltip_text = "%d KB" % f.size_bytes()
 
 	func _gui_input(event: InputEvent) -> void:
 		if not (event is InputEventMouseButton and event.pressed): return
@@ -335,3 +352,15 @@ class FolderView extends HFlowContainer:
 		dropped.emit(data["inv_file"])
 
 #endregion
+
+## Formats a size in bytes as B, KB, MB or GB (1024 steps).
+static func format_size(bytes: int) -> String:
+	if bytes >= Inventory.GB: return "%s GB" % _trim(bytes / float(Inventory.GB))
+	if bytes >= Inventory.MB: return "%s MB" % _trim(bytes / float(Inventory.MB))
+	if bytes >= Inventory.KB: return "%s KB" % _trim(bytes / float(Inventory.KB))
+	return "%d B" % bytes
+
+
+## One decimal place, but no trailing ".0" ("2 MB", not "2.0 MB").
+static func _trim(v: float) -> String:
+	return ("%.1f" % v).trim_suffix(".0")

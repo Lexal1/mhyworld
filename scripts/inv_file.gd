@@ -2,8 +2,8 @@ class_name InvFile extends RefCounted
 ## One entry in the inventory's file tree: a folder, an item stack, a component stack or a text file.
 
 enum Kind { FOLDER, ITEM, COMPONENT, TEXT }
-const COMPONENT_SIZE := 1 ## KB per component.
-const TEXT_CHARS_PER_KB := 64
+const COMPONENT_SIZE := 64 ## Bytes per component.
+const TEXT_HEADER := 32    ## Bytes every text file costs, even when empty.
 
 var kind := Kind.FOLDER
 var name := ""                 # folders and text files
@@ -57,7 +57,7 @@ func display_name() -> String:
 	return String(item_id) if is_stack() else name
 
 
-func size_kb() -> int:
+func size_bytes() -> int:
 	match kind:
 		Kind.ITEM:
 			var b: Block = BlockRegistry.get_by_id(item_id)
@@ -65,9 +65,9 @@ func size_kb() -> int:
 		Kind.COMPONENT:
 			return count * COMPONENT_SIZE
 		Kind.TEXT:
-			return maxi(1, ceili(text.length() / float(TEXT_CHARS_PER_KB)))
+			return TEXT_HEADER + text.to_utf8_buffer().size()
 	var total := 0
-	for c in children: total += c.size_kb()
+	for c in children: total += c.size_bytes()
 	return total
 
 

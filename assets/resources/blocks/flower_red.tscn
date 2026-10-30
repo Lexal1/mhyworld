@@ -10,6 +10,9 @@ id = &"flower_red"
 solid = false
 hardness = 0.5
 render_cube = false
+recycle = Dictionary[StringName, int]({
+&"herba": 1
+})
 metadata/_custom_type_script = "uid://b5nqgefcth643"
 
 [node name="SpriteComponent" type="Node" parent="." unique_id=1151681988]

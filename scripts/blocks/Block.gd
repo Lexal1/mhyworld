@@ -6,7 +6,7 @@ class_name Block extends Resource
 @export var hardness: float = 1.0
 @export var render_cube := true ## false = no cube mesh (the block draws itself, e.g. via a component).
 @export_range(0.0, 1.0) var emission := 0.0 ## 0 = normal, 1 = full brightness regardless of light.
-@export var size := 4 ## Inventory space, in KB.
+@export var size := 4096 ## Inventory space, in bytes.
 @export var recycle: Dictionary[StringName, int] = {} ## component id -> amount. Empty = can't be recycled.
 
 func _init(p_id: StringName = "", p_solid: bool = true, p_atlas_position: BlockAtlasPosition = null) -> void:

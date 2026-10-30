@@ -3,11 +3,14 @@ class_name Inventory extends RefCounted
 
 signal changed
 
-var capacity := 128
+const KB := 1024
+const MB := 1024 * KB
+const GB := 1024 * MB
+
+var capacity := 1 * MB
 var root := InvFile.folder("C:")
 
-
-func used() -> int: return root.size_kb()
+func used() -> int: return root.size_bytes()
 
 func free_space() -> int: return maxi(capacity - used(), 0)
 
@@ -70,7 +73,7 @@ func make_folder(in_folder: InvFile, folder_name: String) -> InvFile:
 
 ## Needs 1 KB free. Returns null if there's no room.
 func make_text(in_folder: InvFile, file_name: String) -> InvFile:
-	if free_space() < 1: return null
+	if free_space() < InvFile.TEXT_HEADER: return null
 	var f := InvFile.text_file(file_name)
 	_attach(in_folder, f)
 	changed.emit()
@@ -94,8 +97,14 @@ func delete(f: InvFile) -> bool:
 ## Saves as much of `text` as still fits on the drive.
 func set_text(f: InvFile, text: String) -> void:
 	if f.kind != InvFile.Kind.TEXT: return
-	var max_chars := (f.size_kb() + free_space()) * InvFile.TEXT_CHARS_PER_KB
-	f.text = text.substr(0, max_chars)
+	var budget := free_space() + f.size_bytes() - InvFile.TEXT_HEADER
+	var used_bytes := 0
+	var keep := 0
+	for ch in text:
+		used_bytes += ch.to_utf8_buffer().size()
+		if used_bytes > budget: break
+		keep += 1
+	f.text = text.substr(0, keep)
 	changed.emit()
 
 
@@ -137,7 +146,7 @@ func recycle(f: InvFile) -> bool:
 
 	var parts := 0
 	for n in b.recycle.values(): parts += n
-	if parts * f.count * InvFile.COMPONENT_SIZE > free_space() + f.size_kb(): return false
+	if parts * f.count * InvFile.COMPONENT_SIZE > free_space() + f.size_bytes(): return false
 
 	var folder := f.parent
 	_detach(f)
