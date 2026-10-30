@@ -20,6 +20,7 @@ func _physics_process(delta: float) -> void:
 		var left: int = player.inventory.add(item.item_id, item.count)
 		if left == item.count: return # nothing fit, leave it on the ground
 		picked_up.emit(player, item.item_id, item.count - left)
+		player.play_pickup_sfx()
 		if left > 0:
 			item.count = left # partial pickup
 			return

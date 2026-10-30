@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://bvocj4r036lxu" path="res://scripts/blocks/block.gd" id="1_55gyr"]
 [ext_resource type="Script" uid="uid://c2j5n5wf30urt" path="res://scripts/blocks/block_atlas_position.gd" id="1_t20kv"]
+[ext_resource type="AudioStream" uid="uid://cxc3v4v4rsg5" path="res://assets/audio/sfx/tiss.wav" id="3_70rhc"]
 
 [sub_resource type="Resource" id="Resource_t20kv"]
 script = ExtResource("1_t20kv")
@@ -21,4 +22,5 @@ recycle = Dictionary[StringName, int]({
 &"herba": 5,
 &"terra": 5
 })
+step_sound = ExtResource("3_70rhc")
 metadata/_custom_type_script = "uid://bvocj4r036lxu"

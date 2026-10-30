@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://c2j5n5wf30urt" path="res://scripts/blocks/block_atlas_position.gd" id="1_nyxsy"]
 [ext_resource type="Script" uid="uid://bvocj4r036lxu" path="res://scripts/blocks/block.gd" id="1_ypyq1"]
+[ext_resource type="AudioStream" uid="uid://irgygfsu4bru" path="res://assets/audio/sfx/thumph.wav" id="3_07bm0"]
 
 [sub_resource type="Resource" id="Resource_ypyq1"]
 script = ExtResource("1_nyxsy")
@@ -20,4 +21,5 @@ atlas_position = SubResource("Resource_ypyq1")
 recycle = Dictionary[StringName, int]({
 &"terra": 5
 })
+step_sound = ExtResource("3_07bm0")
 metadata/_custom_type_script = "uid://bvocj4r036lxu"

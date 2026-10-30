@@ -8,6 +8,7 @@ class_name Block extends Resource
 @export_range(0.0, 1.0) var emission := 0.0 ## 0 = normal, 1 = full brightness regardless of light.
 @export var size := 4096 ## Inventory space, in bytes.
 @export var recycle: Dictionary[StringName, int] = {} ## component id -> amount. Empty = can't be recycled.
+@export var step_sound: AudioStream ## Played when walking on top of this block. Empty = silent.
 
 func _init(p_id: StringName = "", p_solid: bool = true, p_atlas_position: BlockAtlasPosition = null) -> void:
 	id = p_id

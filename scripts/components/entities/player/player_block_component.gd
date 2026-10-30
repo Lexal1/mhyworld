@@ -3,8 +3,9 @@ class_name PlayerBlockComponent extends PlayerComponent
 ## Edits go out through the Player's break_block / place_block signals.
 
 const OUTLINE_IDLE := Color(1, 0.459, 0.055, 0.17) # the colour set in player.tscn
-const BREAK_SFX := preload("res://assets/audio/break.wav")
-const PLACE_SFX := preload("res://assets/audio/place.wav")
+const BREAK_SFX := preload("res://assets/audio/sfx/break.wav")
+const PLACE_SFX := preload("res://assets/audio/sfx/place.wav")
+const PICKUP_SFX := preload("res://assets/audio/sfx/poip.wav")
 const MAX_RAY_STEPS := 64
 
 # Numpad action -> block id
@@ -27,10 +28,14 @@ var _break_pos := Vector3i.ZERO
 var _break_progress := 0.0
 var _breaking := false
 var _outline_material: StandardMaterial3D
-
+var _pickup_audio: AudioStreamPlayer
 
 func setup() -> void:
 	_outline_material = outline.mesh.material
+	_pickup_audio = AudioStreamPlayer.new()
+	_pickup_audio.stream = PICKUP_SFX
+	_pickup_audio.max_polyphony = 4 # several items collected at once overlap
+	add_child(_pickup_audio)
 
 
 func tick(delta: float) -> void:
@@ -159,9 +164,14 @@ func play_break_sfx() -> void: _play_sfx(BREAK_SFX)
 
 func play_place_sfx() -> void: _play_sfx(PLACE_SFX)
 
+func play_pickup_sfx() -> void:
+	_pickup_audio.pitch_scale = randf_range(0.90, 1.10)
+	_pickup_audio.volume_db = -12
+	_pickup_audio.play()
+
 func _play_sfx(stream: AudioStream) -> void:
 	sfx.stream = stream
-	sfx.pitch_scale = randf_range(0.95, 1.05)
+	sfx.pitch_scale = randf_range(0.90, 1.10)
 	sfx.play()
 
 #endregion

@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://b5nqgefcth643" path="res://scripts/blocks/block_def.gd" id="1_qwiw2"]
 [ext_resource type="Script" uid="uid://c2j5n5wf30urt" path="res://scripts/blocks/block_atlas_position.gd" id="2_qncj5"]
 [ext_resource type="Script" uid="uid://calx6m0bvjxu7" path="res://scripts/components/blocks/light_component.gd" id="2_uj6im"]
+[ext_resource type="AudioStream" uid="uid://irgygfsu4bru" path="res://assets/audio/sfx/thumph.wav" id="3_2y8kk"]
 
 [sub_resource type="Resource" id="Resource_rkvui"]
 script = ExtResource("2_qncj5")
@@ -23,6 +24,7 @@ recycle = Dictionary[StringName, int]({
 &"lux": 10,
 &"metallum": 5
 })
+step_sound = ExtResource("3_2y8kk")
 
 [node name="LightComponent" type="Node" parent="." unique_id=1187142909]
 script = ExtResource("2_uj6im")

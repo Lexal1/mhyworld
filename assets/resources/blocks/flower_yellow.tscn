@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://bfv2ydbkayqja"]
 
 [ext_resource type="Script" uid="uid://b5nqgefcth643" path="res://scripts/blocks/block_def.gd" id="1_4u57k"]
+[ext_resource type="AudioStream" uid="uid://cxc3v4v4rsg5" path="res://assets/audio/sfx/tiss.wav" id="2_1huy1"]
 [ext_resource type="Script" uid="uid://7qf1mkj2bcm8" path="res://scripts/components/blocks/sprite_component.gd" id="2_j2iae"]
 [ext_resource type="Texture2D" uid="uid://dooex1b22t0kv" path="res://assets/textures/mhycraftblocks.png" id="3_1huy1"]
 
@@ -13,6 +14,7 @@ render_cube = false
 recycle = Dictionary[StringName, int]({
 &"herba": 1
 })
+step_sound = ExtResource("2_1huy1")
 metadata/_custom_type_script = "uid://b5nqgefcth643"
 
 [node name="SpriteComponent" type="Node" parent="." unique_id=1151681988]

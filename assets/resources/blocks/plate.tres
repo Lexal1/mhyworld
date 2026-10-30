@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://bvocj4r036lxu" path="res://scripts/blocks/block.gd" id="1_7iudg"]
 [ext_resource type="Script" uid="uid://c2j5n5wf30urt" path="res://scripts/blocks/block_atlas_position.gd" id="1_aovs0"]
+[ext_resource type="AudioStream" uid="uid://tk0c267qd2ex" path="res://assets/audio/sfx/bonk.wav" id="3_7kkql"]
 
 [sub_resource type="Resource" id="Resource_aovs0"]
 script = ExtResource("1_aovs0")
@@ -20,4 +21,5 @@ atlas_position = SubResource("Resource_aovs0")
 recycle = Dictionary[StringName, int]({
 &"metallum": 5
 })
+step_sound = ExtResource("3_7kkql")
 metadata/_custom_type_script = "uid://bvocj4r036lxu"

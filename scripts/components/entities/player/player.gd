@@ -58,4 +58,6 @@ func play_break_sfx() -> void: _blocks.play_break_sfx()
 
 func play_place_sfx() -> void: _blocks.play_place_sfx()
 
+func play_pickup_sfx() -> void: _blocks.play_pickup_sfx()
+
 #endregion

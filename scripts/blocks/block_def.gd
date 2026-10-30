@@ -9,6 +9,7 @@ class_name BlockDef extends Node
 @export var render_cube := true ## false = no cube mesh (the block draws itself, e.g. via a component).
 @export var size := 4096 ## Inventory space, in bytes.
 @export var recycle: Dictionary[StringName, int] = {} ## component id -> amount. Empty = can't be recycled.
+@export var step_sound: AudioStream
 
 func build() -> SceneBlock:
 	var block := SceneBlock.new(id, solid)
@@ -17,6 +18,7 @@ func build() -> SceneBlock:
 	block.render_cube = render_cube
 	block.size = size
 	block.recycle = recycle
+	block.step_sound = step_sound
 	if atlas_position != null:
 		block.atlas_position = atlas_position
 	for child in get_children():

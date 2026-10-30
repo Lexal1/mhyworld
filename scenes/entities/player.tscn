@@ -8,6 +8,7 @@
 [ext_resource type="Script" uid="uid://qf6h7np714b5" path="res://scripts/components/entities/player/player_block_component.gd" id="5_block"]
 [ext_resource type="Script" uid="uid://5ebof4uvmvj1" path="res://scripts/components/entities/player/player_target_component.gd" id="6_target"]
 [ext_resource type="Script" uid="uid://dx0ybcll1d4th" path="res://scripts/components/entities/player/player_debug_component.gd" id="7_debug"]
+[ext_resource type="Script" uid="uid://tvk8cbwqbpmb" path="res://scripts/components/entities/player/player_footstep_component.gd" id="9_c5rqy"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_f56tk"]
 radius = 0.4
@@ -75,3 +76,6 @@ script = ExtResource("6_target")
 
 [node name="Debug" type="Node" parent="." unique_id=1321043249]
 script = ExtResource("7_debug")
+
+[node name="Footsteps" type="Node" parent="." unique_id=912703499]
+script = ExtResource("9_c5rqy")
