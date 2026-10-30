@@ -19,6 +19,10 @@ script = ExtResource("1_qwiw2")
 id = &"light"
 atlas_position = SubResource("Resource_rkvui")
 emission = 1.0
+recycle = Dictionary[StringName, int]({
+&"lux": 10,
+&"metallum": 5
+})
 
 [node name="LightComponent" type="Node" parent="." unique_id=1187142909]
 script = ExtResource("2_uj6im")

@@ -17,4 +17,7 @@ metadata/_custom_type_script = "uid://c2j5n5wf30urt"
 script = ExtResource("1_7iudg")
 id = &"plate"
 atlas_position = SubResource("Resource_aovs0")
+recycle = Dictionary[StringName, int]({
+&"metallum": 5
+})
 metadata/_custom_type_script = "uid://bvocj4r036lxu"

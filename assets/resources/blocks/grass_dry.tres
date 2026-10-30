@@ -17,4 +17,9 @@ metadata/_custom_type_script = "uid://c2j5n5wf30urt"
 script = ExtResource("1_uhbup")
 id = &"grass_dry"
 atlas_position = SubResource("Resource_6nwfi")
+recycle = Dictionary[StringName, int]({
+&"herba": 5,
+&"perditio": 2,
+&"terra": 5
+})
 metadata/_custom_type_script = "uid://bvocj4r036lxu"
