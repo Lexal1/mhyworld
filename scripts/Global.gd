@@ -10,8 +10,6 @@ enum WorldHeights { SMALL = 64, MEDIUM = 128, LARGE = 256 }
 
 const CHUNK_SIZE := Vector3i(16, 16, 16)
 const TEXTURE_ATLAS_SIZE := Vector2(16, 16)
-const NIGHT_START_HOUR := 21 # night music plays after this hour...
-const NIGHT_END_HOUR := 6    # ...and before this one
 
 var state := GameState.GAMEPLAY
 var paused := false
@@ -22,11 +20,6 @@ var world_height: int = WorldHeights.SMALL ## Blocks tall. Set before the world 
 
 var Tasks := TaskManager.new()
 
-@onready var music_timer: Timer = $Music/Timer
-@onready var music: AudioStreamPlayer = $Music
-@onready var music_two: AudioStreamPlayer = $Music/MusicTwo
-@onready var music_three: AudioStreamPlayer = $Music/MusicTwo/MusicThree
-@onready var viewer_music: AudioStreamPlayer = $Music/ViewerMusic
 @onready var canvas_layer: CanvasLayer = $CanvasLayer
 
 
@@ -45,36 +38,6 @@ func _input(event: InputEvent) -> void:
 func wrap_chunk(c: Vector3i) -> Vector3i:
 	var n := world_size / CHUNK_SIZE.x # chunks across (same on X and Z)
 	return Vector3i(posmod(c.x, n), c.y, posmod(c.z, n))
-
-#region Music
-
-func _is_night() -> bool:
-	var hour: int = Time.get_time_dict_from_system()["hour"]
-	return hour > NIGHT_START_HOUR or hour < NIGHT_END_HOUR
-
-
-func _is_night_squared() -> bool:
-	if _is_night() and get_node("World/Environment/DayNight").is_night: return true
-	else: return false
-
-
-func _on_timer_timeout() -> void:
-	if Engine.is_editor_hint(): return
-	
-	if get_tree().get_root().get_child(-1).name == "Game":
-		var track := music_two if _is_night() else (music_three if _is_night_squared() else music)
-		track.play()
-		await track.finished
-		
-		music_timer.wait_time = randi_range(256, 512)
-		music_timer.start()
-	else:
-		var track := viewer_music
-		track.play()
-
-
-
-#endregion
 
 #region GameState
 

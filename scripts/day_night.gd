@@ -67,6 +67,7 @@ func _ready() -> void:
 	_moon.light_color = moon_color
 	_moon.shadow_enabled = false # one shadow caster (the sun) is plenty
 	add_child(_moon)
+	MusicManager.register_day_night(self)
 
 	update_environment()
 	LimboConsole.register_command(
@@ -136,6 +137,10 @@ func get_day() -> int:
 
 func set_day(value: int):
 	day = value
+
+
+func _exit_tree() -> void:
+	MusicManager.unregister_day_night(self)
 
 
 ## The sun's path is a circle in the XY plane, leaned over by sun_tilt_degrees.

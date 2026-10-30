@@ -39,7 +39,7 @@ func _hurt_target(amount: float) -> void:
 
 func _on_player_die() -> void:
 	Global.gameIsQuitting = true
-	Global.music.stream_paused = true
+	MusicManager.fade_out(0.5)
 	sky.environment.background_mode = Environment.BG_KEEP
 	die.play()
 	await die.finished

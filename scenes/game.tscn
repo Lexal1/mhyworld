@@ -46,7 +46,6 @@ shadow_enabled = true
 directional_shadow_pancake_size = 1.0
 
 [node name="Player" parent="." unique_id=825439093 instance=ExtResource("2_nni6g")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 45, 0)
 
 [node name="die" type="AudioStreamPlayer" parent="." unique_id=1165512681]
 stream = ExtResource("4_7r2ba")
