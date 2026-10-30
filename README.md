@@ -1,4 +1,4 @@
-<img width="768" height="418" alt="mhyworldtitle" src="assets/resources/mhyworldtitle.png">
+<img width="768" height="418" alt="mhyworldtitle" src="assets/resources/models/mhyworldtitle.png">
 GOOD LORD WHAT IS GOING ON IN THERE!
 
 # WHAT IS THIS
