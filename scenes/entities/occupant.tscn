@@ -18,7 +18,7 @@
 script = ExtResource("1_lggnh")
 id = &"occupant"
 move_speed = 3.0
-model = NodePath("")
+model = NodePath("OccupantModel")
 metadata/_custom_type_script = "uid://foqhkm45vf8y"
 
 [node name="OccupantModel" parent="." unique_id=1894631300 instance=ExtResource("2_0nal0")]

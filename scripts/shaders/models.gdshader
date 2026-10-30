@@ -12,6 +12,8 @@ uniform float affine_weight : hint_range(0.0, 1.0) = 0.1; //0 = no affine, 1 = f
 
 uniform float emission_energy : hint_range(0.0, 8.0) = 1.0;
 
+uniform vec4 albedo_color : source_color = vec4(1.0);
+
 varying vec2 uv_affine;
 varying vec2 uv_persp;
 varying float clip_w;
@@ -40,7 +42,7 @@ void fragment() {
 	vec2 uv_final = mix(uv_persp, uv_aff, affine_weight);
 	
 	vec4 albedo = texture(albedo_texture, uv_final * texture_tile);
-	ALBEDO = albedo.rgb;
+	ALBEDO = albedo.rgb * albedo_color.rgb;
 	ALPHA = albedo.a;
 	
 	EMISSION = albedo.rgb * emit * emission_energy;

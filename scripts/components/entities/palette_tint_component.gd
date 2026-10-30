@@ -39,9 +39,19 @@ func _meshes_named(part: String) -> Array[MeshInstance3D]:
 ## The glb's materials are shared by every instance, so each mesh gets its own copy.
 func _tint(meshes: Array[MeshInstance3D], color: Color) -> void:
 	for mi in meshes:
+		if mi.material_override != null: # override wins over surface materials
+			mi.material_override = _tinted_copy(mi.material_override, color)
+			continue
 		for s in mi.mesh.get_surface_count():
-			var mat := mi.get_active_material(s) as BaseMaterial3D
+			var mat := mi.get_active_material(s)
 			if mat == null: continue
-			var copy := mat.duplicate() as BaseMaterial3D
-			copy.albedo_color = color # multiplies the texture
-			mi.set_surface_override_material(s, copy)
+			mi.set_surface_override_material(s, _tinted_copy(mat, color))
+
+
+func _tinted_copy(mat: Material, color: Color) -> Material:
+	var copy := mat.duplicate()
+	if copy is ShaderMaterial:
+		copy.set_shader_parameter("albedo_color", color)
+	elif copy is BaseMaterial3D:
+		copy.albedo_color = color # multiplies the texture
+	return copy
