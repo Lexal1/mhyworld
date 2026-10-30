@@ -1,7 +1,12 @@
 [gd_scene format=3 uid="uid://dl24p08af224r"]
 
 [ext_resource type="Texture2D" uid="uid://pe3ttkphaibb" path="res://assets/textures/player.png" id="1_7cd0c"]
-[ext_resource type="Script" uid="uid://3mjoqo43yobe" path="res://scripts/player.gd" id="1_wh74w"]
+[ext_resource type="Script" uid="uid://3mjoqo43yobe" path="res://scripts/components/entities/player/player.gd" id="1_wh74w"]
+[ext_resource type="Script" uid="uid://cqfv3ub88eeem" path="res://scripts/components/entities/player/player_movement_component.gd" id="3_ss7kx"]
+[ext_resource type="Script" uid="uid://dbpr3kkjdm20k" path="res://scripts/components/entities/player/player_camera_component.gd" id="4_cam"]
+[ext_resource type="Script" uid="uid://qf6h7np714b5" path="res://scripts/components/entities/player/player_block_component.gd" id="5_block"]
+[ext_resource type="Script" uid="uid://5ebof4uvmvj1" path="res://scripts/components/entities/player/player_target_component.gd" id="6_target"]
+[ext_resource type="Script" uid="uid://dx0ybcll1d4th" path="res://scripts/components/entities/player/player_debug_component.gd" id="7_debug"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_f56tk"]
 radius = 0.4
@@ -19,6 +24,8 @@ size = Vector3(1.02, 1.02, 1.02)
 
 [node name="Player" type="CharacterBody3D" unique_id=1501628855]
 script = ExtResource("1_wh74w")
+id = &"player"
+move_speed = 6.0
 
 [node name="Sprite" type="Sprite3D" parent="." unique_id=1132956881]
 pixel_size = 0.05
@@ -45,9 +52,19 @@ debug_shape_custom_color = Color(1, 0, 1, 0.21568628)
 [node name="blok" type="AudioStreamPlayer3D" parent="Head/Camera/RayCast" unique_id=1385764948]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -4.78793)
 
-[node name="CoyoteTime" type="Timer" parent="." unique_id=986982129]
-wait_time = 0.1
-one_shot = true
+[node name="Movement" type="Node" parent="." unique_id=2023854143]
+script = ExtResource("3_ss7kx")
 
-[node name="InputBuffer" type="Timer" parent="." unique_id=1752370864]
-one_shot = true
+[node name="CameraControl" type="Node" parent="." unique_id=1791372845]
+script = ExtResource("4_cam")
+
+[node name="BlockInteraction" type="Node" parent="." unique_id=1916059492 node_paths=PackedStringArray("outline", "sfx")]
+script = ExtResource("5_block")
+outline = NodePath("../BlockOutline")
+sfx = NodePath("../Head/Camera/RayCast/blok")
+
+[node name="Targeting" type="Node" parent="." unique_id=1415192222]
+script = ExtResource("6_target")
+
+[node name="Debug" type="Node" parent="." unique_id=1321043249]
+script = ExtResource("7_debug")

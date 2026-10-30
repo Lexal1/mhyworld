@@ -3,11 +3,12 @@
 [ext_resource type="Script" uid="uid://d0jinjwheg73p" path="res://scripts/game.gd" id="1_5dhsp"]
 [ext_resource type="Script" uid="uid://b68eysrf87yjn" path="res://scripts/world.gd" id="2_0tnpc"]
 [ext_resource type="Script" uid="uid://c4rnoxgp2qfxf" path="res://scripts/day_night.gd" id="2_gee14"]
-[ext_resource type="PackedScene" uid="uid://dl24p08af224r" path="res://scenes/player.tscn" id="2_nni6g"]
+[ext_resource type="PackedScene" uid="uid://dl24p08af224r" path="res://scenes/entities/player.tscn" id="2_nni6g"]
 [ext_resource type="Environment" uid="uid://brc6bsfocnk1h" path="res://assets/resources/game_enviroment.tres" id="2_oaiob"]
 [ext_resource type="PackedScene" uid="uid://t2ghc1agq2jn" path="res://scenes/pause_menu.tscn" id="3_u5sy4"]
 [ext_resource type="AudioStream" uid="uid://cc0nd4rgeqi8h" path="res://assets/audio/die.wav" id="4_7r2ba"]
 [ext_resource type="PackedScene" uid="uid://de37u445imeh7" path="res://scenes/hud.tscn" id="6_p57ef"]
+[ext_resource type="PackedScene" uid="uid://icnvwdb1o10x" path="res://scenes/inventory.tscn" id="8_0tnpc"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_upgun"]
 
@@ -52,6 +53,9 @@ stream = ExtResource("4_7r2ba")
 
 [node name="PauseMenu" parent="." unique_id=1947755196 node_paths=PackedStringArray("player") instance=ExtResource("3_u5sy4")]
 visible = false
+player = NodePath("../Player")
+
+[node name="Inventory" parent="." unique_id=478197342 node_paths=PackedStringArray("player") instance=ExtResource("8_0tnpc")]
 player = NodePath("../Player")
 
 [node name="HUD" parent="." unique_id=1430509112 instance=ExtResource("6_p57ef")]

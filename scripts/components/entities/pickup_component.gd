@@ -16,5 +16,11 @@ func _physics_process(delta: float) -> void:
 	if player == null or entity.global_position.distance_to(player.global_position) > radius: return
 
 	var item := entity.get_component(ItemComponent) as ItemComponent
-	if item != null: picked_up.emit(player, item.item_id, item.count)
+	if item != null:
+		var left: int = player.inventory.add(item.item_id, item.count)
+		if left == item.count: return # nothing fit, leave it on the ground
+		picked_up.emit(player, item.item_id, item.count - left)
+		if left > 0:
+			item.count = left # partial pickup
+			return
 	entity.queue_free()

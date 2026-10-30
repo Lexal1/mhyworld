@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://cb08mh86kiec4"]
 
-[ext_resource type="Script" uid="uid://foqhkm45vf8y" path="res://scripts/entities/entity.gd" id="1_lggnh"]
+[ext_resource type="Script" uid="uid://foqhkm45vf8y" path="res://scripts/components/entities/entity.gd" id="1_lggnh"]
 [ext_resource type="PackedScene" uid="uid://rgq75vgso8ky" path="res://assets/resources/models/occupants.glb" id="2_s76t6"]
 [ext_resource type="Script" uid="uid://d0ce4lxn6vepx" path="res://scripts/components/entities/health_component.gd" id="3_8q74g"]
 [ext_resource type="Script" uid="uid://cw6ih7np485lt" path="res://scripts/components/entities/intelligence/brain_component.gd" id="4_gyinq"]

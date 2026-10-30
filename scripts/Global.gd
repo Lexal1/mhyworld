@@ -86,4 +86,11 @@ func is_paused() -> bool: return paused
 func toggle_pause_state() -> void:
 	set_game_state(GameState.GAMEPLAY if state == GameState.UI else GameState.UI)
 
+
+## Freezes gameplay input for a menu, without the pause screen.
+func open_menu() -> void:
+	paused = true
+	state = GameState.UI
+	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
+
 #endregion

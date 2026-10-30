@@ -1,4 +1,20 @@
 [gd_scene format=3 uid="uid://cikk8had45r64"]
 
-[node name="DroppedItem" type="CharacterBody3D" unique_id=2119296855]
-collision_layer = 2
+[ext_resource type="PackedScene" uid="uid://ci2748medac7l" path="res://scenes/entity.tscn" id="1_entity"]
+[ext_resource type="Script" uid="uid://c7nthe5ytayml" path="res://scripts/components/entities/item_component.gd" id="2_item"]
+[ext_resource type="Script" uid="uid://bwiaqexj2ajt5" path="res://scripts/components/entities/pickup_component.gd" id="3_pickup"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_item"]
+size = Vector3(0.3, 0.3, 0.3)
+
+[node name="DroppedItem" unique_id=1221614699 instance=ExtResource("1_entity")]
+id = &"item"
+
+[node name="Collision" type="CollisionShape3D" parent="." index="0" unique_id=1089763390]
+shape = SubResource("BoxShape3D_item")
+
+[node name="ItemComponent" type="Node" parent="." index="1" unique_id=1744169673]
+script = ExtResource("2_item")
+
+[node name="PickupComponent" type="Node" parent="." index="2" unique_id=450565948]
+script = ExtResource("3_pickup")

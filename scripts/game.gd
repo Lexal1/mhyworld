@@ -17,6 +17,8 @@ func _ready() -> void:
 		"spawn", "Spawn scenes/entities/<name>.tscn in front of you.")
 	LimboConsole.register_command(func(amount: float): _hurt_target(amount),
 		"hurt", "Damage the entity you're looking at.")
+	LimboConsole.register_command(func(id: String, n: int): $Player.inventory.add(StringName(id), n),
+		"give", "Add an item to your inventory.")
 
 
 func _spawn_entity(scene_name: String) -> void:
