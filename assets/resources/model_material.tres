@@ -10,3 +10,4 @@ shader_parameter/snap_enabled = true
 shader_parameter/snap_resolution = 100.0
 shader_parameter/affine_weight = 0.50000002375
 shader_parameter/emission_energy = 1.0
+shader_parameter/albedo_color = Color(1, 1, 1, 1)

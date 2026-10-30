@@ -267,7 +267,18 @@ static func _gui_icon(i: int) -> AtlasTexture:
 
 static func _block_icon(id: StringName) -> AtlasTexture:
 	var b: Block = BlockRegistry.get_by_id(id)
-	if b == null or b.atlas_position == null: return null
+	if b == null: return null
+
+	# Non-cube blocks draw themselves with a sprite, so use that image.
+	if not b.render_cube and b is SceneBlock:
+		for c in b.components:
+			if c is SpriteComponent:
+				var st := AtlasTexture.new()
+				st.atlas = c.texture
+				st.region = c.region # already in pixels, no tile maths needed
+				return st
+
+	if b.atlas_position == null: return null
 	var tile := BLOCK_TEX.get_size() / Global.TEXTURE_ATLAS_SIZE
 	var t := AtlasTexture.new()
 	t.atlas = BLOCK_TEX

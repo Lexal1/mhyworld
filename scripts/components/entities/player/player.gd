@@ -8,13 +8,13 @@ signal break_block(pos)
 signal die()
 
 var frozen := true ## World releases the player once the spawn chunks are meshed.
-var dead := false
 var inventory := Inventory.new()
 
 @onready var hud: HUD = %HUD
 @onready var head: Node3D = $Head
 @onready var camera: Camera3D = $Head/Camera
 @onready var raycast: RayCast3D = $Head/Camera/RayCast
+@onready var health := get_component(HealthComponent) as HealthComponent
 
 @onready var _movement := get_component(PlayerMovementComponent) as PlayerMovementComponent
 @onready var _blocks := get_component(PlayerBlockComponent) as PlayerBlockComponent
@@ -26,10 +26,9 @@ var target_entity: Entity: ## What the crosshair is on, if anything.
 
 func _ready() -> void:
 	world = %World
-	# Physics callbacks run lowest priority first. Components tick at 0, so this makes
-	# move_and_slide() run after they've all set this frame's velocity.
 	process_physics_priority = 100
-	super() # Entity wires up the components
+	super()
+	health.died.connect(func(_source: Node): die.emit())
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 
 
@@ -44,9 +43,8 @@ func _physics_process(_delta: float) -> void:
 
 
 func _check_death() -> void:
-	if position.y <= DEATH_Y and not dead:
-		dead = true
-		die.emit()
+	if position.y <= DEATH_Y and not health.dead:
+		health.damage(health.max_health) # falling out of the world is just lethal damage
 
 
 #region Console / World hooks

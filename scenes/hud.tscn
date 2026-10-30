@@ -54,13 +54,8 @@ size_flags_vertical = 4
 mouse_filter = 2
 
 [node name="Crosshair" type="Line2D" parent="MarginContainer/Control" unique_id=713079517]
-position = Vector2(-7, 0)
-width = 1.0
+width = 0.5
 script = ExtResource("1_ahhtf")
-width_pixels = 25.0
-scroll_speed = 3.0
-pulse_rate = 1.25
-amplitude = 18.0
 
 [node name="Ver" type="Label" parent="." unique_id=410920366]
 layout_mode = 0

@@ -1,5 +1,6 @@
 [gd_scene format=4 uid="uid://b7n8aew0u0j6y"]
 
+[ext_resource type="Shader" uid="uid://bsqxjmih6phl0" path="res://scripts/shaders/2d_models.gdshader" id="2_3ugay"]
 [ext_resource type="Material" uid="uid://dq2bo6521l0vq" path="res://assets/resources/model_material.tres" id="2_ju6ou"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_a143t"]
@@ -75,6 +76,16 @@ _surfaces = [{
 }]
 blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_eq7ld")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_vb46p"]
+render_priority = 0
+shader = ExtResource("2_3ugay")
+shader_parameter/texture_tile = Vector2(1, 1)
+shader_parameter/snap_enabled = true
+shader_parameter/snap_resolution = 100.0
+shader_parameter/affine_weight = 0.50000002375
+shader_parameter/emission_energy = 1.0
+shader_parameter/albedo_color = Color(1, 1, 1, 1)
 
 [sub_resource type="Animation" id="Animation_4ape4"]
 resource_name = "attack"
@@ -318,7 +329,7 @@ bone_idx = 0
 transform = Transform3D(0.9987423, -0.050138637, -1.3818225e-09, 1.8626451e-09, 0, 0.7427946, -0.050138637, -0.9987423, 6.936995e-11, -0.0046759723, 0.44769353, -0.010617245)
 mesh = SubResource("ArrayMesh_k5lue")
 skeleton = NodePath("")
-surface_material_override/0 = ExtResource("2_ju6ou")
+surface_material_override/0 = SubResource("ShaderMaterial_vb46p")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=43862084]
 libraries/ = SubResource("AnimationLibrary_68owa")

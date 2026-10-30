@@ -26,21 +26,29 @@ func _get_material() -> ShaderMaterial:
 	return _material
 
 
-func on_block_created(block: Block, pos: Vector3, chunk: StaticBody3D) -> void:
-	if block.has_tag(pos, chunk): return # meshing runs this on every remesh
+## Builds the sprite without placing it. `size_scale` shrinks it via pixel_size,
+## because the sprite shader ignores node scale.
+func create_sprite(size_scale := 1.0) -> Sprite3D:
 	var s := Sprite3D.new()
 	s.texture = texture
 	s.region_enabled = true
 	s.region_rect = region
-	s.pixel_size = pixel_size
+	s.pixel_size = pixel_size * size_scale
 	s.billboard = BaseMaterial3D.BILLBOARD_FIXED_Y
 	s.texture_filter = BaseMaterial3D.TEXTURE_FILTER_NEAREST
 	s.alpha_cut = SpriteBase3D.ALPHA_CUT_DISCARD
 	s.shaded = SpriteBase3D.FLAG_SHADED
 	s.material_override = _get_material() # null = keep the default look
+	return s
+
+
+func on_block_created(block: Block, pos: Vector3, chunk: StaticBody3D) -> void:
+	if block.has_tag(pos, chunk): return # meshing runs this on every remesh
+	var s := create_sprite()
 	s.position = pos + Vector3(0.5, 0.5, 0.5)
 	block.set_tag(pos, chunk, s)
 	chunk.add_child.call_deferred(s)
+
 
 func on_block_destroyed(block: Block, pos: Vector3, chunk: StaticBody3D) -> void:
 	if not block.has_tag(pos, chunk): return

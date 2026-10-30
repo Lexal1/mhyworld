@@ -12,4 +12,4 @@ func tick(_delta: float) -> void:
 	var health: HealthComponent = null
 	if target_entity != null:
 		health = target_entity.get_component(HealthComponent) as HealthComponent
-	player.hud.crosshair.heartbeat_source = health # null = back to your own heartbeat
+	player.hud.crosshair.heartbeat_source = health if health != null else player.health # null = back to your own heartbeat

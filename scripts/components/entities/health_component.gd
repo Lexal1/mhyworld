@@ -7,8 +7,8 @@ signal died(source: Node)
 @export var max_health := 10.0
 @export var free_entity_on_death := true
 @export_group("Heartbeat") ## What the crosshair shows while you look at this entity.
-@export var resting_pulse := 1.25
-@export var panic_pulse := 3.5 ## Pulse at 0 health. Lower health = faster beat.
+@export var resting_bpm := 70.0
+@export var panic_bpm := 170.0 ## BPM at 0 health.
 @export var pulse_amplitude := 18.0
 
 var health := 0.0
@@ -39,5 +39,7 @@ func fraction() -> float:
 	return health / maxf(max_health, 0.001)
 
 
-func pulse_rate() -> float:
-	return lerpf(panic_pulse, resting_pulse, fraction())
+## Rises slowly at first, then fast as health runs out. 0 when dead (flatline).
+func pulse_bpm() -> float:
+	if dead: return 0.0
+	return lerpf(panic_bpm, resting_bpm, sqrt(fraction()))

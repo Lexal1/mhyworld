@@ -2,6 +2,7 @@
 
 [ext_resource type="Texture2D" uid="uid://pe3ttkphaibb" path="res://assets/textures/player.png" id="1_7cd0c"]
 [ext_resource type="Script" uid="uid://3mjoqo43yobe" path="res://scripts/components/entities/player/player.gd" id="1_wh74w"]
+[ext_resource type="Script" uid="uid://d0ce4lxn6vepx" path="res://scripts/components/entities/health_component.gd" id="3_dnykm"]
 [ext_resource type="Script" uid="uid://cqfv3ub88eeem" path="res://scripts/components/entities/player/player_movement_component.gd" id="3_ss7kx"]
 [ext_resource type="Script" uid="uid://dbpr3kkjdm20k" path="res://scripts/components/entities/player/player_camera_component.gd" id="4_cam"]
 [ext_resource type="Script" uid="uid://qf6h7np714b5" path="res://scripts/components/entities/player/player_block_component.gd" id="5_block"]
@@ -51,6 +52,12 @@ debug_shape_custom_color = Color(1, 0, 1, 0.21568628)
 
 [node name="blok" type="AudioStreamPlayer3D" parent="Head/Camera/RayCast" unique_id=1385764948]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -4.78793)
+
+[node name="HealthComponent" type="Node" parent="." unique_id=788843434]
+script = ExtResource("3_dnykm")
+max_health = 20.0
+free_entity_on_death = false
+metadata/_custom_type_script = "uid://d0ce4lxn6vepx"
 
 [node name="Movement" type="Node" parent="." unique_id=2023854143]
 script = ExtResource("3_ss7kx")

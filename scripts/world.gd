@@ -3,7 +3,7 @@ extends Node3D
 const CHUNK_SCENE := preload("res://scenes/chunk.tscn")
 const SAVE_DIR := "user://world/test/chunk"
 const MAX_IN_FLIGHT := 4 ## Generation tasks running at once. Try around your CPU core count.
-
+const DROPPED_ITEM_SCENE := preload("res://scenes/entities/dropped_item.tscn")
 
 @export var render_distance := 5 ## How many chunks to keep loaded along X and Z.
 @export var vertical_render_distance := 5 ## How many chunks to keep loaded along Y.
@@ -222,7 +222,7 @@ func _on_player_place_block(pos: Vector3, block_idx: int) -> void:
 
 	var local := _local_in_chunk(block_pos)
 	var i := Chunk.block_index(local.x, local.y, local.z)
-	var old_block := BlockRegistry.get_by_idx(chunk.blocks[i])
+	var old_block: Block = BlockRegistry.get_by_idx(chunk.blocks[i])
 	if old_block != null:
 		old_block.on_block_destroyed(local, chunk.chunk_position, chunk)
 	chunk.blocks[i] = block_idx
@@ -231,6 +231,7 @@ func _on_player_place_block(pos: Vector3, block_idx: int) -> void:
 	chunk.request_remesh()
 	_remesh_border_neighbors(chunk, local)
 	if is_breaking:
+		_drop_block(old_block, pos)
 		player.play_break_sfx()
 	else:
 		player.play_place_sfx()
@@ -252,6 +253,15 @@ func get_block_at(pos: Vector3) -> Block:
 	var idx := chunk.blocks[Chunk.block_index(posmod(b.x, cs.x), posmod(b.y, cs.y), posmod(b.z, cs.z))]
 	chunk.blocksMutex.unlock()
 	return BlockRegistry.get_by_idx(idx)
+
+
+## `block_center` is already the middle of the broken block (the player passes it that way).
+func _drop_block(block: Block, block_center: Vector3) -> void:
+	if block == null or block.id == &"air": return
+	spawn_entity(DROPPED_ITEM_SCENE, block_center, func(e: Entity):
+		var item := e.get_component(ItemComponent) as ItemComponent
+		item.item_id = block.id # drop id = block id, which is what ItemComponent and Inventory look up
+		e.velocity = Vector3(randf_range(-1.0, 1.0), 3.0, randf_range(-1.0, 1.0)))
 
 #endregion
 
