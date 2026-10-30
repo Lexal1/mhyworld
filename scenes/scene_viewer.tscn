@@ -1,0 +1,42 @@
+[gd_scene format=3 uid="uid://b2q5kmssl66gc"]
+
+[ext_resource type="Script" uid="uid://de8a7r4xgjmpd" path="res://scripts/debug_scenes/scene_viewer.gd" id="1_viewer"]
+[ext_resource type="PackedScene" uid="uid://dsmdch1charhc" path="res://scenes/chunk.tscn" id="2_chunk"]
+[ext_resource type="Theme" uid="uid://be74h2fudfjk0" path="res://assets/resources/theme_default.tres" id="3_theme"]
+
+[sub_resource type="Environment" id="Environment_viewer"]
+background_mode = 1
+background_color = Color(0.78775924, 0.78775924, 0.78775924, 1)
+ambient_light_color = Color(1, 1, 1, 1)
+
+[node name="SceneViewer" type="Node" unique_id=1033058292]
+script = ExtResource("1_viewer")
+
+[node name="Pivot" type="Node3D" parent="." unique_id=1400963729]
+
+[node name="Holder" type="Node3D" parent="Pivot" unique_id=2074053324]
+
+[node name="ChunkRoot" type="Node3D" parent="Pivot/Holder" unique_id=1248668028]
+
+[node name="Chunk" parent="Pivot/Holder/ChunkRoot" unique_id=546656502 instance=ExtResource("2_chunk")]
+visible = false
+auto_generate = false
+
+[node name="Camera" type="Camera3D" parent="." unique_id=2099533500]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=911081685]
+environment = SubResource("Environment_viewer")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=717015013]
+transform = Transform3D(-0.8660254, -0.43301278, 0.25, 0, 0.49999997, 0.86602545, -0.50000006, 0.75, -0.43301266, 0, 0, 0)
+shadow_enabled = true
+
+[node name="UI" type="Control" parent="." unique_id=1046402859]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme = ExtResource("3_theme")

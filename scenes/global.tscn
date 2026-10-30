@@ -13,6 +13,7 @@
 [ext_resource type="AudioStream" uid="uid://oochtta0smaq" path="res://assets/audio/oldmusic/synth4.ogg" id="10_b18l6"]
 [ext_resource type="AudioStream" uid="uid://buw7ighk0itjv" path="res://assets/audio/oldmusic/synth5.ogg" id="11_korfd"]
 [ext_resource type="AudioStream" uid="uid://boleqpf6ma6m4" path="res://assets/audio/oldmusic/synth7.ogg" id="12_dxqtg"]
+[ext_resource type="AudioStream" uid="uid://dantbuen80sie" path="res://assets/audio/viewer.ogg" id="13_7upwp"]
 
 [sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_g4v7s"]
 random_pitch = 1.0293022
@@ -62,6 +63,9 @@ pitch_scale = 0.98
 wait_time = 3.5
 one_shot = true
 autostart = true
+
+[node name="ViewerMusic" type="AudioStreamPlayer" parent="Music" unique_id=751624064]
+stream = ExtResource("13_7upwp")
 
 [node name="PauseTimer" type="Timer" parent="." unique_id=553628922]
 wait_time = 2.0
