@@ -43,7 +43,7 @@ func _physics_process(_delta: float) -> void:
 
 
 func _check_death() -> void:
-	if position.y <= DEATH_Y and not health.dead:
+	if position.y <= death_y() and not health.dead:
 		health.damage(health.max_health) # falling out of the world is just lethal damage
 
 

@@ -1,9 +1,11 @@
 class_name DeathComponent extends EntityComponent
 ## On death: stop thinking, play the death animation, linger, fade out, delete.
 
+const CORPSE_LAYER := 1 << 2 # physics layer 3: hit by the crosshair ray, not bumped by the player
+
 @export var death_animation: StringName = &"death"
 @export var linger_time := 1.5 ## Seconds before the fade starts.
-@export var fade_time := 1.0
+@export var fade_time := 1.5
 
 var _meshes: Array[Node] = []
 
@@ -21,7 +23,7 @@ func _on_died(_source: Node) -> void:
 	var brain := entity.get_component(BrainComponent) as BrainComponent
 	if brain != null: brain.stop()
 	entity.wish_dir = Vector3.ZERO
-	entity.collision_layer = 0 # can't be targeted or bumped; still collides with the ground
+	entity.collision_layer = CORPSE_LAYER # still collides with the ground via its mask
 
 	var animator := entity.get_component(AnimatorComponent) as AnimatorComponent
 	if animator != null: animator.play(death_animation, false)
@@ -38,4 +40,9 @@ func _on_died(_source: Node) -> void:
 
 func _set_fade(amount: float) -> void:
 	for m: MeshInstance3D in _meshes:
-		m.transparency = amount
+		for s in m.mesh.get_surface_count():
+			var mat := m.get_active_material(s)
+			if mat is ShaderMaterial:
+				var c: Color = mat.get_shader_parameter("albedo_color")
+				c.a = 1.0 - amount
+				mat.set_shader_parameter("albedo_color", c)

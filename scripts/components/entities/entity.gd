@@ -1,7 +1,7 @@
 class_name Entity extends CharacterBody3D
 ## Base for everything that lives in the world. Behaviour comes from EntityComponent children.
 
-const DEATH_Y := -25.0
+const DEATH_DEPTH := 0.4 ## Fraction of world height below y=0 where entities die. 0.4 of 64 is about the old -25.
 const GROUND_FRICTION := 17.0
 const AIR_FRICTION := 5.0
 
@@ -24,6 +24,10 @@ func _ready() -> void:
 		if c is EntityComponent: c.on_attach()
 
 
+static func death_y() -> float:
+	return -Global.world_height * DEATH_DEPTH
+
+
 func get_component(type: Script) -> EntityComponent:
 	for c in get_children():
 		if is_instance_of(c, type): return c
@@ -35,7 +39,7 @@ func has_component(type: Script) -> bool:
 
 
 func _physics_process(delta: float) -> void:
-	if position.y < DEATH_Y:
+	if position.y < death_y():
 		queue_free()
 		return
 	if world != null and not world.is_position_loaded(global_position): return # no collision yet

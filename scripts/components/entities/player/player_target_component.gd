@@ -3,6 +3,9 @@ class_name PlayerTargetComponent extends PlayerComponent
 
 var target_entity: Entity = null
 
+func setup() -> void:
+	player.raycast.set_collision_mask_value(3, true) # also see corpses (layer 3)
+
 
 func tick(_delta: float) -> void:
 	target_entity = null

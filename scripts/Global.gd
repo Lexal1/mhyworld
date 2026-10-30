@@ -25,6 +25,7 @@ var Tasks := TaskManager.new()
 @onready var music_timer: Timer = $Music/Timer
 @onready var music: AudioStreamPlayer = $Music
 @onready var music_two: AudioStreamPlayer = $Music/MusicTwo
+@onready var music_three: AudioStreamPlayer = $Music/MusicTwo/MusicThree
 @onready var canvas_layer: CanvasLayer = $CanvasLayer
 
 
@@ -51,10 +52,15 @@ func _is_night() -> bool:
 	return hour > NIGHT_START_HOUR or hour < NIGHT_END_HOUR
 
 
+func _is_night_squared() -> bool:
+	if _is_night() and get_node("World/Environment/DayNight").is_night: return true
+	else: return false
+
+
 func _on_timer_timeout() -> void:
 	if Engine.is_editor_hint(): return
 
-	var track := music_two if _is_night() else music
+	var track := music_two if _is_night() else (music_three if _is_night_squared() else music)
 	track.play()
 	await track.finished
 

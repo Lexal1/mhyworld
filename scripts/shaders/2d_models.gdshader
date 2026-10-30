@@ -43,7 +43,7 @@ void fragment() {
 	
 	vec4 albedo = texture(albedo_texture, uv_final * texture_tile);
 	ALBEDO = albedo.rgb * albedo_color.rgb;
-	ALPHA = albedo.a;
+	ALPHA = albedo.a * albedo_color.a;
 	
 	EMISSION = albedo.rgb * emit * emission_energy;
 }

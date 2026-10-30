@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://icnvwdb1o10x"]
 
 [ext_resource type="Script" uid="uid://daojs7v7f6o1i" path="res://scripts/inventory/inventory_ui.gd" id="1_qw0r6"]
+[ext_resource type="PackedScene" uid="uid://bpau8glmpuajx" path="res://scenes/crt.tscn" id="2_hj2ta"]
 
 [node name="Inventory" type="Control" unique_id=478197342]
 layout_mode = 3
@@ -10,3 +11,5 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_qw0r6")
+
+[node name="CRT" parent="." unique_id=731269213 instance=ExtResource("2_hj2ta")]

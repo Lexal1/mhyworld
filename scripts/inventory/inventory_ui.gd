@@ -48,9 +48,13 @@ func _ready() -> void:
 func _unhandled_input(event: InputEvent) -> void:
 	if not event.is_action_pressed("pause"): return
 	if visible:
+		$CRT.animation.play("tween_out")
+		await $CRT.animation.animation_finished
 		Global.resume_game() # emits on_resume, which hides us
+		$CRT.visible = false
 	elif not Global.is_paused():
 		Global.open_menu()
+		$CRT.visible = true
 		show()
 		_refresh() # after show(), because _refresh skips work while hidden
 

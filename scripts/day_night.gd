@@ -1,4 +1,4 @@
-extends Node
+class_name DayNight extends Node
 
 @export var sun: DirectionalLight3D
 @export var sky: WorldEnvironment
@@ -39,6 +39,7 @@ extends Node
 
 var time := 0.0 ## 0.0 = midnight, 0.5 = noon. Wraps at 1.0.
 var day := 0 ## Counts up each noon. Drives the moon phase.
+var realtime := false ## When true, `time` follows the computer's clock instead of day_duration.
 
 var _moon: DirectionalLight3D
 var _cover_tween: Tween
@@ -90,14 +91,31 @@ func _ready() -> void:
 	LimboConsole.register_command(
 		func(p_cover: float, p_seconds: float): fade_cloud_cover(p_cover, p_seconds),
 		"clouds fade", "Fade cloud cover to a value over some seconds.")
+	LimboConsole.register_command(
+		func(): LimboConsole.info("realtime: %s" % ("on" if toggle_realtime() else "off")),
+		"time realtime", "Toggle syncing world time to your computer's clock. (for fun)")
 
 
 func _process(delta: float) -> void:
 	var prev := time
-	time = fposmod(time + delta / day_duration, 1.0)
+	if realtime:
+		time = _clock_time()
+	else:
+		time = fposmod(time + delta / day_duration, 1.0)
 	if prev < 0.5 and time >= 0.5: day += 1
 	update_environment()
 	label.text = get_time()
+
+
+## Local time of day as 0..1 (0.0 = midnight, 0.5 = noon), same scale as `time`.
+func _clock_time() -> float:
+	var t := Time.get_time_dict_from_system() # local time, not UTC
+	return (t["hour"] * 3600.0 + t["minute"] * 60.0 + t["second"]) / 86400.0
+
+
+func toggle_realtime() -> bool:
+	realtime = not realtime
+	return realtime
 
 
 ## Weather hooks. Call these from a future weather system.

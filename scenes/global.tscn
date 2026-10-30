@@ -15,23 +15,28 @@
 [ext_resource type="AudioStream" uid="uid://boleqpf6ma6m4" path="res://assets/audio/oldmusic/synth7.ogg" id="12_dxqtg"]
 
 [sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_g4v7s"]
-random_pitch = 1.005793
-streams_count = 4
+random_pitch = 1.0293022
+streams_count = 3
 stream_0/stream = ExtResource("2_m3l3d")
 stream_1/stream = ExtResource("3_6rlim")
 stream_2/stream = ExtResource("5_2se67")
-stream_3/stream = ExtResource("5_7upwp")
 
 [sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_yf5fn"]
 random_pitch = 1.0594631
-streams_count = 7
+streams_count = 4
+stream_0/stream = ExtResource("7_7upwp")
+stream_1/stream = ExtResource("8_e7lx3")
+stream_2/stream = ExtResource("9_3q7h5")
+stream_3/stream = ExtResource("10_b18l6")
+
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_57qmd"]
+random_pitch = 1.0905077
+streams_count = 5
 stream_0/stream = ExtResource("4_m3l3d")
-stream_1/stream = ExtResource("7_7upwp")
-stream_2/stream = ExtResource("8_e7lx3")
-stream_3/stream = ExtResource("9_3q7h5")
-stream_4/stream = ExtResource("10_b18l6")
-stream_5/stream = ExtResource("11_korfd")
-stream_6/stream = ExtResource("12_dxqtg")
+stream_1/stream = ExtResource("10_b18l6")
+stream_2/stream = ExtResource("11_korfd")
+stream_3/stream = ExtResource("12_dxqtg")
+stream_4/stream = ExtResource("5_7upwp")
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_mmyj5"]
 shader = ExtResource("6_6rlim")
@@ -43,14 +48,18 @@ script = ExtResource("1_6kgfw")
 
 [node name="Music" type="AudioStreamPlayer" parent="." unique_id=728941297]
 stream = SubResource("AudioStreamRandomizer_g4v7s")
-pitch_scale = 0.99
 bus = &"Music"
 
 [node name="MusicTwo" type="AudioStreamPlayer" parent="Music" unique_id=851602278]
 stream = SubResource("AudioStreamRandomizer_yf5fn")
+pitch_scale = 0.99
+
+[node name="MusicThree" type="AudioStreamPlayer" parent="Music/MusicTwo" unique_id=166386826]
+stream = SubResource("AudioStreamRandomizer_57qmd")
+pitch_scale = 0.98
 
 [node name="Timer" type="Timer" parent="Music" unique_id=1264478801]
-wait_time = 3.0
+wait_time = 3.5
 one_shot = true
 autostart = true
 
