@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://cb08mh86kiec4"]
 
 [ext_resource type="Script" uid="uid://foqhkm45vf8y" path="res://scripts/components/entities/entity.gd" id="1_lggnh"]
-[ext_resource type="PackedScene" uid="uid://rgq75vgso8ky" path="res://assets/resources/models/occupants.glb" id="2_s76t6"]
+[ext_resource type="PackedScene" uid="uid://b7n8aew0u0j6y" path="res://assets/resources/models/occupant_model.tscn" id="2_0nal0"]
 [ext_resource type="Script" uid="uid://d0ce4lxn6vepx" path="res://scripts/components/entities/health_component.gd" id="3_8q74g"]
 [ext_resource type="Script" uid="uid://cw6ih7np485lt" path="res://scripts/components/entities/intelligence/brain_component.gd" id="4_gyinq"]
 [ext_resource type="Script" uid="uid://c6m65q1fe8w84" path="res://scripts/components/entities/animator_component.gd" id="4_pvkfj"]
@@ -18,10 +18,10 @@
 script = ExtResource("1_lggnh")
 id = &"occupant"
 move_speed = 3.0
-model = NodePath("Model")
+model = NodePath("")
 metadata/_custom_type_script = "uid://foqhkm45vf8y"
 
-[node name="Model" parent="." unique_id=1434311373 instance=ExtResource("2_s76t6")]
+[node name="OccupantModel" parent="." unique_id=1894631300 instance=ExtResource("2_0nal0")]
 transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1949501383]
