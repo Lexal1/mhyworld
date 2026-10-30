@@ -1,8 +1,8 @@
 [gd_scene format=3 uid="uid://b2q5kmssl66gc"]
 
-[ext_resource type="Script" uid="uid://de8a7r4xgjmpd" path="res://scripts/debug_scenes/scene_viewer.gd" id="1_viewer"]
-[ext_resource type="PackedScene" uid="uid://dsmdch1charhc" path="res://scenes/chunk.tscn" id="2_chunk"]
-[ext_resource type="Theme" uid="uid://be74h2fudfjk0" path="res://assets/resources/theme_default.tres" id="3_theme"]
+[ext_resource type="Script" uid="uid://de8a7r4xgjmpd" path="res://scripts/debug_scenes/scene_viewer.gd" id="1_tguvk"]
+[ext_resource type="PackedScene" uid="uid://dsmdch1charhc" path="res://scenes/chunk.tscn" id="2_1a10f"]
+[ext_resource type="Theme" uid="uid://be74h2fudfjk0" path="res://assets/resources/theme_default.tres" id="3_sjsru"]
 
 [sub_resource type="Environment" id="Environment_viewer"]
 background_mode = 1
@@ -10,7 +10,7 @@ background_color = Color(0.78775924, 0.78775924, 0.78775924, 1)
 ambient_light_color = Color(1, 1, 1, 1)
 
 [node name="SceneViewer" type="Node" unique_id=1033058292]
-script = ExtResource("1_viewer")
+script = ExtResource("1_tguvk")
 
 [node name="Pivot" type="Node3D" parent="." unique_id=1400963729]
 
@@ -18,7 +18,7 @@ script = ExtResource("1_viewer")
 
 [node name="ChunkRoot" type="Node3D" parent="Pivot/Holder" unique_id=1248668028]
 
-[node name="Chunk" parent="Pivot/Holder/ChunkRoot" unique_id=546656502 instance=ExtResource("2_chunk")]
+[node name="Chunk" parent="Pivot/Holder/ChunkRoot" unique_id=546656502 instance=ExtResource("2_1a10f")]
 visible = false
 auto_generate = false
 
@@ -39,4 +39,4 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
-theme = ExtResource("3_theme")
+theme = ExtResource("3_sjsru")
