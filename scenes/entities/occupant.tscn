@@ -11,6 +11,8 @@
 [ext_resource type="Script" uid="uid://drfpa77ifj0q6" path="res://scripts/components/entities/intelligence/states/wander_state.gd" id="6_pvkfj"]
 [ext_resource type="Texture2D" uid="uid://dljv3kjmac1c3" path="res://assets/textures/palette.png" id="7_0nal0"]
 [ext_resource type="Script" uid="uid://bcpf7ytx1v6a6" path="res://scripts/components/entities/death_component.gd" id="7_n38f8"]
+[ext_resource type="Script" uid="uid://qhiom8g5yrgf" path="res://scripts/components/entities/intelligence/states/talk_state.gd" id="12_4bemk"]
+[ext_resource type="Script" uid="uid://citvhlrbvom2b" path="res://scripts/components/entities/intelligence/dialogue_component.gd" id="13_n38f8"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_g4v7s"]
 
@@ -59,3 +61,12 @@ script = ExtResource("6_pvkfj")
 max_time = 5.0
 speed_scale = 0.8
 animation = &"walk"
+
+[node name="Talk" type="Node" parent="BrainComponent" unique_id=329751200]
+script = ExtResource("12_4bemk")
+animation = &"talk"
+
+[node name="DialogueComponent" type="Node" parent="." unique_id=565350236]
+script = ExtResource("13_n38f8")
+text_file = "res://mark.txt"
+chain_order = 1

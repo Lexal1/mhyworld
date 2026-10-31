@@ -20,6 +20,7 @@ var inventory := Inventory.new()
 @onready var _blocks := get_component(PlayerBlockComponent) as PlayerBlockComponent
 @onready var _targeting := get_component(PlayerTargetComponent) as PlayerTargetComponent
 
+
 var target_entity: Entity: ## What the crosshair is on, if anything.
 	get: return _targeting.target_entity
 

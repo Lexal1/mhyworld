@@ -4,7 +4,12 @@ class_name HUD extends Control
 @onready var fps: Label = $FPS
 @onready var crosshair: Crosshair = $MarginContainer/Control/Crosshair
 
+var dialogue: DialogueBox
+
+
 func _ready() -> void:
+	dialogue = DialogueBox.new()
+	add_child(dialogue)
 	if OS.is_debug_build():
 		ver.text = "Mhyworld c." + GitStatus.get_hash_string()
 	else:

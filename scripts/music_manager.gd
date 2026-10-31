@@ -38,23 +38,26 @@ var _day_night: DayNight
 var _mood := Mood.MENU
 var _gap_left := 0.0
 var _tween: Tween
-
+var _was_playing := false
 
 func _ready() -> void:
-	_player.finished.connect(_on_finished)
 	_mood = _current_mood()
 	_gap_left = first_delay
 
 
 func _process(delta: float) -> void:
+	var playing := _player.playing
+	if _was_playing and not playing:
+		_gap_left = randf_range(min_gap, max_gap) # track ended on its own
+	_was_playing = playing
+
 	var mood := _current_mood()
 	if mood != _mood:
 		_mood = mood
 		_on_mood_changed()
 
-	if muted or _player.playing: return
+	if muted or playing: return
 	_gap_left -= delta
-	if _gap_left >= 0.0: print(_gap_left)
 	if _gap_left <= 0.0: _play_next()
 
 
@@ -98,12 +101,9 @@ func _fade_to(level: float, seconds: float, stop_at_end: bool) -> Tween:
 
 
 func _stop_track() -> void:
-	_player.stop() # stop() doesn't emit `finished`, so reset the gap here
+	_player.stop()
+	_was_playing = false # we stopped it, not the track ending
 	_gap_left = change_delay
-
-
-func _on_finished() -> void:
-	_gap_left = randf_range(min_gap, max_gap)
 
 
 func _on_mood_changed() -> void:
