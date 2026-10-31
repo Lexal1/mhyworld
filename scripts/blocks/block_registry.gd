@@ -6,6 +6,7 @@ const BLOCK_DIR := "res://assets/resources/blocks/"
 var _blocks: Array[Block] = []
 var _idx_by_id: Dictionary = {} # StringName -> int
 var solid_table := PackedByteArray() # solid_table[idx] = 1 if solid
+var hook_table := PackedByteArray()  # hook_table[idx] = 1 if the block has components to run
 var _scene_roots: Array[Node] = [] # templates stay alive; components live in them
 
 func _ready() -> void:
@@ -46,8 +47,11 @@ func register(block: Block, fname: String = "") -> void:
 
 func _build_solid_table() -> void:
 	solid_table.resize(_blocks.size())
+	hook_table.resize(_blocks.size())
 	for i in _blocks.size():
-		solid_table[i] = 1 if _blocks[i].solid else 0
+		var b := _blocks[i]
+		solid_table[i] = 1 if b.solid else 0
+		hook_table[i] = 1 if (b is SceneBlock and not b.components.is_empty()) else 0
 
 
 func get_by_id(id: StringName) -> Block:

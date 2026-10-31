@@ -6,6 +6,7 @@ signal on_chunk_ready
 const SX := Global.CHUNK_SIZE.x
 const SY := Global.CHUNK_SIZE.y
 const SZ := Global.CHUNK_SIZE.z
+const LAYER := SX * SZ ## Index distance between a block and the one above it.
 const NEIGHBOR_DIRS: Array[Vector3i] = [
 	Vector3i(1, 0, 0), Vector3i(-1, 0, 0),
 	Vector3i(0, 1, 0), Vector3i(0, -1, 0),
@@ -29,6 +30,8 @@ var _world: Node
 var _neighbor_snaps: Array[PackedInt32Array] = [] # parallel to NEIGHBOR_DIRS, empty = not available
 
 var solid_table: PackedByteArray
+var hook_table: PackedByteArray
+var block_defs: Array[Block] = [] ## block index -> Block, so meshing skips the registry call.
 var air_idx: int
 
 var terrain: TerrainGenerator
@@ -54,6 +57,10 @@ static func block_index(x: int, y: int, z: int) -> int:
 func _ready() -> void:
 	_world = get_parent()
 	solid_table = BlockRegistry.solid_table
+	hook_table = BlockRegistry.hook_table
+	block_defs.clear()
+	for i in solid_table.size():
+		block_defs.push_back(BlockRegistry.get_by_idx(i))
 	air_idx = BlockRegistry.get_idx_of(&"air")
 	terrain = TerrainGenerator.for_seed(128 if Engine.is_editor_hint() else Global.world_seed)
 
@@ -140,11 +147,23 @@ func _update_mesh() -> void:
 
 	st.begin(Mesh.PRIMITIVE_TRIANGLES)
 	st.set_smooth_group(-1)
-	for x in SX:
-		for y in SY:
-			for z in SZ:
-				if Global.gameIsQuitting: return
-				_create_block(snap, Vector3i(x, y, z))
+	for y in SY:
+		for z in SZ:
+			if Global.gameIsQuitting: return
+			var row := (y * SZ + z) * SX
+			for x in SX:
+				var idx := row + x
+				var block := snap[idx]
+				if block == air_idx: continue
+				# Only interior blocks can be checked against `snap` directly.
+				# `and` stops at the first non-solid neighbour, so exposed blocks exit fast.
+				if x > 0 and x < SX - 1 and y > 0 and y < SY - 1 and z > 0 and z < SZ - 1 \
+						and hook_table[block] == 0 \
+						and solid_table[snap[idx - 1]] == 1 and solid_table[snap[idx + 1]] == 1 \
+						and solid_table[snap[idx - SX]] == 1 and solid_table[snap[idx + SX]] == 1 \
+						and solid_table[snap[idx - LAYER]] == 1 and solid_table[snap[idx + LAYER]] == 1:
+					continue
+				_create_block(snap, Vector3i(x, y, z), block)
 
 	# All-air or fully buried chunks have no faces; an empty mesh makes
 	# create_trimesh_collision() error, so don't build one.
@@ -214,15 +233,12 @@ func _is_transparent(snap: PackedInt32Array, x: int, y: int, z: int) -> bool:
 	return solid_table[snap[block_index(x, y, z)]] == 0
 
 
-func _create_block(snap: PackedInt32Array, pos: Vector3i) -> void:
-	var block := snap[block_index(pos.x, pos.y, pos.z)]
-	if block == air_idx: return
-
-	var block_data: Block = BlockRegistry.get_by_idx(block)
-	var atlas := block_data.atlas_position
-	var e := block_data.emission
+func _create_block(snap: PackedInt32Array, pos: Vector3i, block: int) -> void:
+	var block_data := block_defs[block]
 
 	if block_data.render_cube:
+		var atlas := block_data.atlas_position
+		var e := block_data.emission
 		_add_face_if_exposed(snap, BlockMesh.TOP,    pos, Vector3i(0, 1, 0),  atlas.TOP, e)
 		_add_face_if_exposed(snap, BlockMesh.BOTTOM, pos, Vector3i(0, -1, 0), atlas.BOTTOM, e)
 		_add_face_if_exposed(snap, BlockMesh.NORTH,  pos, Vector3i(0, 0, 1),  atlas.NORTH, e)
@@ -230,7 +246,7 @@ func _create_block(snap: PackedInt32Array, pos: Vector3i) -> void:
 		_add_face_if_exposed(snap, BlockMesh.EAST,   pos, Vector3i(1, 0, 0),  atlas.EAST, e)
 		_add_face_if_exposed(snap, BlockMesh.WEST,   pos, Vector3i(-1, 0, 0), atlas.WEST, e)
 
-	if block_data.has_method("on_block_created") and not Engine.is_editor_hint():
+	if hook_table[block] == 1 and not Engine.is_editor_hint():
 		block_data.on_block_created(pos, chunk_position, self)
 
 
