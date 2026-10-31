@@ -15,11 +15,11 @@ compatibility/default_parent_skeleton_in_mesh_instance_3d=true
 [application]
 
 config/name="mhyworld"
-config/version="10292026"
+config/version="10302026"
 run/main_scene="res://scenes/game.tscn"
 config/features=PackedStringArray("4.7", "Forward Plus")
 boot_splash/bg_color=Color(1, 1, 1, 1)
-config/icon="res://assets/textures/icon.svg"
+config/icon="uid://ds6bc2jkm0kfp"
 
 [autoload]
 
