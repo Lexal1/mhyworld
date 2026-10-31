@@ -28,5 +28,5 @@ func tick(delta: float) -> void:
 	if block.step_sound == null: return
 
 	_audio.stream = block.step_sound
-	_audio.pitch_scale = randf_range(0.95, 1.05)
+	_audio.pitch_scale = randf_range(0.80, 1.20)
 	_audio.play()

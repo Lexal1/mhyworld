@@ -54,6 +54,7 @@ func _process(delta: float) -> void:
 
 	if muted or _player.playing: return
 	_gap_left -= delta
+	if _gap_left >= 0.0: print(_gap_left)
 	if _gap_left <= 0.0: _play_next()
 
 
@@ -134,7 +135,7 @@ func _stream_for(mood: Mood) -> AudioStream:
 func _current_mood() -> Mood:
 	if not is_instance_valid(_day_night): return Mood.MENU
 	if _day_night.is_night(): return Mood.NIGHT
-	if _is_late_hour(): return Mood.LATE
+	if _is_late_hour() and _day_night.is_night(): return Mood.LATE
 	return Mood.DAY
 
 
